@@ -6,16 +6,10 @@ import com.example.Nofication.Enum.TypeEnum;
 import com.example.Nofication.Model.EmailDetail;
 import com.example.Nofication.Model.Request.NotificationRequest;
 import com.example.Nofication.Repository.NotificationRepository;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
-import java.util.Date;
 import java.util.UUID;
 import java.time.LocalDateTime;
 

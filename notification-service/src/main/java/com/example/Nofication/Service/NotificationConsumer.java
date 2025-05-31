@@ -1,6 +1,5 @@
 package com.example.Nofication.Service;
 
-import com.example.Nofication.Enum.TypeEnum;
 import com.example.Nofication.Model.Request.NotificationRequest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

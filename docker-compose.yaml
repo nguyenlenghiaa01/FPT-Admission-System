@@ -1,6 +1,48 @@
 version: "3.8"
 
 services:
+  config-service:
+    build:
+      context: ./config-service
+    container_name: config-service
+    ports:
+      - "8088:8088"
+    environment:
+      SPRING_APPLICATION_NAME: config-service
+      SPRING_PROFILES_ACTIVE: native
+      SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS: classpath:/application
+      EUREKA_CLIENT_ENABLED: false
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8088/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  discovery-service:
+    build:
+      context: ./discovery-service
+    container_name: discovery-service
+    depends_on:
+      config-service:
+        condition: service_healthy
+    ports:
+      - "9099:9099"
+    environment:
+      SPRING_APPLICATION_NAME: discovery-service
+      SPRING_CONFIG_IMPORT: configserver:http://config-service:8088
+      SPRING_CLOUD_FAIL_FAST: "false"
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: "false"
+      EUREKA_CLIENT_FETCH_REGISTRY: "false"
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9099/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
     container_name: zookeeper
@@ -16,7 +58,10 @@ services:
     image: confluentinc/cp-kafka:7.4.0
     container_name: kafka
     depends_on:
-      - zookeeper
+      zookeeper:
+        condition: service_started
+      discovery-service:
+        condition: service_healthy
     ports:
       - "9092:9092"
     environment:
@@ -49,8 +94,10 @@ services:
       context: ./notification-service
     container_name: notification-service
     depends_on:
-      - noti-db
-      - kafka
+      kafka:
+        condition: service_started
+      noti-db:
+        condition: service_started
     ports:
       - "8083:8083"
     environment:
@@ -64,6 +111,8 @@ services:
       SPRING_MAIL_PASSWORD: ofhkqiwasdkbzpiw
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: "true"
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: "true"
+      SPRING_CONFIG_IMPORT: configserver:http://config-service:8088
+      SPRING_CLOUD_FAIL_FAST: "false"
     networks:
       - app-network
 
@@ -86,8 +135,10 @@ services:
       context: ./user-service
     container_name: user-service
     depends_on:
-      - user-db
-      - kafka
+      kafka:
+        condition: service_started
+      user-db:
+        condition: service_started
     ports:
       - "8082:8082"
     environment:
@@ -95,6 +146,50 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 123
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_CONFIG_IMPORT: configserver:http://config-service:8088
+      SPRING_CLOUD_FAIL_FAST: "false"
+    networks:
+      - app-network
+
+  authentication-service:
+    build:
+      context: ./authentication-service
+    container_name: authentication-service
+    depends_on:
+      kafka:
+        condition: service_started
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_KAFKA_PRODUCER_KEY_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
+      SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
+      SPRING_CONFIG_IMPORT: configserver:http://config-service:8088
+    networks:
+      - app-network
+
+  api-gateway-service:
+    build:
+      context: ./api-gateway-service
+    container_name: api-gateway-service
+    depends_on:
+      config-service:
+        condition: service_healthy
+      discovery-service:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: true
+      EUREKA_CLIENT_FETCH_REGISTRY: true
+      SPRING_CLOUD_GATEWAY_DISCOVERY_LOCATOR_ENABLED: true
+      SPRING_CLOUD_GATEWAY_DISCOVERY_LOCATOR_LOWER_CASE_SERVICE_ID: true
+      SPRING_CLOUD_GATEWAY_HTTPCLIENT_CONNECT_TIMEOUT: 5000
+      SPRING_CLOUD_GATEWAY_HTTPCLIENT_RESPONSE_TIMEOUT: 5s
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_CLOUD_GATEWAY: DEBUG
+      SPRING_CONFIG_IMPORT: configserver:http://config-service:8088
+      SPRING_CLOUD_FAIL_FAST: "false"
     networks:
       - app-network
 
