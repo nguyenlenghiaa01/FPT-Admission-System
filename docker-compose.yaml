@@ -10,8 +10,9 @@ services:
     environment:
       SPRING_APPLICATION_NAME: config-service
       SPRING_PROFILES_ACTIVE: native
-      SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS: classpath:/application
+      SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS: "classpath:/application/"
       EUREKA_CLIENT_ENABLED: false
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
     networks:
       - app-network
     healthcheck:
@@ -31,7 +32,7 @@ services:
       - "9099:9099"
     environment:
       SPRING_APPLICATION_NAME: discovery-service
-      SPRING_CONFIG_IMPORT: configserver:http://config-service:8088
+      SPRING_CONFIG_IMPORT: http://config-service:8088/
       SPRING_CLOUD_FAIL_FAST: "false"
       EUREKA_CLIENT_REGISTER_WITH_EUREKA: "false"
       EUREKA_CLIENT_FETCH_REGISTRY: "false"
@@ -111,7 +112,8 @@ services:
       SPRING_MAIL_PASSWORD: ofhkqiwasdkbzpiw
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: "true"
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: "true"
-      SPRING_CONFIG_IMPORT: configserver:http://config-service:8088
+      SPRING_CONFIG_IMPORT: http://config-service:8088/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
       SPRING_CLOUD_FAIL_FAST: "false"
     networks:
       - app-network
@@ -146,8 +148,9 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 123
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      SPRING_CONFIG_IMPORT: configserver:http://config-service:8088
+      SPRING_CONFIG_IMPORT: http://config-service:8088/
       SPRING_CLOUD_FAIL_FAST: "false"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
     networks:
       - app-network
 
@@ -164,7 +167,8 @@ services:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       SPRING_KAFKA_PRODUCER_KEY_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
       SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
-      SPRING_CONFIG_IMPORT: configserver:http://config-service:8088
+      SPRING_CONFIG_IMPORT: http://config-service:8088/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
     networks:
       - app-network
 
@@ -188,8 +192,9 @@ services:
       SPRING_CLOUD_GATEWAY_HTTPCLIENT_CONNECT_TIMEOUT: 5000
       SPRING_CLOUD_GATEWAY_HTTPCLIENT_RESPONSE_TIMEOUT: 5s
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_CLOUD_GATEWAY: DEBUG
-      SPRING_CONFIG_IMPORT: configserver:http://config-service:8088
+      SPRING_CONFIG_IMPORT: http://config-service:8088/
       SPRING_CLOUD_FAIL_FAST: "false"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
     networks:
       - app-network
 
