@@ -28,42 +28,9 @@ public class NotificationService {
     private TokenUtil tokenUtil;
 
     public void createNotificationForgotPassword(NotificationRequest notificationRequest) {
-        try {
-            // Tạo UUID duy nhất
-            String notificationUuid;
-            do {
-                notificationUuid = UUID.randomUUID().toString();
-            } while (notificationRepository.findNotificationByUuid(notificationUuid) != null);
 
-            // Tạo notification mới
-            Notification newNotification = new Notification();
-            newNotification.setUuid(notificationUuid);
-            newNotification.setEmail(notificationRequest.getEmail());
-            newNotification.setType(TypeEnum.FORGOT_PASSWORD);
-            newNotification.setSendAt(LocalDateTime.now());
-            newNotification.setDescription("none");
-
-            EmailDetail emailDetail = new EmailDetail();
-            emailDetail.setReceiver(notificationRequest.getEmail());
-            emailDetail.setSubject("Reset Password");
-            String token = notificationRequest.getToken();
-            tokenUtil.parseToken(token);
-
-            emailDetail.setLink("https://localhost:8082/reset-password?token=" + token);
-
-            // Gửi email
-            try {
-                emailService.sendEmail(emailDetail);
-                newNotification.setStatus(StatusEnum.SEND);
-            } catch (Exception e) {
-                newNotification.setStatus(StatusEnum.FAIL);
-            }
-
-            notificationRepository.save(newNotification);
-
-        } catch (Exception e) {
-            throw new RuntimeException("Tạo thông báo quên mật khẩu thất bại", e);
-        }
     }
 
+    public void createNotificationSubmitApplication(NotificationRequest request) {
+    }
 }

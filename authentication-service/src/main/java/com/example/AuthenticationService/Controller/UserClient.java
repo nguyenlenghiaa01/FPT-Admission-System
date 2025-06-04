@@ -9,14 +9,14 @@ import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "user-service", url = "http://localhost:8082")
+@FeignClient(name = "user-service", url = "http://user-service:8082")
 public interface UserClient {
     @PostMapping("/api/users/register")
     AccountResponse register(@Valid @RequestBody RegisterRequest registerRequest);
     @PostMapping("/api/users/login")
     AccountResponse login(@Valid @RequestBody LoginRequest loginRequest);
     @GetMapping("/api/users/getEmail")
-     AccountResponse getAccountByEmail(@RequestParam String email);
+    AccountResponse getAccountByEmail(@RequestParam String email);
     @PostMapping("/api/users/change-password")
     String changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest);
     @PostMapping("/api/users/reset-password")

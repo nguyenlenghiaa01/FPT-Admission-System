@@ -154,6 +154,15 @@ services:
     networks:
       - app-network
 
+  candidate-db:
+    image: postgres:14
+    container_name: candidate-db
+    environment:
+      - POSTGRES_DB: candidate
+      - POSTGRES_USER: candidate
+      - POSTGRES_PASSWORD: 12345
+    ports: "54"
+
   authentication-service:
     build:
       context: ./authentication-service
