@@ -1,7 +1,5 @@
-package com.example.AuthenticationService.Config;
+package com.example.consultant_service.Config;
 
-import com.example.AuthenticationService.Service.AuthenticationService;
-import com.example.AuthenticationService.Service.TokenService; // Import TokenService
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
-import org.springframework.web.servlet.HandlerExceptionResolver; // Import này để inject Resolver
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
 @EnableMethodSecurity
@@ -54,10 +52,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                         .requestMatchers(
-                                "/api/users/login",
-                                "/api/users/register",
-                                "/api/users/forgot-password",
-                                "/api/users/register/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**"

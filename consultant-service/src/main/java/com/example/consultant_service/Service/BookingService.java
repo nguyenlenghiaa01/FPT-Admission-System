@@ -1,0 +1,102 @@
+package com.example.consultant_service.Service;
+
+import com.example.consultant_service.Entity.Booking;
+import com.example.consultant_service.Enum.StatusEnum;
+import com.example.consultant_service.Exception.NotFoundException;
+import com.example.consultant_service.Model.Request.BookingRequest;
+import com.example.consultant_service.Model.Request.BookingUpdateRequest;
+import com.example.consultant_service.Model.Response.BookingResponse;
+import com.example.consultant_service.Model.Response.DataResponse;
+import com.example.consultant_service.Repository.BookingRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class BookingService {
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public BookingResponse create (BookingRequest bookingRequest){
+        Booking booking = new Booking();
+        booking.setUuid(UUID.randomUUID().toString());
+        booking.setCreatedAt(LocalDateTime.now());
+        booking.setScheduler(bookingRequest.getScheduler());
+        booking.setStatus(StatusEnum.BOOKED);
+        booking.setStaffUuid(null);
+        Booking newBooking = bookingRepository.save(booking);
+        return modelMapper.map(newBooking,BookingResponse.class);
+    }
+
+    public DataResponse<BookingResponse> getAll(int page, int size) {
+        Page<Booking> bookingPage = bookingRepository.findAll(PageRequest.of(page, size));
+        List<Booking> bookings = bookingPage.getContent();
+        List<BookingResponse> bookingResponse = new ArrayList<>();
+        for(Booking booking: bookings) {
+            BookingResponse booking1 = new BookingResponse();
+            booking1.setStatus(booking.getStatus());
+            booking1.setScheduler(booking.getScheduler());
+            booking1.setBookAt(booking.getCreatedAt());
+            booking.setUserUuid(booking.getUserUuid());
+
+            bookingResponse.add(booking1);
+        }
+
+        DataResponse<BookingResponse> dataResponse = new DataResponse<>();
+        dataResponse.setListData(bookingResponse);
+        dataResponse.setTotalElements(bookingPage.getTotalElements());
+        dataResponse.setPageNumber(bookingPage.getNumber());
+        dataResponse.setTotalPages(bookingPage.getTotalPages());
+        return dataResponse;
+    }
+
+    public Booking findBookingByUuid(String uuid){
+        Booking booking = bookingRepository.findBookingByUuid(uuid);
+        if(booking ==null){
+            throw new NotFoundException("Booking not found");
+        }
+        return booking;
+    }
+
+    public BookingResponse update(String bookingUuid,BookingRequest bookingRequest){
+        Booking booking = bookingRepository.findBookingByUuid(bookingUuid);
+        if(booking == null){
+            throw new NotFoundException("Booking not found");
+        }
+        booking.setScheduler(bookingRequest.getScheduler());
+        Booking newBooking = bookingRepository.save(booking);
+        return modelMapper.map(newBooking,BookingResponse.class);
+    }
+
+    public BookingResponse updateStatus(String uuid, BookingUpdateRequest bookingUpdateRequest){
+        Booking booking = bookingRepository.findBookingByUuid(uuid);
+        if(booking == null){
+           throw new NotFoundException("Booking not found");
+        }
+        booking.setStatus(bookingUpdateRequest.getStatus());
+        booking.setStaffUuid(bookingUpdateRequest.getStaffUuid());
+        booking.setUserUuid(bookingUpdateRequest.getUserUuid());
+        Booking newBooking = bookingRepository.save(booking);
+        return modelMapper.map(newBooking,BookingResponse.class);
+    }
+
+    public Booking delete (String uuid){
+        Booking booking = bookingRepository.findBookingByUuid(uuid);
+        if(booking == null){
+            throw new NotFoundException("Booking not found");
+        }
+        bookingRepository.delete(booking);
+        return booking;
+    }
+}
