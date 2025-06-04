@@ -66,7 +66,6 @@ public class Filter extends OncePerRequestFilter {
         }
 
         String token = getTokenFromRequest(request);
-
         if (token == null) {
             resolver.resolveException(request, response, null, new AuthException("JWT token is missing!"));
             return;

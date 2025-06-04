@@ -132,6 +132,20 @@ services:
     networks:
       - app-network
 
+  consultant-db:
+    image: postgres:14
+    container_name: consultant-db
+    environment:
+      POSTGRES_DB: consultant
+      POSTGRES_USER: consultant
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - "5434:5432"
+    volumes:
+      - user_pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
   user-service:
     build:
       context: ./user-service
@@ -198,9 +212,34 @@ services:
     networks:
       - app-network
 
+  consultant-service:
+    build:
+      context: ./consultant-service
+    container_name: consultant-service
+    depends_on:
+      kafka:
+        condition: service_started
+      user-db:
+        condition: service_started
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5432/consultant
+      SPRING_DATASOURCE_USERNAME: consultant
+      SPRING_DATASOURCE_PASSWORD: 12345
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_CONFIG_IMPORT: http://config-service:8088/
+      SPRING_CLOUD_FAIL_FAST: "false"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
+    networks:
+      - app-network
+
+
 volumes:
   noti_pgdata:
   user_pgdata:
+  consultant_pgdata:
+
 
 networks:
   app-network:
