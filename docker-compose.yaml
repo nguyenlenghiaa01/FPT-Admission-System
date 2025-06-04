@@ -158,10 +158,73 @@ services:
     image: postgres:14
     container_name: candidate-db
     environment:
-      - POSTGRES_DB: candidate
-      - POSTGRES_USER: candidate
-      - POSTGRES_PASSWORD: 12345
-    ports: "54"
+      POSTGRES_DB: candidate
+      POSTGRES_USER: candidate
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - "5434:5432"
+    volumes:
+      - candidate_pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  candidate-service:
+    build:
+      context: ./candidate-service
+    container_name: candidate-service
+    depends_on:
+      kafka:
+        condition: service_started
+      user-db:
+        condition: service_started
+    ports:
+      - "8086:8086"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5434/candidate
+      SPRING_DATASOURCE_USERNAME: candidate
+      SPRING_DATASOURCE_PASSWORD: 12345
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_CONFIG_IMPORT: http://config-service:8088/
+      SPRING_CLOUD_FAIL_FAST: "false"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
+    networks:
+      - app-network
+
+  program-db:
+    image: postgres:14
+    container_name: program-db
+    environment:
+      POSTGRES_DB: program
+      POSTGRES_USER: program
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - "5435:5432"
+    volumes:
+      - program_pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  program-service:
+    build:
+      context: ./program-service
+    container_name: program-service
+    depends_on:
+      kafka:
+        condition: service_started
+      user-db:
+        condition: service_started
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5435/program
+      SPRING_DATASOURCE_USERNAME: program
+      SPRING_DATASOURCE_PASSWORD: 12345
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_CONFIG_IMPORT: http://config-service:8088/
+      SPRING_CLOUD_FAIL_FAST: "false"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
+    networks:
+      - app-network
 
   authentication-service:
     build:

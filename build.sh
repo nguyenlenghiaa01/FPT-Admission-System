@@ -9,6 +9,8 @@ services=(
     config-service
     discovery-service
     notification-service
+    candidate-service
+    program-service
 )
 
 # Lưu thư mục gốc

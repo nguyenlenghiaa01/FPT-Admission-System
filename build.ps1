@@ -6,7 +6,9 @@ $services = @(
     "api-gateway-service",
     "config-service",
     "discovery-service",
-    "notification-service"
+    "notification-service",
+    "candidate-service",
+    "program-service"
 )
 
 # Lưu thư mục hiện tại
