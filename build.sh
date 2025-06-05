@@ -11,6 +11,7 @@ services=(
     notification-service
     candidate-service
     program-service
+    consultant-service
 )
 
 # Lưu thư mục gốc

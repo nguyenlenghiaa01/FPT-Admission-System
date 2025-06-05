@@ -122,9 +122,9 @@ services:
     image: postgres:14
     container_name: user-db
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: userdb
+      POSTGRES_USER: userdb
+      POSTGRES_PASSWORD: 12345
     ports:
       - "5432:5432"
     volumes:
@@ -142,7 +142,7 @@ services:
     ports:
       - "5434:5432"
     volumes:
-      - user_pgdata:/var/lib/postgresql/data
+      - consultant_pgdata:/var/lib/postgresql/data
     networks:
       - app-network
 
@@ -158,9 +158,9 @@ services:
     ports:
       - "8082:8082"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5432/postgres
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: 123
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5432/userdb
+      SPRING_DATASOURCE_USERNAME: userdb
+      SPRING_DATASOURCE_PASSWORD: 12345
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       SPRING_CONFIG_IMPORT: http://config-service:8088/
       SPRING_CLOUD_FAIL_FAST: "false"
@@ -176,7 +176,7 @@ services:
       POSTGRES_USER: candidate
       POSTGRES_PASSWORD: 12345
     ports:
-      - "5434:5432"
+      - "5436:5432"
     volumes:
       - candidate_pgdata:/var/lib/postgresql/data
     networks:
@@ -194,7 +194,7 @@ services:
     ports:
       - "8086:8086"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5434/candidate
+      SPRING_DATASOURCE_URL: jdbc:postgresql://candidate-db:5432/candidate
       SPRING_DATASOURCE_USERNAME: candidate
       SPRING_DATASOURCE_PASSWORD: 12345
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
@@ -228,9 +228,9 @@ services:
       user-db:
         condition: service_started
     ports:
-      - "8085:8085"
+      - "8087:8087"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5435/program
+      SPRING_DATASOURCE_URL: jdbc:postgresql://program-db:5432/program
       SPRING_DATASOURCE_USERNAME: program
       SPRING_DATASOURCE_PASSWORD: 12345
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
@@ -296,7 +296,7 @@ services:
     ports:
       - "8085:8085"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5432/consultant
+      SPRING_DATASOURCE_URL: jdbc:postgresql://consultant-db:5432/consultant
       SPRING_DATASOURCE_USERNAME: consultant
       SPRING_DATASOURCE_PASSWORD: 12345
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
@@ -310,8 +310,9 @@ services:
 volumes:
   noti_pgdata:
   user_pgdata:
+  program_pgdata:
+  candidate_pgdata:
   consultant_pgdata:
-
 
 networks:
   app-network:

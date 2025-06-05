@@ -7,19 +7,20 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="configservice" />
-        <module name="DiscoveryService" />
-        <module name="demo" />
         <module name="authenservice" />
         <module name="api-gateway-service" />
         <module name="demo (1)" />
+        <module name="configservice" />
+        <module name="DiscoveryService" />
+        <module name="demo" />
+        <module name="authenservice (1)" />
       </profile>
       <profile name="Annotation profile for program-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar" />
         </processorPath>
         <module name="candidate-service" />
         <module name="program-service" />
@@ -31,6 +32,7 @@
       <module name="DiscoveryService" options="-parameters" />
       <module name="api-gateway-service" options="-parameters" />
       <module name="authenservice" options="-parameters" />
+      <module name="authenservice (1)" options="-parameters" />
       <module name="candidate-service" options="-parameters" />
       <module name="configservice" options="-parameters" />
       <module name="demo" options="-parameters" />

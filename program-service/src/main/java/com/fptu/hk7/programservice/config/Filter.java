@@ -38,8 +38,7 @@ public class Filter extends OncePerRequestFilter {
             "/v3/api-docs/**",
             "/swagger-resources/**",
             "/webjars/**",
-            "/swagger-ui.html",
-            "/api/program/**"
+            "/swagger-ui.html"
     );
 
     public boolean checkIsPublicAPI(String uri) {
@@ -84,6 +83,9 @@ public class Filter extends OncePerRequestFilter {
             // => token chuẩn
             // => cho phép truy cập
             // => lưu lại thông tin account
+            if(authorResponse.getEmail() == null || authorResponse.getEmail().isEmpty() || authorResponse.getRole() == null || authorResponse.getRole().isEmpty()) {
+                throw new RuntimeException("Error: Không thể decode token!");
+            }
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     authorResponse.getEmail(),
                     token,

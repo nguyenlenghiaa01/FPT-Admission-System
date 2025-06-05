@@ -8,7 +8,8 @@ $services = @(
     "discovery-service",
     "notification-service",
     "candidate-service",
-    "program-service"
+    "program-service",
+    "consultant-service"
 )
 
 # Lưu thư mục hiện tại

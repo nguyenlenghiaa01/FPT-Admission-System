@@ -5,7 +5,7 @@ FROM openjdk:23-jdk-slim
 WORKDIR /app
 
 # Copy jar file to container
-COPY target/be.jar app.jar
+COPY target/candidate-service-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose port app chạy (8084 trong file config)
 EXPOSE 8086

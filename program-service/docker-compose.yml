@@ -1,21 +1,21 @@
-version: '3.7'
-services:
-  program-service:
-    image: postgres:14
-    container_name: program-db
-    ports:
-      - "5435:5432"
-    environment:
-      POSTGRES_DB: program
-      POSTGRES_USER: program
-      POSTGRES_PASSWORD: 12345
-    volumes:
-      - program_pgdata:/var/lib/postgresql/data
-    networks:
-        - app-network
-volumes:
-    program_pgdata:
-
-networks:
-  app-network:
-    driver: bridge
+#version: '3.7'
+#services:
+#  program-service:
+#    image: postgres:14
+#    container_name: program-db
+#    ports:
+#      - "5435:5432"
+#    environment:
+#      POSTGRES_DB: program
+#      POSTGRES_USER: program
+#      POSTGRES_PASSWORD: 12345
+#    volumes:
+#      - program_pgdata:/var/lib/postgresql/data
+#    networks:
+#        - app-network
+#volumes:
+#    program_pgdata:
+#
+#networks:
+#  app-network:
+#    driver: bridge

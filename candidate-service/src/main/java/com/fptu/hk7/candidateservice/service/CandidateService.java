@@ -56,6 +56,6 @@ public class CandidateService {
     }
 
     public String getCurrentEmailUser() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
     }
 }

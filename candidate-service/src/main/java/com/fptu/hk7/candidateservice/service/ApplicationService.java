@@ -1,6 +1,6 @@
 package com.fptu.hk7.candidateservice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fptu.hk7.candidateservice.client.OfferingProgramClient;
 import com.fptu.hk7.candidateservice.client.UserClient;
 import com.fptu.hk7.candidateservice.dto.request.ApplicationRequest;
@@ -13,7 +13,9 @@ import com.fptu.hk7.candidateservice.repository.ApplicationRepository;
 import com.fptu.hk7.candidateservice.pojo.Application;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +31,12 @@ public class ApplicationService {
     private final OfferingProgramClient offeringProgramClient;
     private final CandidateService candidateService;
     private final ScholarshipService scholarshipService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
 
     public Application createApplication(Application application) {
         return applicationRepository.save(application);
@@ -62,24 +70,45 @@ public class ApplicationService {
         return false;
     }
 
+    // Produce Kafka Event
     private final String TOPIC = "submit_application";
 
     public ResponseEntity<ResponseApi<ApplicationResponse>> submitApplication(ApplicationRequest applicationRequest){
         Candidate candidate = modelMapper.map(applicationRequest, Candidate.class);
-        candidate.setId(UUID.fromString(userClient.getAccountByEmail(candidateService.getCurrentEmailUser()).getUuid()));
+
+        System.out.println("Start: Lấy thông tin User Account thông qua Feign");
+        UUID id = UUID.fromString(userClient.getAccountByEmail(candidateService.getCurrentEmailUser()).getUuid());
+        candidate.setId(id);
+        System.out.println("UUID của UserAccount: "+id);
+        System.out.println("End: Lấy thông tin thành công");
         candidateService.createCandidate(candidate);
+
+        System.out.println("Start: Lấy thông tin Offering UUID");
         UUID offering_id = offeringProgramClient.getOfferingByCampusNameAndSpecializationName(
                 new FindOfferingRequest(applicationRequest.getSpecialization(), applicationRequest.getCampus())
         ).getBody();
+        System.out.println("UUID Offering lấy được: " + offering_id);
+        System.out.println("End: Lấy thông tin thành công");
         Application application = new Application();
         application.setOffering_id(offering_id);
         application.setScholarship(scholarshipService.getScholarshipByName(applicationRequest.getScholarship()));
-        this.createApplication(application);
+        createApplication(application);
+
+        System.out.println("Start: Bắt đầu tạo kafka-event cho submit_application");
         try {
             SubmitApplicationEvent event = new SubmitApplicationEvent();
             event.setEmail(candidate.getEmail());
-//            event.setToken();
+            event.setFullname(candidate.getFullname());
+            event.setPhone(applicationRequest.getPhone());
+            event.setCampus(applicationRequest.getCampus());
+            event.setSpecialization(applicationRequest.getSpecialization());
+
+            String eventJson = objectMapper.writeValueAsString(event);
+            System.out.println("Event submit_application: "+event.toString());
+            kafkaTemplate.send(TOPIC, eventJson);
+            System.out.println("Success: Đã tạo ra kafka-event submit_application thành công!");
         } catch (Exception e) {
+            System.err.println("X Error: Không thể tạo kafka-event submit_application, " + e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
         return ResponseEntity.ok(

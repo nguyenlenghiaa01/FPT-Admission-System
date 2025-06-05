@@ -27,10 +27,11 @@ public class TokenService {
     }
 
     public AuthorResponse isAuthenticated(String token) {
+        System.out.println("Token received: " + token);
         Claims claims = Jwts.parserBuilder().setSigningKey(getSigninKey()).build().parseClaimsJws(token).getBody();
         AuthorResponse authorResponse = new AuthorResponse();
         authorResponse.setEmail(claims.getSubject());
-        authorResponse.setRole(claims.get("role", String.class));
+        authorResponse.setRole(claims.get("roles", String.class));
         return authorResponse;
     }
 

@@ -38,8 +38,7 @@ public class Filter extends OncePerRequestFilter {
     private final List<String> AUTH_PERMISSION = List.of(
             "/swagger-ui/**",
             "/v3/api-docs/**",
-            "/swagger-resources/**",
-            "/api/application/submit"
+            "/swagger-resources/**"
     );
 
     public boolean checkIsPublicAPI(String uri) {
@@ -80,6 +79,9 @@ public class Filter extends OncePerRequestFilter {
                 // response token sai
                 resolver.resolveException(request, response, null, new AuthException("Invalid token!"));
                 return;
+            }
+            if(authorResponse.getEmail() == null || authorResponse.getEmail().isEmpty() || authorResponse.getRole() == null || authorResponse.getRole().isEmpty()) {
+                throw new RuntimeException("Error: Không thể decode token!");
             }
             // => token chuẩn
             // => cho phép truy cập

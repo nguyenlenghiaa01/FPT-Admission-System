@@ -11,5 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SubmitApplicationEvent {
     String email;
-    String token;
+    String phone;
+    String fullname;
+    String specialization;
+    String campus;
 }

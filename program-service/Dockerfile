@@ -5,10 +5,10 @@ FROM openjdk:23-jdk-slim
 WORKDIR /app
 
 # Copy jar file to container
-COPY target/be.jar app.jar
+COPY target/program-service-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose port app chạy (8085 trong file config)
-EXPOSE 8085
+EXPOSE 8087
 
 # Run the jar file
 ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Xác nhận gửi đơn tư vấn thành công</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f6f6f6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .header {
+      background-color: #d9232d;
+      color: white;
+      padding: 16px;
+      text-align: center;
+      border-radius: 6px 6px 0 0;
+    }
+    .footer {
+      font-size: 0.9em;
+      color: #777;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #d9232d;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h2>Đã gửi đơn tư vấn thành công</h2>
+  </div>
+
+  <p>Chào bạn <strong th:text="${fullname}"></strong>,</p>
+
+  <p>Cảm ơn bạn đã gửi đơn đăng ký tư vấn tuyển sinh tới <strong>Trường Đại học FPT</strong>. Chúng tôi đã nhận được thông tin của bạn và bộ phận tuyển sinh sẽ liên hệ trong thời gian sớm nhất.</p>
+
+  <p><strong>Thông tin bạn đã cung cấp:</strong></p>
+  <ul>
+    <li><strong th:text="${phone}">Số điện thoại:</strong></li>
+    <li><strong th:text="${specialization}">Ngành quan tâm:</strong></li>
+    <li><strong th:text="${campus}">Cơ sở học:</strong></li>
+  </ul>
+
+  <p>Nếu bạn có bất kỳ câu hỏi nào, vui lòng phản hồi email này hoặc gọi đến hotline: <strong>1900 1234</strong></p>
+
+  <a class="btn" href="https://fpt.edu.vn">Truy cập website</a>
+
+  <div class="footer">
+    &copy; 2025 Trường Đại học FPT. Mọi quyền được bảo lưu.
+  </div>
+</div>
+</body>
+</html>
