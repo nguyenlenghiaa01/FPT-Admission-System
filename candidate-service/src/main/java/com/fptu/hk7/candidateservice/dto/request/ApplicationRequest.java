@@ -36,5 +36,5 @@ public class ApplicationRequest {
 
     private boolean postpaid;
 
-
+    private String bookingUuid;
 }

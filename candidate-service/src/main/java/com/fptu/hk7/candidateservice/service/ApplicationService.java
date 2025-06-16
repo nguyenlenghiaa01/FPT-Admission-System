@@ -7,6 +7,7 @@ import com.fptu.hk7.candidateservice.dto.request.ApplicationRequest;
 import com.fptu.hk7.candidateservice.dto.request.FindOfferingRequest;
 import com.fptu.hk7.candidateservice.dto.response.ApplicationResponse;
 import com.fptu.hk7.candidateservice.dto.response.ResponseApi;
+import com.fptu.hk7.candidateservice.event.BookingEvent;
 import com.fptu.hk7.candidateservice.event.SubmitApplicationEvent;
 import com.fptu.hk7.candidateservice.pojo.Candidate;
 import com.fptu.hk7.candidateservice.repository.ApplicationRepository;
@@ -71,7 +72,9 @@ public class ApplicationService {
     }
 
     // Produce Kafka Event
-    private final String TOPIC = "submit_application";
+    private final String TOPIC = "submit_application"; // notification-service
+
+    private final String TOPIC2 = "update_application"; // consultant-service
 
     public ResponseEntity<ResponseApi<ApplicationResponse>> submitApplication(ApplicationRequest applicationRequest){
         Candidate candidate = modelMapper.map(applicationRequest, Candidate.class);
@@ -94,6 +97,18 @@ public class ApplicationService {
         application.setScholarship(scholarshipService.getScholarshipByName(applicationRequest.getScholarship()));
         createApplication(application);
 
+        System.out.println("Start: Lưu thông tin ứng viên vào Booking bên bảng Booking - Consultant Service");
+        try {
+            BookingEvent bookingEvent = new BookingEvent();
+            bookingEvent.setBookingUuid(applicationRequest.getBookingUuid());
+
+            String jsonBookingEvent = objectMapper.writeValueAsString(bookingEvent);
+            System.out.println("Event booking: " + bookingEvent.toString());
+            kafkaTemplate.send(TOPIC2, jsonBookingEvent);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         System.out.println("Start: Bắt đầu tạo kafka-event cho submit_application");
         try {
             SubmitApplicationEvent event = new SubmitApplicationEvent();
@@ -104,7 +119,7 @@ public class ApplicationService {
             event.setSpecialization(applicationRequest.getSpecialization());
 
             String eventJson = objectMapper.writeValueAsString(event);
-            System.out.println("Event submit_application: "+event.toString());
+            System.out.println("Event submit_application: "+ event.toString());
             kafkaTemplate.send(TOPIC, eventJson);
             System.out.println("Success: Đã tạo ra kafka-event submit_application thành công!");
         } catch (Exception e) {
