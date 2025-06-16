@@ -306,6 +306,13 @@ services:
     networks:
       - app-network
 
+#  redis:
+#    image: redis:lastest
+#    container_name: redis
+#    ports:
+#      - "6379:6379"
+#    networks:
+#      - app-network
 
 volumes:
   noti_pgdata:

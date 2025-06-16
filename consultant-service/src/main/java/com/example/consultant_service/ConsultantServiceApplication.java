@@ -13,7 +13,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableFeignClients
 @EnableDiscoveryClient
-@OpenAPIDefinition(info = @Info(title = "AUTHENTICATION API", version = "1.0", description = "Information"))
+@OpenAPIDefinition(info = @Info(title = "CONSULTANT API", version = "1.0", description = "Information"))
 @SecurityScheme(name = "api", scheme = "bearer", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
 public class ConsultantServiceApplication {
 

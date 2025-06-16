@@ -17,7 +17,7 @@ public class Booking {
     private String uuid;
 
     @Column(name = "user_uuid")
-    private String userUuid;
+    private String candidateUuid;
 
     @Column(name="staff_uuid")
     private String staffUuid;
@@ -31,4 +31,13 @@ public class Booking {
 
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
+
+    @Column(name = "available_date")
+    private LocalDateTime availableDate;
+
+    @Column(name = "start_time")
+    private LocalDateTime startTime;
+
+    @Column(name = "end_time")
+    private LocalDateTime endTime;
 }

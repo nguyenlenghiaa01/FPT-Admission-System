@@ -35,4 +35,6 @@ public class ApplicationRequest {
     private String scholarship;
 
     private boolean postpaid;
+
+
 }
