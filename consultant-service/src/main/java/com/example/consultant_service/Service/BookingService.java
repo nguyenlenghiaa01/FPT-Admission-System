@@ -35,6 +35,11 @@ public class BookingService {
         booking.setScheduler(bookingRequest.getScheduler());
         booking.setStatus(StatusEnum.BOOKED);
         booking.setStaffUuid(null);
+        booking.setScheduler(bookingRequest.getScheduler());
+        booking.setAvailableDate(booking.getAvailableDate());
+        booking.setStartTime(booking.getStartTime());
+        booking.setEndTime(bookingRequest.getEndTime());
+        booking.setCandidateUuid(bookingRequest.getCandidateUuid());
         Booking newBooking = bookingRepository.save(booking);
         return modelMapper.map(newBooking,BookingResponse.class);
     }
@@ -48,7 +53,14 @@ public class BookingService {
             booking1.setStatus(booking.getStatus());
             booking1.setScheduler(booking.getScheduler());
             booking1.setBookAt(booking.getCreatedAt());
-            booking.setUserUuid(booking.getUserUuid());
+            booking1.setScheduler(booking.getScheduler());
+            booking1.setStatus(StatusEnum.BOOKED);
+            booking1.setStaffUuid(booking.getStaffUuid());
+            booking1.setScheduler(booking.getScheduler());
+            booking1.setAvailableDate(booking.getAvailableDate());
+            booking1.setStartTime(booking.getStartTime());
+            booking1.setEndTime(booking.getEndTime());
+            booking1.setCandidateUuid(booking.getCandidateUuid());
 
             bookingResponse.add(booking1);
         }
@@ -86,7 +98,7 @@ public class BookingService {
         }
         booking.setStatus(bookingUpdateRequest.getStatus());
         booking.setStaffUuid(bookingUpdateRequest.getStaffUuid());
-        booking.setUserUuid(bookingUpdateRequest.getUserUuid());
+        booking.setCandidateUuid(bookingUpdateRequest.getUserUuid());
         Booking newBooking = bookingRepository.save(booking);
         return modelMapper.map(newBooking,BookingResponse.class);
     }

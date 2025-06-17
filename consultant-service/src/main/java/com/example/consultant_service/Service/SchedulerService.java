@@ -1,7 +1,10 @@
 package com.example.consultant_service.Service;
 
+import com.example.consultant_service.Entity.Booking;
 import com.example.consultant_service.Entity.Scheduler;
+import com.example.consultant_service.Enum.StatusEnum;
 import com.example.consultant_service.Exception.NotFoundException;
+import com.example.consultant_service.Model.Request.Booking1Request;
 import com.example.consultant_service.Model.Request.CreateSchedulerRequest;
 import com.example.consultant_service.Model.Response.DataResponse;
 import com.example.consultant_service.Repository.SchedulerRepository;
@@ -13,10 +16,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,27 +27,55 @@ public class SchedulerService {
     @Autowired
     SchedulerRepository schedulerRepository;
 
-    public Scheduler create (CreateSchedulerRequest createSchedulerRequest){
+    public Scheduler create(CreateSchedulerRequest request) {
         Scheduler scheduler = new Scheduler();
         scheduler.setUuid(UUID.randomUUID().toString());
-        scheduler.setAvailableDate(createSchedulerRequest.getAvailableDate());
-        scheduler.setStartTime(createSchedulerRequest.getStartTime());
-        scheduler.setEndTime(createSchedulerRequest.getEndTime());
-        schedulerRepository.save(scheduler);
-        return scheduler;
+
+        List<Booking> bookings = new ArrayList<>();
+        for (Booking1Request bReq : request.getBookings()) {
+            Booking booking = new Booking();
+            booking.setUuid(UUID.randomUUID().toString());
+            booking.setStaffUuid(bReq.getStaff_uuid());
+            booking.setAvailableDate(bReq.getAvailableDate());
+            booking.setStartTime(bReq.getStartTime());
+            booking.setEndTime(bReq.getEndTime());
+            booking.setCreatedAt(LocalDateTime.now());
+            booking.setStatus(StatusEnum.AVAILABLE);
+            booking.setScheduler(scheduler);
+
+            bookings.add(booking);
+        }
+
+        scheduler.setBookingList(bookings);
+
+        return schedulerRepository.save(scheduler);
     }
 
-    public Scheduler update (String uuid,CreateSchedulerRequest updateSchedulerRequest){
+
+    public Scheduler update(String uuid, CreateSchedulerRequest updateSchedulerRequest) {
         Scheduler scheduler = schedulerRepository.findSchedulerByUuid(uuid);
-        if(scheduler == null){
+        if (scheduler == null) {
             throw new NotFoundException("Not found scheduler");
         }
-        scheduler.setEndTime(updateSchedulerRequest.getEndTime());
-        scheduler.setAvailableDate(updateSchedulerRequest.getAvailableDate());
-        scheduler.setStartTime(updateSchedulerRequest.getStartTime());
-        schedulerRepository.save(scheduler);
-        return scheduler;
+
+        List<Booking> updatedBookings = new ArrayList<>();
+        for (Booking1Request bReq : updateSchedulerRequest.getBookings()) {
+            Booking booking = new Booking();
+            booking.setStaffUuid(bReq.getStaff_uuid());
+            booking.setAvailableDate(bReq.getAvailableDate());
+            booking.setStartTime(bReq.getStartTime());
+            booking.setEndTime(bReq.getEndTime());
+            booking.setCreatedAt(LocalDateTime.now());
+            booking.setStatus(StatusEnum.AVAILABLE);
+            booking.setScheduler(scheduler);
+
+            updatedBookings.add(booking);
+        }
+
+        scheduler.setBookingList(updatedBookings);
+        return schedulerRepository.save(scheduler);
     }
+
 
     public DataResponse<Scheduler> getAll( int page, int size) {
         Page schedulerPage = schedulerRepository.findAll(PageRequest.of(page, size));
@@ -53,10 +83,6 @@ public class SchedulerService {
         List<Scheduler> schedulerResponse = new ArrayList<>();
         for(Scheduler scheduler: schedulers) {
             Scheduler scheduler1 = new Scheduler();
-            scheduler1.setUuid(scheduler.getUuid());
-            scheduler1.setStartTime(scheduler.getStartTime());
-            scheduler1.setAvailableDate(scheduler.getAvailableDate());
-            scheduler1.setEndTime(scheduler.getEndTime());
             scheduler1.setBookingList(scheduler.getBookingList());
 
             schedulerResponse.add(scheduler1);
@@ -100,10 +126,6 @@ public class SchedulerService {
         List<Scheduler> schedulerResponse = new ArrayList<>();
         for (Scheduler scheduler : schedulerPage.getContent()) {
             Scheduler scheduler1 = new Scheduler();
-            scheduler1.setUuid(scheduler.getUuid());
-            scheduler1.setStartTime(scheduler.getStartTime());
-            scheduler1.setAvailableDate(scheduler.getAvailableDate());
-            scheduler1.setEndTime(scheduler.getEndTime());
             scheduler1.setBookingList(scheduler.getBookingList());
             schedulerResponse.add(scheduler1);
         }

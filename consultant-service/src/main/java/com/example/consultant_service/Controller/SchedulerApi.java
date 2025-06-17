@@ -19,7 +19,7 @@ public class SchedulerApi {
     private SchedulerService schedulerService;
 
     @PostMapping("/scheduler/create")
-    public ResponseEntity<Scheduler> create (CreateSchedulerRequest createSchedulerRequest){
+    public ResponseEntity<Scheduler> create (@RequestBody CreateSchedulerRequest createSchedulerRequest){
         Scheduler scheduler = schedulerService.create(createSchedulerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduler);
 

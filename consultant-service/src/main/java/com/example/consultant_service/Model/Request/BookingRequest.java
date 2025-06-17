@@ -10,10 +10,19 @@ import java.time.LocalDateTime;
 @Data
 public class BookingRequest {
 
-    private String userUuid;
+    private String candidateUuid;
+
 
     private Scheduler scheduler;
 
+    private LocalDateTime createdAt;
+
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
+
+    private LocalDateTime availableDate;
+
+    private LocalDateTime startTime;
+
+    private LocalDateTime endTime;
 }
