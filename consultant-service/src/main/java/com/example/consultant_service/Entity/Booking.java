@@ -2,6 +2,7 @@ package com.example.consultant_service.Entity;
 
 import com.example.consultant_service.Enum.StatusEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +26,7 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "schedule_uuid")
+    @JsonIgnore
     private Scheduler scheduler;
 
     @Column(name = "create_at")

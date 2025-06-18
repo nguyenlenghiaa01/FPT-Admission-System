@@ -78,7 +78,7 @@ public class SchedulerService {
 
 
     public DataResponse<Scheduler> getAll( int page, int size) {
-        Page schedulerPage = schedulerRepository.findAll(PageRequest.of(page, size));
+        Page<Scheduler> schedulerPage = schedulerRepository.findAll(PageRequest.of(page, size));
         List<Scheduler> schedulers = schedulerPage.getContent();
         List<Scheduler> schedulerResponse = new ArrayList<>();
         for(Scheduler scheduler: schedulers) {
