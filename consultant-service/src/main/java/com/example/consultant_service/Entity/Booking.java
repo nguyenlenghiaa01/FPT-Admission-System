@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -37,7 +38,7 @@ public class Booking {
 
     @Column(name = "available_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy")
-    private LocalDateTime availableDate;
+    private LocalDate availableDate;
 
     @Column(name = "start_time")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy HH:mm")

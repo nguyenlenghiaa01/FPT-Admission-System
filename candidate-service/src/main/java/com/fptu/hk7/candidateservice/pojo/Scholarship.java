@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -24,4 +25,7 @@ public class Scholarship {
         this.name = name;
         this.description = description;
     }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "scholarship")
+    private List<Application> applications;
 }

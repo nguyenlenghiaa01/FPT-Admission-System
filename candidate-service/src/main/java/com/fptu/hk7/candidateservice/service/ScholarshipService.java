@@ -48,4 +48,8 @@ public class ScholarshipService {
         }
         return false;
     }
+
+    public long count() {
+        return scholarshipRepository.count();
+    }
 }

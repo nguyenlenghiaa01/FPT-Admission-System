@@ -74,7 +74,7 @@ public class ApplicationService {
     // Produce Kafka Event
     private final String TOPIC = "submit_application"; // notification-service
 
-    private final String TOPIC2 = "update_application"; // consultant-service
+    private final String TOPIC2 = "booking_admission"; // consultant-service
 
     public ResponseEntity<ResponseApi<ApplicationResponse>> submitApplication(ApplicationRequest applicationRequest){
         Candidate candidate = modelMapper.map(applicationRequest, Candidate.class);
@@ -101,12 +101,15 @@ public class ApplicationService {
         try {
             BookingEvent bookingEvent = new BookingEvent();
             bookingEvent.setBookingUuid(applicationRequest.getBookingUuid());
+            bookingEvent.setCandidateUuid(String.valueOf(id));
 
             String jsonBookingEvent = objectMapper.writeValueAsString(bookingEvent);
             System.out.println("Event booking: " + bookingEvent.toString());
             kafkaTemplate.send(TOPIC2, jsonBookingEvent);
+            System.out.println("Success-end: Đã tạo kafka event qua candidate-service");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.err.println("X Error: Không thể tạo kafka-event booking, " + e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
 
         System.out.println("Start: Bắt đầu tạo kafka-event cho submit_application");

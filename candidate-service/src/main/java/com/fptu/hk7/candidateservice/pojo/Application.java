@@ -42,7 +42,7 @@ public class Application {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateAt;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "scholarship_id")
     private Scholarship scholarship;
 }

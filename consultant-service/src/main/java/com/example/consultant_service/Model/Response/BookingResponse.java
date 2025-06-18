@@ -6,6 +6,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -23,7 +24,7 @@ public class BookingResponse {
 
     private LocalDateTime endTime;
 
-    private LocalDateTime AvailableDate;
+    private LocalDate AvailableDate;
 
     @Enumerated(EnumType.STRING)
     private StatusEnum status;

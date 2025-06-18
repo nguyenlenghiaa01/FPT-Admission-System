@@ -10,6 +10,7 @@
         <module name="authenservice" />
         <module name="api-gateway-service" />
         <module name="demo (1)" />
+        <module name="authenservice (2)" />
         <module name="configservice" />
         <module name="DiscoveryService" />
         <module name="demo" />
@@ -33,6 +34,7 @@
       <module name="api-gateway-service" options="-parameters" />
       <module name="authenservice" options="-parameters" />
       <module name="authenservice (1)" options="-parameters" />
+      <module name="authenservice (2)" options="-parameters" />
       <module name="candidate-service" options="-parameters" />
       <module name="configservice" options="-parameters" />
       <module name="demo" options="-parameters" />

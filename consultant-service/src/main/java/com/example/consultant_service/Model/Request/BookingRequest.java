@@ -5,13 +5,13 @@ import com.example.consultant_service.Enum.StatusEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
 public class BookingRequest {
 
     private String candidateUuid;
-
 
     private Scheduler scheduler;
 
@@ -20,7 +20,7 @@ public class BookingRequest {
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
 
-    private LocalDateTime availableDate;
+    private LocalDate availableDate;
 
     private LocalDateTime startTime;
 

@@ -111,4 +111,10 @@ public class BookingService {
         bookingRepository.delete(booking);
         return booking;
     }
+
+    public Booking candidateBookingAdmission(String bookingUuid, String candidateUuid){
+        Booking booking = bookingRepository.findBookingByUuid(bookingUuid);
+        booking.setCandidateUuid(candidateUuid);
+        return bookingRepository.save(booking);
+    }
 }
