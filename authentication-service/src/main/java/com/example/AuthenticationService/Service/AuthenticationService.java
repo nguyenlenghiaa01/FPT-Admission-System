@@ -38,7 +38,7 @@ public class AuthenticationService {
 
     public AccountResponse login(LoginRequest loginRequest) {
         try {
-            AccountResponse userAuthInfo = userClient.login(loginRequest); // <-- GIẢ SỬ userClient.authenticateUser() trả về UserAuthResponse
+            AccountResponse userAuthInfo = userClient.login(loginRequest);
 
             if (userAuthInfo == null) {
                 throw new AuthException("Invalid username or password.");

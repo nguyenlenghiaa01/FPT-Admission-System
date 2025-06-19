@@ -26,7 +26,7 @@ public class AuthenticationAPI {
 
     @PostMapping("/users/register")
     public ResponseEntity <AccountResponse>register(@Valid @RequestBody RegisterRequest registerRequest) {
-        AccountResponse newAccount = userClient.register(registerRequest);
+        AccountResponse newAccount = authenticationService.register(registerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(newAccount);
     }
 
@@ -59,13 +59,13 @@ public class AuthenticationAPI {
 
     @PostMapping("/users/reset-password")
     public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest){
-        userClient.resetPassword(resetPasswordRequest);
+        authenticationService.resetPassword(resetPasswordRequest);
         return ResponseEntity.ok("reset password successfully");
     }
 
     @PostMapping("/users/change-password")
     public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
-        String message = userClient.changePassword(changePasswordRequest);
+        String message = authenticationService.changePassword(changePasswordRequest);
         return ResponseEntity.ok(message);
     }
 
