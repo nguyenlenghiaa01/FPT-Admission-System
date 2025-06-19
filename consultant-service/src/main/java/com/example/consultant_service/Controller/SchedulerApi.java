@@ -2,6 +2,7 @@ package com.example.consultant_service.Controller;
 
 import com.example.consultant_service.Entity.Scheduler;
 import com.example.consultant_service.Model.Request.CreateSchedulerRequest;
+import com.example.consultant_service.Model.Request.SchedulerResponse;
 import com.example.consultant_service.Model.Response.DataResponse;
 import com.example.consultant_service.Service.SchedulerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -31,8 +32,8 @@ public class SchedulerApi {
         return ResponseEntity.ok(scheduler);
     }
     @GetMapping("/scheduler/get")
-    public ResponseEntity<DataResponse<Scheduler>> getAll(@RequestParam int page, @RequestParam int size){
-        DataResponse<Scheduler> scheduler = schedulerService.getAll(page,size);
+    public ResponseEntity<DataResponse<SchedulerResponse>> getAll(@RequestParam int page, @RequestParam int size){
+        DataResponse<SchedulerResponse> scheduler = schedulerService.getAll(page,size);
         return ResponseEntity.ok(scheduler);
     }
     @PutMapping("/scheduler/{id}")

@@ -6,10 +6,12 @@ import com.example.consultant_service.Enum.StatusEnum;
 import com.example.consultant_service.Exception.NotFoundException;
 import com.example.consultant_service.Model.Request.Booking1Request;
 import com.example.consultant_service.Model.Request.CreateSchedulerRequest;
+import com.example.consultant_service.Model.Request.SchedulerResponse;
 import com.example.consultant_service.Model.Response.DataResponse;
 import com.example.consultant_service.Repository.SchedulerRepository;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,12 +23,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class SchedulerService {
     @Autowired
     SchedulerRepository schedulerRepository;
 
+    @Transactional
     public Scheduler create(CreateSchedulerRequest request) {
         Scheduler scheduler = new Scheduler();
         scheduler.setUuid(UUID.randomUUID().toString());
@@ -77,22 +81,25 @@ public class SchedulerService {
     }
 
 
-    public DataResponse<Scheduler> getAll( int page, int size) {
+    public DataResponse<SchedulerResponse> getAll(int page, int size) {
         Page<Scheduler> schedulerPage = schedulerRepository.findAll(PageRequest.of(page, size));
-        List<Scheduler> schedulers = schedulerPage.getContent();
-        List<Scheduler> schedulerResponse = new ArrayList<>();
-        for(Scheduler scheduler: schedulers) {
-            Scheduler scheduler1 = new Scheduler();
-            scheduler1.setBookingList(scheduler.getBookingList());
 
-            schedulerResponse.add(scheduler1);
-        }
+        List<SchedulerResponse> schedulerResponse = schedulerPage.getContent()
+                .stream()
+                .map(s -> {
+                    SchedulerResponse dto = new SchedulerResponse();
+                    dto.setUuid(s.getUuid());
+                    dto.setBookingList(s.getBookingList());
+                    return dto;
+                })
+                .collect(Collectors.toList());
 
-        DataResponse<Scheduler> dataResponse = new DataResponse<Scheduler>();
+        DataResponse<SchedulerResponse> dataResponse = new DataResponse<>();
         dataResponse.setListData(schedulerResponse);
         dataResponse.setTotalElements(schedulerPage.getTotalElements());
         dataResponse.setPageNumber(schedulerPage.getNumber());
         dataResponse.setTotalPages(schedulerPage.getTotalPages());
+
         return dataResponse;
     }
 
