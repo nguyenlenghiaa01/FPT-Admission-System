@@ -22,10 +22,10 @@ public class BookingConsumer {
         try {
             System.out.println("Catch booking_admission event: Đã nhận được event từ CandidateService");
             Map<String, String> data = objectMapper.readValue(message, new TypeReference<>() {});
-            String bookingUuid = data.get("bookingUuid");
+            String schedularUuid = data.get("schedularUuid");
             String candidateUuid = data.get("candidateUuid");
 
-            Booking booking = bookingService.candidateBookingAdmission(bookingUuid, candidateUuid);
+            Booking booking = bookingService.candidateBookingAdmission(schedularUuid, candidateUuid);
             System.out.println("Success: Đã tạo được lịch hẹn");
             System.out.println(booking.toString());
         } catch (Exception e) {

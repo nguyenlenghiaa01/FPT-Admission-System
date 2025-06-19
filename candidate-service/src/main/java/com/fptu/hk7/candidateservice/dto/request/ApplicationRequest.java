@@ -1,6 +1,7 @@
 package com.fptu.hk7.candidateservice.dto.request;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -36,5 +37,6 @@ public class ApplicationRequest {
 
     private boolean postpaid;
 
-    private String bookingUuid;
+    @NotBlank(message = "Schedular can not be blank")
+    private String schedularUuid;
 }

@@ -1,6 +1,7 @@
 package com.example.consultant_service.Service;
 
 import com.example.consultant_service.Entity.Booking;
+import com.example.consultant_service.Entity.Scheduler;
 import com.example.consultant_service.Enum.StatusEnum;
 import com.example.consultant_service.Exception.NotFoundException;
 import com.example.consultant_service.Model.Request.BookingRequest;
@@ -8,6 +9,7 @@ import com.example.consultant_service.Model.Request.BookingUpdateRequest;
 import com.example.consultant_service.Model.Response.BookingResponse;
 import com.example.consultant_service.Model.Response.DataResponse;
 import com.example.consultant_service.Repository.BookingRepository;
+import com.example.consultant_service.Repository.SchedulerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,9 @@ public class BookingService {
 
     @Autowired
     private BookingRepository bookingRepository;
+
+    @Autowired
+    private SchedulerRepository schedulerRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -112,8 +117,11 @@ public class BookingService {
         return booking;
     }
 
-    public Booking candidateBookingAdmission(String bookingUuid, String candidateUuid){
-        Booking booking = bookingRepository.findBookingByUuid(bookingUuid);
+    public Booking candidateBookingAdmission(String schedularUuid, String candidateUuid){
+        Scheduler scheduler = schedulerRepository.findSchedulerByUuid(schedularUuid);
+        if(scheduler == null) throw new NotFoundException("Scheduler not found");
+        Booking booking = bookingRepository.findByScheduler(scheduler);
+        if(booking == null) throw new NotFoundException("Booking not found");
         booking.setCandidateUuid(candidateUuid);
         return bookingRepository.save(booking);
     }

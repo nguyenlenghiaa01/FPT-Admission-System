@@ -100,7 +100,7 @@ public class ApplicationService {
         System.out.println("Start: Lưu thông tin ứng viên vào Booking bên bảng Booking - Consultant Service");
         try {
             BookingEvent bookingEvent = new BookingEvent();
-            bookingEvent.setBookingUuid(applicationRequest.getBookingUuid());
+            bookingEvent.setSchedularUuid(applicationRequest.getSchedularUuid());
             bookingEvent.setCandidateUuid(String.valueOf(id));
 
             String jsonBookingEvent = objectMapper.writeValueAsString(bookingEvent);

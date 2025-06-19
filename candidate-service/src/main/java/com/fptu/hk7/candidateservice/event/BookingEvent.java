@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class BookingEvent {
-    private String bookingUuid;
+    private String schedularUuid;
     private String candidateUuid;
 }
