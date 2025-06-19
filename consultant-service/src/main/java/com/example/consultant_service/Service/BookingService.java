@@ -123,6 +123,7 @@ public class BookingService {
         Booking booking = bookingRepository.findByScheduler(scheduler);
         if(booking == null) throw new NotFoundException("Booking not found");
         booking.setCandidateUuid(candidateUuid);
+        booking.setStatus(StatusEnum.BOOKED);
         return bookingRepository.save(booking);
     }
 }
