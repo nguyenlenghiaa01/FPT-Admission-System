@@ -44,7 +44,8 @@ public class Filter extends OncePerRequestFilter {
             "/api/auth/login",
             "/api/auth/register",
             "/api/auth/forgot-password",
-            "/api/auth/getEmail"
+            "/api/auth/getEmail",
+            "/actuator/**"
     );
 
     private final AntPathMatcher pathMatcher = new AntPathMatcher();

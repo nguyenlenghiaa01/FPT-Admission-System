@@ -26,7 +26,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                                .requestMatchers("/**").permitAll() // Cho phép tất cả các request
+                                .requestMatchers(
+                                        "/actuator/**",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**"
+                                        ).permitAll() // Cho phép tất cả các request
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);

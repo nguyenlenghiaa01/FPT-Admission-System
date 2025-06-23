@@ -38,7 +38,8 @@ public class Filter extends OncePerRequestFilter {
     private final List<String> AUTH_PERMISSION = List.of(
             "/swagger-ui/**",
             "/v3/api-docs/**",
-            "/swagger-resources/**"
+            "/swagger-resources/**",
+            "/actuator/**"
     );
 
     public boolean checkIsPublicAPI(String uri) {
