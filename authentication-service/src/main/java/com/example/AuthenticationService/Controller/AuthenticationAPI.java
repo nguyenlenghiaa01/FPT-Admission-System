@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/auth")
 @SecurityRequirement(name = "api")
 @CrossOrigin("*")
 public class AuthenticationAPI {
@@ -24,14 +24,14 @@ public class AuthenticationAPI {
     @Autowired
     private UserClient userClient;
 
-    @PostMapping("/users/register")
+    @PostMapping("/register")
     public ResponseEntity <AccountResponse>register(@Valid @RequestBody RegisterRequest registerRequest) {
         AccountResponse newAccount = authenticationService.register(registerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(newAccount);
     }
 
 
-    @PostMapping("/users/login")
+    @PostMapping("/login")
     public ResponseEntity <AccountResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         AccountResponse accountResponse = authenticationService.login(loginRequest);
         if (accountResponse == null) {
@@ -51,19 +51,19 @@ public class AuthenticationAPI {
 //        }
 //    }
 
-    @PostMapping("/users/forgot-password")
+    @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest){
         authenticationService.forgotPassword(forgotPasswordRequest);
         return ResponseEntity.ok("forgot password successfully");
     }
 
-    @PostMapping("/users/reset-password")
+    @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest){
         authenticationService.resetPassword(resetPasswordRequest);
         return ResponseEntity.ok("reset password successfully");
     }
 
-    @PostMapping("/users/change-password")
+    @PostMapping("/change-password")
     public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
         String message = authenticationService.changePassword(changePasswordRequest);
         return ResponseEntity.ok(message);

@@ -54,10 +54,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                         .requestMatchers(
-                                "/api/users/login",
-                                "/api/users/register",
-                                "/api/users/forgot-password",
-                                "/api/users/register/**",
+                                "/api/auth/login",
+                                "/api/auth/register",
+                                "/api/auth/forgot-password",
+                                "/api/auth/getEmail",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**"

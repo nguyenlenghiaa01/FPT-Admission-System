@@ -41,10 +41,10 @@ public class Filter extends OncePerRequestFilter {
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-resources/**",
-            "/api/users/login",
-            "/api/users/register",
-            "/api/users/forgot-password",
-            "/api/users/getEmail"
+            "/api/auth/login",
+            "/api/auth/register",
+            "/api/auth/forgot-password",
+            "/api/auth/getEmail"
     );
 
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
