@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/booking")
 @SecurityRequirement(name = "api")
 @CrossOrigin("*")
 public class BookingApi {
@@ -24,44 +24,44 @@ public class BookingApi {
     @Autowired
     private BookingService bookingService;
 
-    @PostMapping("/booking/create")
+    @PostMapping("/create")
     public ResponseEntity<BookingResponse> create(@RequestBody BookingRequest bookingRequest) {
         BookingResponse booking = bookingService.create(bookingRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(booking);
     }
 
-    @GetMapping("/booking/get")
+    @GetMapping("/get")
     public ResponseEntity<DataResponse<BookingResponse>> getAll
             (@RequestParam int page, @RequestParam int size) {
         DataResponse<BookingResponse> bookingResponse = bookingService.getAll(page, size);
         return ResponseEntity.ok(bookingResponse);
     }
 
-    @GetMapping("/booking/{uuid}")
+    @GetMapping("/{uuid}")
     public ResponseEntity<Booking> getByUuid(@PathVariable String uuid) {
         Booking booking = bookingService.findBookingByUuid(uuid);
         return ResponseEntity.ok(booking);
     }
 
-    @PutMapping("/booking/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<BookingResponse> update(@PathVariable String uuid, @RequestBody BookingRequest bookingRequest) {
         BookingResponse bookingResponse = bookingService.update(uuid, bookingRequest);
         return ResponseEntity.ok(bookingResponse);
     }
 
-    @PutMapping("/booking/status/{id}")
+    @PutMapping("/status/{id}")
     public ResponseEntity<BookingResponse> update(@PathVariable String uuid, @RequestBody BookingUpdateRequest bookingUpdateRequest) {
         BookingResponse bookingResponse = bookingService.updateStatus(uuid, bookingUpdateRequest);
         return ResponseEntity.ok(bookingResponse);
     }
 
-    @DeleteMapping("/booking/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Booking> delete(@PathVariable String uuid) {
         Booking booking = bookingService.delete(uuid);
         return ResponseEntity.ok(booking);
     }
 
-    @GetMapping("/booking/getByStaff/{id}")
+    @GetMapping("/getByStaff/{id}")
     public ResponseEntity<DataResponse<BookingResponse>> getByStaff(@PathVariable("id") String staffUuid,
                                                                     @RequestParam int page, @RequestParam int size) {
         return ResponseEntity.ok(bookingService.getByStaff(staffUuid, page, size));
