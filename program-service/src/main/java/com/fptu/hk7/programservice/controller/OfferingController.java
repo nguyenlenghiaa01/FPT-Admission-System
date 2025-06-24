@@ -4,6 +4,7 @@ import com.fptu.hk7.programservice.pojo.Specialization;
 import com.fptu.hk7.programservice.service.SpecializationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @SecurityRequirement(name = "api")
 public class OfferingController {
-    private final OfferingController offeringController;
+
+    @Autowired
+    private SpecializationService specializationService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
