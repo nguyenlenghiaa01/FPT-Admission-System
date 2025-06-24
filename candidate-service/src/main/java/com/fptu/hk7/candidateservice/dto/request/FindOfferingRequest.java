@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FindOfferingRequest {
-    private String specialization;
-    private String campus;
+    private String specializationUuid;
+    private String campusUuid;
 }

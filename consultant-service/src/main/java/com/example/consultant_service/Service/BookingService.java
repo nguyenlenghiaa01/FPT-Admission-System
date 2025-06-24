@@ -126,4 +126,20 @@ public class BookingService {
         booking.setStatus(StatusEnum.BOOKED);
         return bookingRepository.save(booking);
     }
+
+    public DataResponse<BookingResponse> getByStaff(String staffUuid, int page, int size) {
+        Page<Booking> bookings = bookingRepository.findBookingByStaffUuid(staffUuid, PageRequest.of(page, size));
+        if(bookings.isEmpty()) throw new NotFoundException("Booking not found");
+
+        List<BookingResponse> bookingResponses = bookings.getContent().stream()
+                .map(booking -> modelMapper.map(booking, BookingResponse.class))
+                .toList();
+
+        DataResponse<BookingResponse> dataResponse = new DataResponse<>();
+        dataResponse.setListData(bookingResponses);
+        dataResponse.setTotalElements(bookings.getTotalElements());
+        dataResponse.setPageNumber(bookings.getNumber());
+        dataResponse.setTotalPages(bookings.getTotalPages());
+        return dataResponse;
+    }
 }

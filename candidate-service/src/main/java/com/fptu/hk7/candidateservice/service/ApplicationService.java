@@ -7,9 +7,11 @@ import com.fptu.hk7.candidateservice.dto.request.ApplicationRequest;
 import com.fptu.hk7.candidateservice.dto.request.FindOfferingRequest;
 import com.fptu.hk7.candidateservice.dto.response.ApplicationResponse;
 import com.fptu.hk7.candidateservice.dto.response.ResponseApi;
+import com.fptu.hk7.candidateservice.enums.ApplicationStatus;
 import com.fptu.hk7.candidateservice.event.BookingEvent;
 import com.fptu.hk7.candidateservice.event.SubmitApplicationEvent;
 import com.fptu.hk7.candidateservice.pojo.Candidate;
+import com.fptu.hk7.candidateservice.pojo.StatusApplication;
 import com.fptu.hk7.candidateservice.repository.ApplicationRepository;
 import com.fptu.hk7.candidateservice.pojo.Application;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,6 +36,7 @@ public class ApplicationService {
     private final OfferingProgramClient offeringProgramClient;
     private final CandidateService candidateService;
     private final ScholarshipService scholarshipService;
+    private final StatusApplicationService statusApplicationService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -87,14 +92,20 @@ public class ApplicationService {
         candidateService.createCandidate(candidate);
 
         System.out.println("Start: Lấy thông tin Offering UUID");
-        UUID offering_id = offeringProgramClient.getOfferingByCampusNameAndSpecializationName(
-                new FindOfferingRequest(applicationRequest.getSpecialization(), applicationRequest.getCampus())
+        UUID offering_id = offeringProgramClient.getOffering(
+                new FindOfferingRequest(applicationRequest.getSpecializationUuid(), applicationRequest.getCampusUuid())
         ).getBody();
         System.out.println("UUID Offering lấy được: " + offering_id);
         System.out.println("End: Lấy thông tin thành công");
         Application application = new Application();
         application.setOffering_id(offering_id);
-        application.setScholarship(scholarshipService.getScholarshipByName(applicationRequest.getScholarship()));
+        application.setCandidate(candidate);
+        StatusApplication statusApplication = new StatusApplication();
+        statusApplication.setStatus(ApplicationStatus.PENDING);
+        statusApplication.setApplication(application);
+        statusApplicationService.create(statusApplication);
+        System.out.println("Cập nhật trạng thái đơn thành công");
+        application.setScholarship(scholarshipService.getScholarshipById(UUID.fromString(applicationRequest.getScholarshipUuid())));
         createApplication(application);
 
         System.out.println("Start: Lưu thông tin ứng viên vào Booking bên bảng Booking - Consultant Service");
@@ -118,8 +129,8 @@ public class ApplicationService {
             event.setEmail(candidate.getEmail());
             event.setFullname(candidate.getFullname());
             event.setPhone(applicationRequest.getPhone());
-            event.setCampus(applicationRequest.getCampus());
-            event.setSpecialization(applicationRequest.getSpecialization());
+            event.setCampus(applicationRequest.getCampusUuid());
+            event.setSpecialization(applicationRequest.getSpecializationUuid());
 
             String eventJson = objectMapper.writeValueAsString(event);
             System.out.println("Event submit_application: "+ event.toString());

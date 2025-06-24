@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("api")
 @SecurityRequirement(name = "api")
@@ -59,5 +61,9 @@ public class BookingApi {
         return ResponseEntity.ok(booking);
     }
 
-
+    @GetMapping("/booking/getByStaff/{id}")
+    public ResponseEntity<DataResponse<BookingResponse>> getByStaff(@PathVariable("id") String staffUuid,
+                                                                    @RequestParam int page, @RequestParam int size) {
+        return ResponseEntity.ok(bookingService.getByStaff(staffUuid, page, size));
+    }
 }

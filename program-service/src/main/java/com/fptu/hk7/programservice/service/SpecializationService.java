@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class SpecializationService {
@@ -21,7 +22,7 @@ public class SpecializationService {
         return specializationRepository.findAll();
     }
 
-    public Optional<Specialization> getSpecializationById(Long id) {
+    public Optional<Specialization> getSpecializationById(UUID id) {
         return specializationRepository.findById(id);
     }
 
@@ -29,7 +30,7 @@ public class SpecializationService {
         return specializationRepository.save(specialization);
     }
 
-    public void deleteSpecialization(Long id) {
+    public void deleteSpecialization(UUID id) {
         specializationRepository.deleteById(id);
     }
 }

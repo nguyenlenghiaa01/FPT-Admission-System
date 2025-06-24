@@ -11,5 +11,5 @@ import java.util.UUID;
 @FeignClient(value = "program-service", url = "${feign.client.program-service.url}",fallback = OfferingProgramClientFallback.class)
 public interface OfferingProgramClient {
     @PostMapping(value = "/api/program/get_offering")
-    ResponseEntity<UUID> getOfferingByCampusNameAndSpecializationName(@RequestBody FindOfferingRequest findOfferingRequest);
+    ResponseEntity<UUID> getOffering(@RequestBody FindOfferingRequest findOfferingRequest);
 }

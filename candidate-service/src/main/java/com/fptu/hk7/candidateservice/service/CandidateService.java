@@ -15,7 +15,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CandidateService {
     public final CandidateRepository candidateRepository;
-    public final SubjectRepository subjectRepository;
 
     // Create
     public Candidate createCandidate(Candidate candidate) {
@@ -37,9 +36,9 @@ public class CandidateService {
         return candidateRepository.findById(id).map(candidate -> {
             candidate.setEmail(updatedCandidate.getEmail());
             candidate.setFullname(updatedCandidate.getFullname());
-            candidate.setDob(updatedCandidate.getDob());
-            candidate.setGender(updatedCandidate.getGender());
-            candidate.setProvince(updatedCandidate.getProvince());
+//            candidate.setDob(updatedCandidate.getDob());
+//            candidate.setGender(updatedCandidate.getGender());
+//            candidate.setProvince(updatedCandidate.getProvince());
             candidate.setCreateAt(updatedCandidate.getCreateAt());
             // ...update other fields as needed...
             return candidateRepository.save(candidate);

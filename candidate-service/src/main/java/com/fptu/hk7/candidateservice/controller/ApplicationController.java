@@ -6,7 +6,9 @@ import com.fptu.hk7.candidateservice.dto.response.ApplicationResponse;
 import com.fptu.hk7.candidateservice.dto.response.ResponseApi;
 import com.fptu.hk7.candidateservice.enums.ApplicationStatus;
 import com.fptu.hk7.candidateservice.pojo.Application;
+import com.fptu.hk7.candidateservice.pojo.StatusApplication;
 import com.fptu.hk7.candidateservice.service.ApplicationService;
+import com.fptu.hk7.candidateservice.service.StatusApplicationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import java.util.List;
 public class ApplicationController {
 
     private final ApplicationService applicationService;
+    private final StatusApplicationService statusApplicationService;
 
     ModelMapper modelMapper = new ModelMapper();
 
@@ -46,11 +49,19 @@ public class ApplicationController {
                 );
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('STAFF')")
     @PostMapping("/update_application")
     public ResponseEntity<ApplicationResponse> updateApplication(@Valid @RequestBody UpdateApplicationRequest updateApplicationRequest) {
         Application application = applicationService.getApplicationById(updateApplicationRequest.getId());
         application.setStatus(ApplicationStatus.valueOf(updateApplicationRequest.getStatus()));
+
+        StatusApplication status = new StatusApplication();
+        status.setApplication(application);
+        status.setNote(updateApplicationRequest.getNote());
+        status.setStatus(ApplicationStatus.valueOf(updateApplicationRequest.getStatus()));
+        statusApplicationService.create(status);
+        System.out.println("Cập nhật trạng thái đơn thành công");
+
         return ResponseEntity.ok(
                 modelMapper.map(applicationService.updateApplication(updateApplicationRequest.getId(), application), ApplicationResponse.class)
         );

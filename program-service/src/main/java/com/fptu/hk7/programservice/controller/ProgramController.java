@@ -27,7 +27,7 @@ public class ProgramController {
     @PostMapping("/get_offering")
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     public ResponseEntity<UUID> getOffering(@Validated @RequestBody OfferingRequest offeringRequest) {
-        return offeringService.findOfferingByCampusNameAndSpecializationName(offeringRequest.getCampus(), offeringRequest.getSpecialization());
+        return offeringService.findOfferingByCampusNameAndSpecializationName(offeringRequest.getCampusUuid(), offeringRequest.getSpecializationUuid());
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -35,5 +35,4 @@ public class ProgramController {
     public ResponseEntity<List<Offering>> getAllOffering() {
         return ResponseEntity.ok(offeringService.getAllOfferings());
     }
-
 }

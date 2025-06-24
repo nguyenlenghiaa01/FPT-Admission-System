@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class MajorService {
@@ -21,7 +22,7 @@ public class MajorService {
         return majorRepository.findAll();
     }
 
-    public Optional<Major> getMajorById(Long id) {
+    public Optional<Major> getMajorById(UUID id) {
         return majorRepository.findById(id);
     }
 
@@ -29,7 +30,7 @@ public class MajorService {
         return majorRepository.save(major);
     }
 
-    public void deleteMajor(Long id) {
+    public void deleteMajor(UUID id) {
         majorRepository.deleteById(id);
     }
 }

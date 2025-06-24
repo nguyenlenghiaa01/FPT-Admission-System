@@ -14,7 +14,7 @@ public class OfferingProgramClientFallback implements OfferingProgramClient{
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(UserClientFallback.class);
 
     @Override
-    public ResponseEntity<UUID> getOfferingByCampusNameAndSpecializationName(@RequestBody FindOfferingRequest findOfferingRequest){
+    public ResponseEntity<UUID> getOffering(@RequestBody FindOfferingRequest findOfferingRequest){
         logger.error("Candidate service is unavailable - getOfferingByCampusNameAndSpecializationName fallback");
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
     }

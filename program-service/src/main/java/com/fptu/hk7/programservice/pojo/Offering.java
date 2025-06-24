@@ -25,12 +25,10 @@ public class Offering {
 
     @ManyToOne
     @JoinColumn(name = "campus_id")
-//    @JsonIgnore
     private Campus campus;
 
     @ManyToOne
     @JoinColumn(name = "specialization_id")
-//    @JsonIgnore
     private Specialization specialization;
 }
 

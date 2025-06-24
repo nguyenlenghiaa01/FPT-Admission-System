@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CampusService {
@@ -21,7 +22,7 @@ public class CampusService {
         return campusRepository.findAll();
     }
 
-    public Optional<Campus> getCampusById(Long id) {
+    public Optional<Campus> getCampusById(UUID id) {
         return campusRepository.findById(id);
     }
 
@@ -29,7 +30,7 @@ public class CampusService {
         return campusRepository.save(campus);
     }
 
-    public void deleteCampus(Long id) {
+    public void deleteCampus(UUID id) {
         campusRepository.deleteById(id);
     }
 }

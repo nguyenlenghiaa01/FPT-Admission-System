@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -37,13 +38,11 @@ public class Application {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
 
-    @UpdateTimestamp
-    @Column(name = "update_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updateAt;
-
     @ManyToOne
     @JoinColumn(name = "scholarship_id")
     private Scholarship scholarship;
+
+    @OneToMany(mappedBy = "application", fetch = FetchType.EAGER)
+    private List<StatusApplication> statuses;
 }
 

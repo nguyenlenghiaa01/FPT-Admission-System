@@ -19,23 +19,19 @@ public class ApplicationRequest {
     @Pattern(regexp = "(84|0[3|5|7|8|9])+(\\d{8})", message = "Invalid phone!")
     private String phone;
 
-    @NotNull
-    private LocalDate dob;
-
-    @NotNull
-    private String gender;
-
-    @NotNull
+    @NotBlank(message = "Province not be blank")
     private String province;
 
     @NotNull
-    private String campus;
+    private String address;
+
     @NotNull
-    private String specialization;
+    private String campusUuid;
 
-    private String scholarship;
+    @NotNull
+    private String specializationUuid;
 
-    private boolean postpaid;
+    private String scholarshipUuid;
 
     @NotBlank(message = "Schedular can not be blank")
     private String schedularUuid;

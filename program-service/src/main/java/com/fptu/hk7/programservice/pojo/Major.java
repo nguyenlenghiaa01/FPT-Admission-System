@@ -1,5 +1,6 @@
 package com.fptu.hk7.programservice.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class Major {
     private String name;
     private String description;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "major", cascade = CascadeType.ALL)
     private List<Specialization> specializations;
-
 }

@@ -22,10 +22,6 @@ public class OfferingService {
     private final CampusRepository campusRepo;
     private final SpecializationRepository specializationRepo;
 
-    public Offering createOffering(Offering offering) {
-        return offeringRepo.save(offering);
-    }
-
     public List<Offering> getAllOfferings() {
         return offeringRepo.findAll();
     }
@@ -42,13 +38,13 @@ public class OfferingService {
         offeringRepo.deleteById(id);
     }
 
-    public ResponseEntity<UUID> findOfferingByCampusNameAndSpecializationName(String campusName, String specializationName) {
-        Campus campus = campusRepo.findCampusIdByName(campusName)
-                .orElseThrow(() -> new NotFoundException("Campus not found: " + campusName));
-        Specialization specialization = specializationRepo.findSpecializationIdByName(specializationName)
-                .orElseThrow(() -> new NotFoundException("Specialization not found: " + specializationName));
-        Offering offering =  offeringRepo.findOfferingByCampusIdAndSpecializationId(campus.getId(), specialization.getId())
-                .orElseThrow(() -> new NotFoundException("Offering not found for campus: " + campusName + " and specialization: " + specializationName));
+    public ResponseEntity<UUID> findOfferingByCampusNameAndSpecializationName(String campusUuid, String specializationUuid) {
+        campusRepo.findById(UUID.fromString(campusUuid))
+                .orElseThrow(() -> new NotFoundException("Campus not found"));
+        specializationRepo.findById(UUID.fromString(specializationUuid))
+                .orElseThrow(() -> new NotFoundException("Specialization not found"));
+        Offering offering =  offeringRepo.findOfferingByCampusIdAndSpecializationId(UUID.fromString(campusUuid), UUID.fromString(specializationUuid))
+                .orElseThrow(() -> new NotFoundException("Offering not found for campus specializationName"));
         return ResponseEntity.ok(offering.getId());
     }
 }

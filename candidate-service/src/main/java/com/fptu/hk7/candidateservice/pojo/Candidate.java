@@ -1,6 +1,8 @@
 package com.fptu.hk7.candidateservice.pojo;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -18,16 +20,17 @@ public class Candidate {
     @Id
     private UUID id;
 
+    @Email
     @Column(unique = true)
     private String email;
 
+    @NotBlank(message = "Full name can not be blank")
     private String fullname;
 
-    @Temporal(TemporalType.DATE)
-    private LocalDate dob;
+    @NotBlank(message = "Address can not be blank")
+    private String address;
 
-    private String gender;
-
+    @NotBlank(message = "Province not be blank")
     private String province;
 
     @CreationTimestamp

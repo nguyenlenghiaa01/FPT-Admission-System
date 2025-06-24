@@ -1,5 +1,6 @@
 package com.fptu.hk7.programservice.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,8 +24,10 @@ public class Campus {
     private String name;
 
     private String address;
+
     private String description;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "campus", cascade = CascadeType.ALL)
     private List<Offering> offerings;
 
