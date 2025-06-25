@@ -10,7 +10,8 @@ $services = @(
         "notification-service",
         "candidate-service",
         "program-service",
-        "consultant-service"
+        "consultant-service",
+        "blog-service"
 )
 
 # Lặp qua từng service để xóa thư mục target

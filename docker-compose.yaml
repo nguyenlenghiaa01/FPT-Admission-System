@@ -306,6 +306,42 @@ services:
     networks:
       - app-network
 
+  blog-db:
+    image: postgres:14
+    container_name: blog-db
+    environment:
+      POSTGRES_DB: blog
+      POSTGRES_USER: blog
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - "5437:5432"
+    volumes:
+      - blog_pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  blog-service:
+    build:
+      context: ./blog-service
+    container_name: blog-service
+    depends_on:
+      kafka:
+        condition: service_started
+      blog-db:
+        condition: service_started
+    ports:
+      - "8089:8089"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://blog-db:5432/blog
+      SPRING_DATASOURCE_USERNAME: blog
+      SPRING_DATASOURCE_PASSWORD: 12345
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_CONFIG_IMPORT: http://config-service:8088/
+      SPRING_CLOUD_FAIL_FAST: "false"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
+    networks:
+      - app-network
+
 #  redis:
 #    image: redis:lastest
 #    container_name: redis
@@ -321,6 +357,7 @@ volumes:
   program_pgdata:
   candidate_pgdata:
   consultant_pgdata:
+  blog_pgdata:
 
 networks:
   app-network:
