@@ -11,8 +11,8 @@ import com.example.UserService.Entity.ForgotPasswordEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.example.AuthenticationService.Controller.UserClientFallback;
 
 @Service
 public class AuthenticationService {
@@ -27,6 +27,10 @@ public class AuthenticationService {
     private KafkaTemplate<String, String> kafkaTemplate;
 
     @Autowired
+
+    private UserClientFallback userServiceCaller;
+
+    @Autowired
     private UserClient userClient;
 
     public AccountResponse register(RegisterRequest registerRequest) {
@@ -38,7 +42,7 @@ public class AuthenticationService {
 
     public AccountResponse login(LoginRequest loginRequest) {
         try {
-            AccountResponse userAuthInfo = userClient.login(loginRequest);
+            AccountResponse userAuthInfo = userServiceCaller.login(loginRequest);
 
             if (userAuthInfo == null) {
                 throw new AuthException("Invalid username or password.");
@@ -70,7 +74,7 @@ public class AuthenticationService {
 
 
     public void forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
-        AccountResponse account = userClient.getAccountByEmail(forgotPasswordRequest.getEmail());
+        AccountResponse account = userServiceCaller.getAccountByEmail(forgotPasswordRequest.getEmail());
         if (account == null) {
             throw new NotFoundException("Email not found!");
         } else {
@@ -94,40 +98,12 @@ public class AuthenticationService {
 
 
     public void resetPassword(ResetPasswordRequest resetPasswordRequest){
-         userClient.resetPassword(resetPasswordRequest);
+        userServiceCaller.resetPassword(resetPasswordRequest);
     }
 
     public String changePassword(ChangePasswordRequest changePasswordRequest) {
-        return userClient.changePassword(changePasswordRequest);
+        return userServiceCaller.changePassword(changePasswordRequest);
     }
-
-//    public UserResponse loginGoogle(String token){
-//        try {
-//            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
-//            String email = decodedToken.getEmail();
-//            Account account = accountRepository.findAccountByEmail(email);
-//            if(account == null) {
-//                Account newAccount = new Account();
-//                newAccount.setUserName(decodedToken.getEmail());
-//                newAccount.setEmail(decodedToken.getEmail());
-//                newAccount.setFullName(decodedToken.getName());
-//                newAccount.setImage(decodedToken.getPicture());
-//                newAccount.setRole(Role.CONSULTANT);
-//                account=accountRepository.save(newAccount);
-//            }
-//            UserResponse userResponse = new UserResponse();
-//            userResponse.setToken(token);
-//            userResponse.setFullName(account.getFullName());
-//            userResponse.setImage(account.getImage());
-//            userResponse.setRole(account.getRole());
-//
-//            return userResponse;
-//
-//        } catch (Exception e) {
-//            throw new RuntimeException("Google token verification failed", e);
-//        }
-//
-//    }
 
 
 }

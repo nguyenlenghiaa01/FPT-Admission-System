@@ -10,7 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "user-service", url = "http://user-service:8082",configuration = FeignConfig.class,fallback = UserClientFallback.class)
+@FeignClient(name = "user-service", url = "http://user-service:8082",configuration = FeignConfig.class)
 public interface UserClient {
     @PostMapping("/api/users/register")
     AccountResponse register(@Valid @RequestBody RegisterRequest registerRequest);
