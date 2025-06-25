@@ -18,7 +18,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("api/booking")
 @SecurityRequirement(name = "api")
-@CrossOrigin("*")
 public class BookingApi {
 
     @Autowired

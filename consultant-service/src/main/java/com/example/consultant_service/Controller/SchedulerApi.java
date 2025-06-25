@@ -19,7 +19,6 @@ import java.time.LocalTime;
 @RestController
 @RequestMapping("api/scheduler")
 @SecurityRequirement(name = "api")
-@CrossOrigin("*")
 public class SchedulerApi {
     @Autowired
     private SchedulerService schedulerService;
