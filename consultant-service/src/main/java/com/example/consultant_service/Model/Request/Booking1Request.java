@@ -11,9 +11,6 @@ public class Booking1Request {
 
     private String staff_uuid;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy")
-    private LocalDate availableDate;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy HH:mm")
     private LocalDateTime startTime;
 

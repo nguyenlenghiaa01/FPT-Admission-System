@@ -12,7 +12,6 @@ services=(
     candidate-service
     program-service
     consultant-service
-    monitor-service
 )
 
 # Lưu thư mục gốc

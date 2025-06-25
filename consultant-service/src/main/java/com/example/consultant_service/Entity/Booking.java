@@ -37,8 +37,8 @@ public class Booking {
     private StatusEnum status;
 
     @Column(name = "available_date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy")
-    private LocalDate availableDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy HH:mm")
+    private LocalDateTime availableDate;
 
     @Column(name = "start_time")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy HH:mm")

@@ -38,25 +38,25 @@ public class BookingApi {
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<Booking> getByUuid(@PathVariable String uuid) {
+    public ResponseEntity<Booking> getByUuid(@PathVariable("uuid") String uuid) {
         Booking booking = bookingService.findBookingByUuid(uuid);
         return ResponseEntity.ok(booking);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BookingResponse> update(@PathVariable String uuid, @RequestBody BookingRequest bookingRequest) {
+    public ResponseEntity<BookingResponse> update(@PathVariable("id") String uuid, @RequestBody BookingRequest bookingRequest) {
         BookingResponse bookingResponse = bookingService.update(uuid, bookingRequest);
         return ResponseEntity.ok(bookingResponse);
     }
 
     @PutMapping("/status/{id}")
-    public ResponseEntity<BookingResponse> update(@PathVariable String uuid, @RequestBody BookingUpdateRequest bookingUpdateRequest) {
+    public ResponseEntity<BookingResponse> update(@PathVariable("id") String uuid, @RequestBody BookingUpdateRequest bookingUpdateRequest) {
         BookingResponse bookingResponse = bookingService.updateStatus(uuid, bookingUpdateRequest);
         return ResponseEntity.ok(bookingResponse);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Booking> delete(@PathVariable String uuid) {
+    public ResponseEntity<Booking> delete(@PathVariable("id") String uuid) {
         Booking booking = bookingService.delete(uuid);
         return ResponseEntity.ok(booking);
     }

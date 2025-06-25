@@ -6,10 +6,14 @@ import com.example.consultant_service.Enum.StatusEnum;
 import com.example.consultant_service.Exception.NotFoundException;
 import com.example.consultant_service.Model.Request.Booking1Request;
 import com.example.consultant_service.Model.Request.CreateSchedulerRequest;
+import com.example.consultant_service.Model.Request.FilterSchedulerRequest;
 import com.example.consultant_service.Model.Request.SchedulerResponse;
+import com.example.consultant_service.Model.Response.BookingResponse;
 import com.example.consultant_service.Model.Response.DataResponse;
 import com.example.consultant_service.Repository.SchedulerRepository;
 import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +23,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -40,7 +46,7 @@ public class SchedulerService {
             Booking booking = new Booking();
             booking.setUuid(UUID.randomUUID().toString());
             booking.setStaffUuid(bReq.getStaff_uuid());
-            booking.setAvailableDate(bReq.getAvailableDate());
+            booking.setAvailableDate(bReq.getStartTime());
             booking.setStartTime(bReq.getStartTime());
             booking.setEndTime(bReq.getEndTime());
             booking.setCreatedAt(LocalDateTime.now());
@@ -66,7 +72,7 @@ public class SchedulerService {
         for (Booking1Request bReq : updateSchedulerRequest.getBookings()) {
             Booking booking = new Booking();
             booking.setStaffUuid(bReq.getStaff_uuid());
-            booking.setAvailableDate(bReq.getAvailableDate());
+            booking.setAvailableDate(bReq.getStartTime());
             booking.setStartTime(bReq.getStartTime());
             booking.setEndTime(bReq.getEndTime());
             booking.setCreatedAt(LocalDateTime.now());
@@ -103,48 +109,60 @@ public class SchedulerService {
         return dataResponse;
     }
 
-    public DataResponse<Scheduler> filter(int time, int date, int month, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public DataResponse<BookingResponse> filter(FilterSchedulerRequest filterSchedulerRequest) {
+        Pageable pageable = PageRequest.of(filterSchedulerRequest.getPage(), filterSchedulerRequest.getSize());
 
         Specification<Scheduler> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
+            Join<Scheduler, Booking> bookingJoin = root.join("bookingList", JoinType.INNER);
 
-            if (time != 0) {
-                Expression<Integer> hourExpression = cb.function("HOUR", Integer.class, root.get("availableDate"));
-                predicates.add(cb.equal(hourExpression, time));
+            if (filterSchedulerRequest.getTime() != null && !filterSchedulerRequest.getTime().isEmpty()) {
+                LocalTime time = LocalTime.parse(filterSchedulerRequest.getTime());
+                Expression<LocalDateTime> availableDatePath = bookingJoin.get("availableDate");
+
+                Expression<Integer> extractedHour = cb.function("date_part", Integer.class,
+                        cb.literal("hour"), availableDatePath);
+                predicates.add(cb.equal(extractedHour, time.getHour()));
             }
 
-            if (date != 0) {
-                Expression<Integer> dayExpression = cb.function("DAY", Integer.class, root.get("availableDate"));
-                predicates.add(cb.equal(dayExpression, date));
-            }
-
-            if (month != 0) {
-                Expression<Integer> monthExpression = cb.function("MONTH", Integer.class, root.get("availableDate"));
-                predicates.add(cb.equal(monthExpression, month));
+            if (filterSchedulerRequest.getDate() != null && !filterSchedulerRequest.getDate().isEmpty()) {
+                LocalDate date = LocalDate.parse(filterSchedulerRequest.getDate());
+                Expression<LocalDate> dateExpression = bookingJoin.get("availableDate").as(LocalDate.class);
+                predicates.add(cb.equal(dateExpression, date));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };
 
         Page<Scheduler> schedulerPage = schedulerRepository.findAll(spec, pageable);
+        List<Scheduler> schedulerResponse = schedulerPage.getContent();
+        List<BookingResponse> bookings = new ArrayList<>();
+        for (Scheduler bReq : schedulerResponse) {
+            for (Booking abc : bReq.getBookingList()) {
+                BookingResponse booking = new BookingResponse();
+                booking.setCandidateUuid(UUID.randomUUID().toString());
+                booking.setStaffUuid(abc.getStaffUuid());
+                booking.setAvailableDate(abc.getStartTime());
+                booking.setStartTime(abc.getStartTime());
+                booking.setEndTime(abc.getEndTime());
+                booking.setBookAt(abc.getCreatedAt());
+                booking.setStatus(abc.getStatus());
+                booking.setScheduler(abc.getScheduler());
 
-        // Chuẩn bị dữ liệu trả về
-        List<Scheduler> schedulerResponse = new ArrayList<>();
-        for (Scheduler scheduler : schedulerPage.getContent()) {
-            Scheduler scheduler1 = new Scheduler();
-            scheduler1.setBookingList(scheduler.getBookingList());
-            schedulerResponse.add(scheduler1);
+                bookings.add(booking);
+            }
         }
 
-        DataResponse<Scheduler> dataResponse = new DataResponse<>();
-        dataResponse.setListData(schedulerResponse);
-        dataResponse.setTotalElements(schedulerPage.getTotalElements());
-        dataResponse.setPageNumber(schedulerPage.getNumber());
-        dataResponse.setTotalPages(schedulerPage.getTotalPages());
+            DataResponse<BookingResponse> dataResponse = new DataResponse<>();
+            dataResponse.setListData(bookings);
+            dataResponse.setTotalElements(schedulerPage.getTotalElements());
+            dataResponse.setPageNumber(schedulerPage.getNumber());
+            dataResponse.setTotalPages(schedulerPage.getTotalPages());
 
-        return dataResponse;
+            return dataResponse;
     }
+
+
 
 
     public Scheduler delete(String uuid){
