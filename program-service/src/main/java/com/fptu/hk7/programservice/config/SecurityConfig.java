@@ -29,7 +29,8 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         "/actuator/**",
                                         "/swagger-ui/**",
-                                        "/v3/api-docs/**"
+                                        "/v3/api-docs/**",
+                                        "/api/campus"
                                         ).permitAll() // Cho phép tất cả các request
                                 .anyRequest().authenticated()
                 )
