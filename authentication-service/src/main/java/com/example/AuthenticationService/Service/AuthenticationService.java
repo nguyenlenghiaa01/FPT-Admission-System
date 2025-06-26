@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
-import com.example.AuthenticationService.Controller.UserClientFallback;
+import com.example.AuthenticationService.Controller.UserServiceCaller;
 
 @Service
 public class AuthenticationService {
@@ -28,7 +28,7 @@ public class AuthenticationService {
 
     @Autowired
 
-    private UserClientFallback userServiceCaller;
+    private UserServiceCaller userServiceCaller;
 
     @Autowired
     private UserClient userClient;

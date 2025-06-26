@@ -2,7 +2,9 @@ package com.fptu.hk7.candidateservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fptu.hk7.candidateservice.client.OfferingProgramClient;
+import com.fptu.hk7.candidateservice.client.OfferingProgramServiceFallback;
 import com.fptu.hk7.candidateservice.client.UserClient;
+import com.fptu.hk7.candidateservice.client.UserServiceFallback;
 import com.fptu.hk7.candidateservice.dto.request.ApplicationRequest;
 import com.fptu.hk7.candidateservice.dto.request.FindOfferingRequest;
 import com.fptu.hk7.candidateservice.dto.response.ApplicationResponse;
@@ -37,6 +39,8 @@ public class ApplicationService {
     private final CandidateService candidateService;
     private final ScholarshipService scholarshipService;
     private final StatusApplicationService statusApplicationService;
+    private final UserServiceFallback userServiceFallback;
+    private final OfferingProgramServiceFallback offeringProgramServiceFallback;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -85,14 +89,14 @@ public class ApplicationService {
         Candidate candidate = modelMapper.map(applicationRequest, Candidate.class);
 
         System.out.println("Start: Lấy thông tin User Account thông qua Feign");
-        UUID id = UUID.fromString(userClient.getAccountByEmail(candidateService.getCurrentEmailUser()).getUuid());
+        UUID id = UUID.fromString(userServiceFallback.getAccountByEmail(candidateService.getCurrentEmailUser()).getUuid());
         candidate.setId(id);
         System.out.println("UUID của UserAccount: "+id);
         System.out.println("End: Lấy thông tin thành công");
         candidateService.createCandidate(candidate);
 
         System.out.println("Start: Lấy thông tin Offering UUID");
-        UUID offering_id = offeringProgramClient.getOffering(
+        UUID offering_id = offeringProgramServiceFallback.getOffering(
                 new FindOfferingRequest(applicationRequest.getSpecializationUuid(), applicationRequest.getCampusUuid())
         ).getBody();
         System.out.println("UUID Offering lấy được: " + offering_id);

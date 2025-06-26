@@ -1,5 +1,6 @@
 package com.fptu.hk7.programservice.controller;
 
+import com.fptu.hk7.programservice.dto.Request.CampusRequest;
 import com.fptu.hk7.programservice.pojo.Campus;
 import com.fptu.hk7.programservice.service.CampusService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -20,7 +21,7 @@ public class CampusController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<Campus> createCampus(@RequestBody Campus campus) {
+    public ResponseEntity<Campus> createCampus(@RequestBody CampusRequest campus) {
         return ResponseEntity.ok(campusService.createCampus(campus));
     }
 

@@ -1,5 +1,8 @@
 package com.fptu.hk7.programservice.controller;
 
+import com.fptu.hk7.programservice.dto.Request.SpecializationRequest;
+import com.fptu.hk7.programservice.dto.Response.DataResponse;
+import com.fptu.hk7.programservice.dto.Response.SpecializationResponse;
 import com.fptu.hk7.programservice.pojo.Specialization;
 import com.fptu.hk7.programservice.service.SpecializationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -20,13 +23,16 @@ public class SpecializationController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<Specialization> createSpecialization(@RequestBody Specialization specialization) {
+    public ResponseEntity<Specialization> createSpecialization(@RequestBody SpecializationRequest specialization) {
         return ResponseEntity.ok(specializationService.createSpecialization(specialization));
     }
 
     @GetMapping
-    public ResponseEntity<List<Specialization>> getAllSpecializations() {
-        return ResponseEntity.ok(specializationService.getAllSpecializations());
+    public ResponseEntity<DataResponse<SpecializationResponse>> getAllSpecializations(
+            @RequestParam int page,
+            @RequestParam int size) {
+        DataResponse<SpecializationResponse> specializationDataResponse = specializationService.getAllSpecializations(page, size);
+        return ResponseEntity.ok(specializationDataResponse);
     }
 
     @GetMapping("/{id}")

@@ -1,5 +1,8 @@
 package com.fptu.hk7.programservice.controller;
 
+import com.fptu.hk7.programservice.dto.Request.MajorRequest;
+import com.fptu.hk7.programservice.dto.Response.DataResponse;
+import com.fptu.hk7.programservice.dto.Response.MajorResponse;
 import com.fptu.hk7.programservice.pojo.Major;
 import com.fptu.hk7.programservice.service.MajorService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -21,13 +24,17 @@ public class MajorController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<Major> createMajor(@RequestBody Major major) {
+    public ResponseEntity<Major> createMajor(@RequestBody MajorRequest major) {
         return ResponseEntity.ok(majorService.createMajor(major));
     }
 
     @GetMapping
-    public ResponseEntity<List<Major>> getAllMajors() {
-        return ResponseEntity.ok(majorService.getAllMajors());
+    public ResponseEntity <DataResponse<MajorResponse>> getAllMajors(
+            @RequestParam int page,
+            @RequestParam int size) {
+        DataResponse<MajorResponse> majorResponse = majorService.getAllMajors(page,size);
+
+        return ResponseEntity.ok(majorResponse);
     }
 
     @GetMapping("/{id}")

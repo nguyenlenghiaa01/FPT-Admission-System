@@ -1,5 +1,6 @@
 package com.fptu.hk7.programservice.service;
 
+import com.fptu.hk7.programservice.dto.Request.CampusRequest;
 import com.fptu.hk7.programservice.pojo.Campus;
 import com.fptu.hk7.programservice.repository.CampusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,11 @@ public class CampusService {
     @Autowired
     private CampusRepository campusRepository;
 
-    public Campus createCampus(Campus campus) {
+    public Campus createCampus(CampusRequest campusRequest) {
+        Campus campus = new Campus();
+        campus.setId(UUID.randomUUID());
+        campus.setName(campusRequest.getCampusName());
+        campus.setAddress(campusRequest.getAddress());
         return campusRepository.save(campus);
     }
 
