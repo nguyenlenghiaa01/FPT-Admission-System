@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,7 @@ public class SpecializationService {
         return specializationRepository.save(specialization);
     }
 
+    @Transactional
     public void deleteSpecialization(UUID id) {
         specializationRepository.deleteById(id);
     }

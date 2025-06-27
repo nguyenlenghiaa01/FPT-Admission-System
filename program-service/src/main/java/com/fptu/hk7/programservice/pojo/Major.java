@@ -25,6 +25,6 @@ public class Major {
     private String description;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "major", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "major", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Specialization> specializations;
 }

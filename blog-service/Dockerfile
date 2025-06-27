@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/blog-service-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose port app chạy (8085 trong file config)
-EXPOSE 8088
+EXPOSE 8089
 
 # Run the jar file
 ENTRYPOINT ["java", "-jar", "app.jar"]

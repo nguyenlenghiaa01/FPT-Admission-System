@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class MajorService {
         List<MajorResponse> majorResponses = new ArrayList<>();
         for(Major major: majors) {
             MajorResponse majorResponse = new MajorResponse();
-            majorResponse.setMajorId(major.getId());
+            majorResponse.setId(major.getId());
             majorResponse.setName(major.getName());
             majorResponse.setDescription(major.getDescription());
 
@@ -59,6 +60,7 @@ public class MajorService {
         return majorRepository.save(major);
     }
 
+    @Transactional
     public void deleteMajor(UUID id) {
         majorRepository.deleteById(id);
     }

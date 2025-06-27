@@ -6,7 +6,7 @@ import java.util.UUID;
 
 @Data
 public class MajorResponse {
-    private UUID MajorId;
+    private UUID id;
     private String name;
     private String description;
 }

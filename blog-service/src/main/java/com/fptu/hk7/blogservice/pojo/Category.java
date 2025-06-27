@@ -1,5 +1,6 @@
 package com.fptu.hk7.blogservice.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -26,7 +27,7 @@ public class Category {
         this.name = name;
     }
 
-    @JsonManagedReference
+    @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Post> posts;
 }

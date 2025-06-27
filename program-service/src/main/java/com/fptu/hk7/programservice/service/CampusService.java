@@ -5,6 +5,7 @@ import com.fptu.hk7.programservice.pojo.Campus;
 import com.fptu.hk7.programservice.repository.CampusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ public class CampusService {
         campus.setId(UUID.randomUUID());
         campus.setName(campusRequest.getCampusName());
         campus.setAddress(campusRequest.getAddress());
+        campus.setDescription(campusRequest.getDescription());
         return campusRepository.save(campus);
     }
 
@@ -35,6 +37,7 @@ public class CampusService {
         return campusRepository.save(campus);
     }
 
+    @Transactional
     public void deleteCampus(UUID id) {
         campusRepository.deleteById(id);
     }

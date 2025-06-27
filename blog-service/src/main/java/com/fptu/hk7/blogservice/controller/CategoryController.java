@@ -1,5 +1,6 @@
 package com.fptu.hk7.blogservice.controller;
 
+import com.fptu.hk7.blogservice.dto.Request.CategoryRequest;
 import com.fptu.hk7.blogservice.pojo.Category;
 import com.fptu.hk7.blogservice.service.CategoryService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -33,7 +34,8 @@ public class CategoryController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public Category create(@RequestBody Category category) {
+    public Category create(@RequestBody CategoryRequest categoryRequest) {
+        Category category = new Category(categoryRequest.getName());
         return categoryService.save(category);
     }
 

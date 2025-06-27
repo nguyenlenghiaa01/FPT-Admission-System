@@ -7,10 +7,10 @@ import java.util.UUID;
 @Data
 public class CampusRequest {
 
-        private String CampusName;
+    private String CampusName;
 
-        private String address;
+    private String address;
 
-        private String description;
+    private String description;
 
 }

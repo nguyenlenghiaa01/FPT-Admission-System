@@ -28,7 +28,7 @@ public class Campus {
     private String description;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "campus", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "campus", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Offering> offerings;
 
 }

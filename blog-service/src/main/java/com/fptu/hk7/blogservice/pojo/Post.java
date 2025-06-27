@@ -41,8 +41,7 @@ public class Post {
 
     private UUID author_id; // người viết
 
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 }

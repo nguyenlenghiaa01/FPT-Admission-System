@@ -1,10 +1,14 @@
 package com.fptu.hk7.blogservice.service;
 
 import com.fptu.hk7.blogservice.dto.Request.PostRequest;
+import com.fptu.hk7.blogservice.pojo.Category;
 import com.fptu.hk7.blogservice.pojo.Post;
 import com.fptu.hk7.blogservice.repository.CategoryRepository;
 import com.fptu.hk7.blogservice.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,5 +50,11 @@ public class PostServiceImp implements PostService {
         post.setThumbnail(postRequest.getThumbnail());
         postRepository.save(post);
         return post;
+    }
+
+    @Override
+    public Page<Post> filter(UUID id, int page, int size) {
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found"));
+        return postRepository.findAllByCategory(category, PageRequest.of(page, size));
     }
 }

@@ -75,4 +75,9 @@ public class PostController {
         postService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/filter/{id}")
+    public ResponseEntity<?> filterByCategoryId(@PathVariable("id") UUID id, @RequestParam int page, @RequestParam int size) {
+        return ResponseEntity.ok(postService.filter(id, page, size));
+    }
 }

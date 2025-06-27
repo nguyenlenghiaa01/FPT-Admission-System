@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/program")
+@RequestMapping("/api/specialization")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "api")
 public class SpecializationController {

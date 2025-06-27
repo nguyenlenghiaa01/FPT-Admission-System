@@ -1,7 +1,10 @@
 package com.fptu.hk7.blogservice.service;
 
 import com.fptu.hk7.blogservice.pojo.Category;
+import com.fptu.hk7.blogservice.pojo.Post;
+import org.springframework.data.domain.Page;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.UUID;
 
