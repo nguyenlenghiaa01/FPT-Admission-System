@@ -1,5 +1,6 @@
 package com.fptu.hk7.candidateservice.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class Scholarship {
         this.description = description;
     }
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "scholarship")
     private List<Application> applications;
 }

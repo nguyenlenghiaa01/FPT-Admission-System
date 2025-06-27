@@ -50,7 +50,7 @@ public class ApplicationController {
     }
 
     @PreAuthorize("hasRole('STAFF')")
-    @PostMapping("/update_application")
+    @PutMapping("/update_application")
     public ResponseEntity<ApplicationResponse> updateApplication(@Valid @RequestBody UpdateApplicationRequest updateApplicationRequest) {
         Application application = applicationService.getApplicationById(updateApplicationRequest.getId());
         application.setStatus(ApplicationStatus.valueOf(updateApplicationRequest.getStatus()));

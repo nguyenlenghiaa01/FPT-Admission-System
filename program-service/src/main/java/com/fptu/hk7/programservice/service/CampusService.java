@@ -22,6 +22,8 @@ public class CampusService {
         campus.setName(campusRequest.getCampusName());
         campus.setAddress(campusRequest.getAddress());
         campus.setDescription(campusRequest.getDescription());
+        campus.setEmail(campusRequest.getEmail());
+        campus.setPhone(campusRequest.getPhone());
         return campusRepository.save(campus);
     }
 

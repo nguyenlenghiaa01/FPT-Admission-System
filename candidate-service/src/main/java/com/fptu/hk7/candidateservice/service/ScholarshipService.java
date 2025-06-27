@@ -1,10 +1,13 @@
 package com.fptu.hk7.candidateservice.service;
 
+import com.fptu.hk7.candidateservice.dto.request.ScholarshipRequest;
 import com.fptu.hk7.candidateservice.pojo.Scholarship;
 import com.fptu.hk7.candidateservice.repository.ScholarshipRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,7 +34,7 @@ public class ScholarshipService {
         return scholarshipRepository.findAll();
     }
 
-    public Scholarship updateScholarship(UUID id, Scholarship updatedScholarship) {
+    public Scholarship updateScholarship(UUID id, ScholarshipRequest updatedScholarship) {
         return scholarshipRepository.findById(id)
                 .map(scholarship -> {
                     scholarship.setName(updatedScholarship.getName());
@@ -41,12 +44,12 @@ public class ScholarshipService {
                 .orElse(null);
     }
 
-    public boolean deleteScholarship(UUID id) {
+    @Transactional
+    public String deleteScholarship(UUID id) {
         if (scholarshipRepository.existsById(id)) {
             scholarshipRepository.deleteById(id);
-            return true;
         }
-        return false;
+        return "Delete successfully";
     }
 
     public long count() {
