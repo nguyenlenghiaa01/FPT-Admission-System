@@ -26,10 +26,45 @@ public class InitData {
         return args -> {
             if(campusRepo.count() == 0) {
                 // ======= CAMPUS =======
-                Campus hanoi = new Campus(null, "FPT Hà Nội", "Hòa Lạc, Hà Nội", "Cơ sở chính", new ArrayList<>());
-                Campus hcm = new Campus(null, "FPT Hồ Chí Minh", "Khu CNC Q.9, TP.HCM", "Cơ sở miền Nam", new ArrayList<>());
-                Campus danang = new Campus(null, "FPT Đà Nẵng", "Ngũ Hành Sơn, Đà Nẵng", "Cơ sở miền Trung", new ArrayList<>());
-                Campus cantho = new Campus(null, "FPT Cần Thơ", "Khu đô thị Cần Thơ", "Cơ sở miền Tây", new ArrayList<>());
+                Campus hanoi = new Campus(
+                        null,
+                        "FPT Hà Nội",
+                        "Hòa Lạc, Hà Nội",
+                        "Cơ sở chính",
+                        "contact@fpt.edu.vn",
+                        "0841234567",
+                        new ArrayList<>()
+                );
+
+                Campus hcm = new Campus(
+                        null,
+                        "FPT Hồ Chí Minh",
+                        "Khu Công Nghệ Cao, Quận 9, TP.HCM",
+                        "Cơ sở miền Nam",
+                        "hcm@fpt.edu.vn",
+                        "0848765432",
+                        new ArrayList<>()
+                );
+
+                Campus danang = new Campus(
+                        null,
+                        "FPT Đà Nẵng",
+                        "Ngũ Hành Sơn, Đà Nẵng",
+                        "Cơ sở miền Trung",
+                        "danang@fpt.edu.vn",
+                        "0842345678",
+                        new ArrayList<>()
+                );
+
+                Campus cantho = new Campus(
+                        null,
+                        "FPT Cần Thơ",
+                        "Khu đô thị mới Nam Cần Thơ",
+                        "Cơ sở miền Tây",
+                        "cantho@fpt.edu.vn",
+                        "0843456789",
+                        new ArrayList<>()
+                );
 
                 campusRepo.saveAll(List.of(hanoi, hcm, danang, cantho));
 

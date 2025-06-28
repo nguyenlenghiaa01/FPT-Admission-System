@@ -161,8 +161,30 @@ public class SchedulerService {
 
             return dataResponse;
     }
+    public List<SchedulerResponse> getByStaff(String staffUuid) {
+        List<Scheduler> schedulers = schedulerRepository.findSchedulersByStaffUuid(staffUuid);
+        List<SchedulerResponse> responseList = new ArrayList<>();
 
+        for (Scheduler scheduler : schedulers) {
+            SchedulerResponse response = new SchedulerResponse();
+            response.setUuid(scheduler.getUuid());
 
+            // Tạo danh sách Booking phù hợp
+            List<Booking> bookingList = new ArrayList<>();
+            if (scheduler.getBookingList() != null) {
+                for (Booking booking : scheduler.getBookingList()) {
+                    if (staffUuid.equals(booking.getStaffUuid())) {
+                        bookingList.add(booking);
+                    }
+                }
+            }
+
+            response.setBookingList(bookingList);
+            responseList.add(response);
+        }
+
+        return responseList;
+    }
 
 
     public Scheduler delete(String uuid){

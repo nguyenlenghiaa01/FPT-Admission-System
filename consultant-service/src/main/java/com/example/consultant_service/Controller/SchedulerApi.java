@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/scheduler")
@@ -40,6 +41,13 @@ public class SchedulerApi {
         DataResponse<SchedulerResponse> scheduler = schedulerService.getAll(page,size);
         return ResponseEntity.ok(scheduler);
     }
+
+    @GetMapping("/staff/{staffUuid}")
+    public ResponseEntity<List<SchedulerResponse>> getByStaff(@PathVariable("staffUuid") String uuid){
+        List<SchedulerResponse> schedulers = schedulerService.getByStaff(uuid);
+        return ResponseEntity.ok(schedulers);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Scheduler> update (@PathVariable("id") String uuid, @RequestBody CreateSchedulerRequest createSchedulerRequest){
         Scheduler scheduler = schedulerService.update(uuid,createSchedulerRequest);
