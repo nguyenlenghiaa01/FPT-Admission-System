@@ -3,6 +3,7 @@ package com.fptu.hk7.candidateservice.controller;
 import com.fptu.hk7.candidateservice.dto.request.ScholarshipRequest;
 import com.fptu.hk7.candidateservice.pojo.Scholarship;
 import com.fptu.hk7.candidateservice.service.ScholarshipService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,10 +16,11 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/scholarship")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "api")
 public class ScholarshipController {
     private final ScholarshipService scholarshipService;
 
-    @RequestMapping
+    @GetMapping
     public List<Scholarship> getAllScholarShip(){
         return scholarshipService.getAllScholarships();
     }

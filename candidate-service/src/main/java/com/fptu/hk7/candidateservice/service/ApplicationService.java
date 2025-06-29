@@ -80,7 +80,6 @@ public class ApplicationService {
         return false;
     }
 
-    // Produce Kafka Event
     private final String TOPIC = "submit_application"; // notification-service
 
     private final String TOPIC2 = "booking_admission"; // consultant-service
@@ -88,46 +87,38 @@ public class ApplicationService {
     public ResponseEntity<ResponseApi<ApplicationResponse>> submitApplication(ApplicationRequest applicationRequest){
         Candidate candidate = modelMapper.map(applicationRequest, Candidate.class);
 
-        System.out.println("Start: Lấy thông tin User Account thông qua Feign");
         UUID id = UUID.fromString(userServiceFallback.getAccountByEmail(candidateService.getCurrentEmailUser()).getUuid());
         candidate.setId(id);
-        System.out.println("UUID của UserAccount: "+id);
-        System.out.println("End: Lấy thông tin thành công");
         candidateService.createCandidate(candidate);
 
-        System.out.println("Start: Lấy thông tin Offering UUID");
         UUID offering_id = offeringProgramServiceFallback.getOffering(
                 new FindOfferingRequest(applicationRequest.getSpecializationUuid(), applicationRequest.getCampusUuid())
         ).getBody();
-        System.out.println("UUID Offering lấy được: " + offering_id);
-        System.out.println("End: Lấy thông tin thành công");
+
+        // ✅ Tạo và lưu Application trước
         Application application = new Application();
         application.setOffering_id(offering_id);
         application.setCandidate(candidate);
+        application.setScholarship(scholarshipService.getScholarshipById(UUID.fromString(applicationRequest.getScholarshipUuid())));
+        createApplication(application); // Lưu trước
+
+        // ✅ Sau đó mới tạo và lưu StatusApplication
         StatusApplication statusApplication = new StatusApplication();
         statusApplication.setStatus(ApplicationStatus.PENDING);
         statusApplication.setApplication(application);
-        statusApplicationService.create(statusApplication);
-        System.out.println("Cập nhật trạng thái đơn thành công");
-        application.setScholarship(scholarshipService.getScholarshipById(UUID.fromString(applicationRequest.getScholarshipUuid())));
-        createApplication(application);
+        statusApplicationService.create(statusApplication); // Lưu sau
 
-        System.out.println("Start: Lưu thông tin ứng viên vào Booking bên bảng Booking - Consultant Service");
+        // Gửi sự kiện Booking
         try {
             BookingEvent bookingEvent = new BookingEvent();
             bookingEvent.setSchedularUuid(applicationRequest.getSchedularUuid());
             bookingEvent.setCandidateUuid(String.valueOf(id));
-
-            String jsonBookingEvent = objectMapper.writeValueAsString(bookingEvent);
-            System.out.println("Event booking: " + bookingEvent.toString());
-            kafkaTemplate.send(TOPIC2, jsonBookingEvent);
-            System.out.println("Success-end: Đã tạo kafka event qua candidate-service");
+            kafkaTemplate.send(TOPIC2, objectMapper.writeValueAsString(bookingEvent));
         } catch (Exception e) {
-            System.err.println("X Error: Không thể tạo kafka-event booking, " + e.getMessage());
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException("Không thể tạo kafka-event booking: " + e.getMessage());
         }
 
-        System.out.println("Start: Bắt đầu tạo kafka-event cho submit_application");
+        // Gửi sự kiện submit_application
         try {
             SubmitApplicationEvent event = new SubmitApplicationEvent();
             event.setEmail(candidate.getEmail());
@@ -136,14 +127,11 @@ public class ApplicationService {
             event.setCampus(applicationRequest.getCampusUuid());
             event.setSpecialization(applicationRequest.getSpecializationUuid());
 
-            String eventJson = objectMapper.writeValueAsString(event);
-            System.out.println("Event submit_application: "+ event.toString());
-            kafkaTemplate.send(TOPIC, eventJson);
-            System.out.println("Success: Đã tạo ra kafka-event submit_application thành công!");
+            kafkaTemplate.send(TOPIC, objectMapper.writeValueAsString(event));
         } catch (Exception e) {
-            System.err.println("X Error: Không thể tạo kafka-event submit_application, " + e.getMessage());
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException("Không thể tạo kafka-event submit_application: " + e.getMessage());
         }
+
         return ResponseEntity.ok(
                 ResponseApi.<ApplicationResponse>builder()
                         .status(200)
@@ -152,4 +140,5 @@ public class ApplicationService {
                         .build()
         );
     }
+
 }
