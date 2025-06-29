@@ -1,5 +1,6 @@
 package com.fptu.hk7.candidateservice.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -33,12 +34,15 @@ public class Candidate {
     @NotBlank(message = "Province not be blank")
     private String province;
 
-    @CreationTimestamp
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
 
     @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Application> applications;
 
+    public void setCreateAt(Date createAt) {
+        this.createAt = new Date();
+    }
 }

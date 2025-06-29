@@ -35,7 +35,7 @@ public class ApplicationController {
         return applicationService.submitApplication(applicationRequest);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/get_all")
     public ResponseEntity<ResponseApi<List<Application>>> getAllApplications() {
         List<Application> list = applicationService.getAllApplications();
@@ -49,7 +49,7 @@ public class ApplicationController {
                 );
     }
 
-    @PreAuthorize("hasRole('STAFF')")
+    @PreAuthorize("hasAuthority('STAFF')")
     @PutMapping("/update_application")
     public ResponseEntity<ApplicationResponse> updateApplication(@Valid @RequestBody UpdateApplicationRequest updateApplicationRequest) {
         Application application = applicationService.getApplicationById(updateApplicationRequest.getId());

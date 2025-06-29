@@ -25,19 +25,19 @@ public class ScholarshipController {
         return scholarshipService.getAllScholarships();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteScholarship(@PathVariable("id") UUID id){
        return ResponseEntity.ok(scholarshipService.deleteScholarship(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateScholarship(@Validated @RequestBody ScholarshipRequest scholarshipRequest, @PathVariable("id") UUID id){
         return ResponseEntity.ok(scholarshipService.updateScholarship(id, scholarshipRequest));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<?> createScholarship(@Validated @RequestBody ScholarshipRequest scholarshipRequest){
         return ResponseEntity.ok(scholarshipService.save(new Scholarship(
