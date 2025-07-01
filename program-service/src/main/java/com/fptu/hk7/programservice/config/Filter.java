@@ -1,7 +1,7 @@
 package com.fptu.hk7.programservice.config;
 
-import com.fptu.hk7.programservice.dto.Response.AuthorResponse;
 import com.fptu.hk7.programservice.service.TokenService;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.security.auth.message.AuthException;
@@ -21,11 +21,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class Filter extends OncePerRequestFilter {
+
     @Autowired
     private TokenService tokenService;
 
@@ -33,77 +36,77 @@ public class Filter extends OncePerRequestFilter {
     @Qualifier("handlerExceptionResolver")
     HandlerExceptionResolver resolver;
 
-    private final List<String> AUTH_PERMISSION = List.of(
+    private final List<String> PUBLIC_AUTH_SERVICE_APIS = List.of(
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-resources/**",
-            "/webjars/**",
-            "/swagger-ui.html",
+            "/api/campus/get",
+            "/api/program/get_all",
+            "/api/specialization",
             "/actuator/**"
     );
 
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
+
     public boolean checkIsPublicAPI(String uri) {
-        // uri: /api/register
-        // nếu gặp những cái api trong list ở trên => cho phép truy cập lun => true
-        AntPathMatcher patchMatch = new AntPathMatcher();
-        // check token => false
-        return AUTH_PERMISSION.stream().anyMatch(pattern -> patchMatch.match(pattern, uri));
+        return PUBLIC_AUTH_SERVICE_APIS.stream().anyMatch(pattern -> pathMatcher.match(pattern, uri));
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // check xem cái api mà người dùng yêu cầu có phải là 1 public api?
-
-        boolean isPublicAPI = checkIsPublicAPI(request.getRequestURI());
-
+        String requestURI = request.getRequestURI();
+        System.out.println("[Filter] Incoming request: " + requestURI + ", full URL: " + request.getRequestURL());
+        boolean isPublicAPI = checkIsPublicAPI(requestURI);
+        System.out.println("[Filter] isPublicAPI? " + isPublicAPI);
         if (isPublicAPI) {
-                filterChain.doFilter(request, response);
-        } else {
-            String token = getToken(request);
-            if (token == null) {
-                // ko được phép truy cập
-                resolver.resolveException(request, response, null, new AuthException("Empty token!"));
-                return;
-            }
-
-            // => có token
-            // check xem token có đúng hay ko => lấy thông tin account từ token
-            AuthorResponse authorResponse;
-            try {
-                authorResponse = tokenService.isAuthenticated(token);
-            } catch (ExpiredJwtException e) {
-                // response token hết hạn
-                resolver.resolveException(request, response, null, new AuthException("Expired token!"));
-                return;
-            } catch (MalformedJwtException malformedJwtException) {
-                // response token sai
-                resolver.resolveException(request, response, null, new AuthException("Invalid token!"));
-                return;
-            }
-            // => token chuẩn
-            // => cho phép truy cập
-            // => lưu lại thông tin account
-            if(authorResponse.getEmail() == null || authorResponse.getEmail().isEmpty() || authorResponse.getRole() == null || authorResponse.getRole().isEmpty()) {
-                throw new RuntimeException("Error: Không thể decode token!");
-            }
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    authorResponse.getEmail(),
-                    token,
-                    Collections.singleton(new SimpleGrantedAuthority(authorResponse.getRole()))
-            );
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            // token ok, cho vao`
             filterChain.doFilter(request, response);
+            return;
         }
 
+        String token = getTokenFromRequest(request);
+        if (token == null) {
+            resolver.resolveException(request, response, null, new AuthException("JWT token is missing!"));
+            return;
+        }
+
+        try {
+            Claims claims = tokenService.extractAllClaims(token);
+            String email = claims.getSubject();
+            String rolesString = (String) claims.get("roles");
+
+            Collection<SimpleGrantedAuthority> authorities = Arrays.stream(rolesString.split(","))
+                    .map(String::trim)
+                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
+                    .collect(Collectors.toList());
+
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                    email,
+                    null,
+                    authorities
+            );
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
+
+            filterChain.doFilter(request, response);
+
+        } catch (ExpiredJwtException e) {
+            resolver.resolveException(request, response, null, new AuthException("JWT token has expired!"));
+        } catch (MalformedJwtException e) {
+            resolver.resolveException(request, response, null, new AuthException("Invalid JWT token format!"));
+        } catch (Exception e) {
+            resolver.resolveException(request, response, null, new AuthException("JWT token processing error: " + e.getMessage()));
+        }
     }
 
-    public String getToken(HttpServletRequest request) {
+    private String getTokenFromRequest(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
-        if (authHeader == null) return null;
-        return authHeader.substring(7);
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
+        }
+        return null;
     }
-
 }

@@ -23,7 +23,12 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-resources/**",
-            "/api/auth/**"
+            "/api/auth/**",
+            "/api/campus/get",
+            "/api/program/get_all",
+            "/api/specialization",
+            "/api/posts",
+            "/api/categories"
     );
 
     private boolean isPublicAPI(String uri) {

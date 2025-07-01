@@ -33,4 +33,12 @@ public class TokenService {
         authorResponse.setRole(claims.get("roles", String.class));
         return authorResponse;
     }
+
+    public Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigninKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
 }

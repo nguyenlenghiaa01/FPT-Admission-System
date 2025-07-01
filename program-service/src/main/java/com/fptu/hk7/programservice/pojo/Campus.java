@@ -35,6 +35,8 @@ public class Campus {
     @Pattern(regexp = "(84|0[3|5|7|8|9])+(\\d{8})", message = "Invalid phone!")
     private String phone;
 
+    private String imageUrl;
+
     @JsonIgnore
     @OneToMany(mappedBy = "campus", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Offering> offerings;

@@ -30,7 +30,6 @@ public class ProgramController {
         return offeringService.findOfferingByCampusNameAndSpecializationName(offeringRequest.getCampusUuid(), offeringRequest.getSpecializationUuid());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/get_all")
     public ResponseEntity<List<Offering>> getAllOffering() {
         return ResponseEntity.ok(offeringService.getAllOfferings());

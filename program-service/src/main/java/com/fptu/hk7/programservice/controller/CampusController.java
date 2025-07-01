@@ -25,7 +25,7 @@ public class CampusController {
         return ResponseEntity.ok(campusService.createCampus(campus));
     }
 
-    @GetMapping
+    @GetMapping("/get")
     public ResponseEntity<List<Campus>> getAllCampuses() {
         return ResponseEntity.ok(campusService.getAllCampuses());
     }

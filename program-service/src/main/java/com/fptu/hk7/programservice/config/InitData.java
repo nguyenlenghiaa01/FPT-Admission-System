@@ -33,6 +33,7 @@ public class InitData {
                         "Cơ sở chính",
                         "contact@fpt.edu.vn",
                         "0841234567",
+                        null,
                         new ArrayList<>()
                 );
 
@@ -43,6 +44,7 @@ public class InitData {
                         "Cơ sở miền Nam",
                         "hcm@fpt.edu.vn",
                         "0848765432",
+                        null,
                         new ArrayList<>()
                 );
 
@@ -53,6 +55,7 @@ public class InitData {
                         "Cơ sở miền Trung",
                         "danang@fpt.edu.vn",
                         "0842345678",
+                        null,
                         new ArrayList<>()
                 );
 
@@ -63,6 +66,7 @@ public class InitData {
                         "Cơ sở miền Tây",
                         "cantho@fpt.edu.vn",
                         "0843456789",
+                        null,
                         new ArrayList<>()
                 );
 

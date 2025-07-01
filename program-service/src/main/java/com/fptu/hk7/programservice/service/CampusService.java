@@ -24,6 +24,7 @@ public class CampusService {
         campus.setDescription(campusRequest.getDescription());
         campus.setEmail(campusRequest.getEmail());
         campus.setPhone(campusRequest.getPhone());
+        campus.setImageUrl(campusRequest.getImageUrl());
         return campusRepository.save(campus);
     }
 
