@@ -28,6 +28,10 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                                 .requestMatchers(
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**",
+                                        "/swagger-resources/**",
+                                        "/webjars/**",
                                         "/api/posts",
                                                 "/api/categories")
                                 .permitAll() // Cho phép tất cả các request
