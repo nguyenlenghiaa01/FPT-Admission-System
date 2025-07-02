@@ -44,9 +44,8 @@ public class SpecializationController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<Specialization> updateSpecialization(@PathVariable UUID id, @RequestBody Specialization specialization) {
-        specialization.setId(id);
-        return ResponseEntity.ok(specializationService.updateSpecialization(specialization));
+    public ResponseEntity<Specialization> updateSpecialization(@PathVariable UUID id, @RequestBody SpecializationRequest specialization) {
+        return ResponseEntity.ok(specializationService.updateSpecialization(id,specialization));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

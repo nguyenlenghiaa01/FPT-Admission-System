@@ -4,6 +4,7 @@ import com.fptu.hk7.programservice.dto.Request.SpecializationRequest;
 import com.fptu.hk7.programservice.dto.Response.DataResponse;
 import com.fptu.hk7.programservice.dto.Response.MajorResponse;
 import com.fptu.hk7.programservice.dto.Response.SpecializationResponse;
+import com.fptu.hk7.programservice.exception.NotFoundException;
 import com.fptu.hk7.programservice.pojo.Major;
 import com.fptu.hk7.programservice.pojo.Specialization;
 import com.fptu.hk7.programservice.repository.SpecializationRepository;
@@ -59,8 +60,15 @@ public class SpecializationService {
         return specializationRepository.findById(id);
     }
 
-    public Specialization updateSpecialization(Specialization specialization) {
-        return specializationRepository.save(specialization);
+    public Specialization updateSpecialization(UUID id,SpecializationRequest specialization) {
+        Specialization specialization1 = specializationRepository.findSpecializationById(id);
+        if(specialization1 == null){
+            throw new NotFoundException("Specialization not found");
+        }
+        specialization1.setName(specialization.getName());
+        specialization1.setDescription(specialization.getDescription());
+        specialization1.setMajor(specialization.getMajor());
+        return specializationRepository.save(specialization1);
     }
 
     @Transactional

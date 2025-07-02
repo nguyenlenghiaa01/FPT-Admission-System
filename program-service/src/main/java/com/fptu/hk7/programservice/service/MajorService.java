@@ -3,6 +3,7 @@ package com.fptu.hk7.programservice.service;
 import com.fptu.hk7.programservice.dto.Request.MajorRequest;
 import com.fptu.hk7.programservice.dto.Response.DataResponse;
 import com.fptu.hk7.programservice.dto.Response.MajorResponse;
+import com.fptu.hk7.programservice.exception.NotFoundException;
 import com.fptu.hk7.programservice.pojo.Major;
 import com.fptu.hk7.programservice.repository.MajorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +57,14 @@ public class MajorService {
         return majorRepository.findById(id);
     }
 
-    public Major updateMajor(Major major) {
-        return majorRepository.save(major);
+    public Major updateMajor(UUID id,MajorRequest major) {
+        Major major1 = majorRepository.findMajorById(id);
+        if(major1 == null ){
+            throw new NotFoundException("Major not found");
+        }
+        major1.setName(major.getName());
+        major1.setDescription(major.getDescription());
+        return majorRepository.save(major1);
     }
 
     @Transactional

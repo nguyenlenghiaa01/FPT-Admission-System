@@ -39,9 +39,8 @@ public class CampusController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<Campus> updateCampus(@PathVariable("id") UUID id, @RequestBody Campus campus) {
-        campus.setId(id);
-        return ResponseEntity.ok(campusService.updateCampus(campus));
+    public ResponseEntity<Campus> updateCampus(@PathVariable("id") UUID id, @RequestBody CampusRequest campus) {
+        return ResponseEntity.ok(campusService.updateCampus(id,campus));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

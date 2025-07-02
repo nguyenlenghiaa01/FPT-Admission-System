@@ -11,5 +11,6 @@ import java.util.UUID;
 public interface MajorRepository extends JpaRepository<Major, Long> {
     Optional<Major> findById(UUID id);
 
+    Major findMajorById(UUID id);
     void deleteById(UUID id);
 }

@@ -1,6 +1,7 @@
 package com.fptu.hk7.programservice.service;
 
 import com.fptu.hk7.programservice.dto.Request.CampusRequest;
+import com.fptu.hk7.programservice.exception.NotFoundException;
 import com.fptu.hk7.programservice.pojo.Campus;
 import com.fptu.hk7.programservice.repository.CampusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,18 @@ public class CampusService {
         return campusRepository.findById(id);
     }
 
-    public Campus updateCampus(Campus campus) {
-        return campusRepository.save(campus);
+    public Campus updateCampus(UUID id,CampusRequest campus) {
+        Campus campus2 = campusRepository.findCampusById(id);
+        if(campus2 == null){
+            throw new NotFoundException("Campus not found");
+        }
+        campus2.setName(campus.getCampusName());
+        campus2.setDescription(campus.getDescription());
+        campus2.setAddress(campus.getAddress());
+        campus2.setPhone(campus.getPhone());
+        campus2.setEmail(campus.getEmail());
+        campus2.setImageUrl(campus.getImageUrl());
+        return campusRepository.save(campus2);
     }
 
     @Transactional

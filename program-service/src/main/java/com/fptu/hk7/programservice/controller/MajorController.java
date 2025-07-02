@@ -46,9 +46,8 @@ public class MajorController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<Major> updateMajor(@PathVariable("id") UUID id, @RequestBody Major major) {
-        major.setId(id);
-        return ResponseEntity.ok(majorService.updateMajor(major));
+    public ResponseEntity<Major> updateMajor(@PathVariable("id") UUID id, @RequestBody MajorRequest major) {
+        return ResponseEntity.ok(majorService.updateMajor(id,major));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

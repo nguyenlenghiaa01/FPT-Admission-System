@@ -13,5 +13,6 @@ public interface SpecializationRepository extends JpaRepository<Specialization, 
 
     Optional<Specialization> findById(UUID id);
 
+    Specialization findSpecializationById(UUID id);
     void deleteById(UUID id);
 }
