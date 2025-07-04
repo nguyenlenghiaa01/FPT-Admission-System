@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -20,5 +21,5 @@ public interface SchedulerRepository extends JpaRepository<Scheduler,String> , J
     @Query("SELECT DISTINCT b.scheduler FROM Booking b WHERE b.staffUuid = :staffUuid")
     List<Scheduler> findSchedulersByStaffUuid(@Param("staffUuid") String staffUuid);
 
-
+    Optional<Scheduler> findSchedulerByWeekOfYearAndYear(int weekOfYear, int year);
 }

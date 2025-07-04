@@ -2,6 +2,7 @@ package com.fptu.hk7.programservice.controller;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fptu.hk7.programservice.dto.Request.OfferingRequest;
+import com.fptu.hk7.programservice.dto.Response.GetOfferingResponse;
 import com.fptu.hk7.programservice.pojo.Offering;
 import com.fptu.hk7.programservice.service.OfferingService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -26,7 +27,7 @@ public class ProgramController {
 
     @PostMapping("/get_offering")
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-    public ResponseEntity<UUID> getOffering(@Validated @RequestBody OfferingRequest offeringRequest) {
+    public ResponseEntity<GetOfferingResponse> getOffering(@Validated @RequestBody OfferingRequest offeringRequest) {
         return offeringService.findOfferingByCampusNameAndSpecializationName(offeringRequest.getCampusUuid(), offeringRequest.getSpecializationUuid());
     }
 

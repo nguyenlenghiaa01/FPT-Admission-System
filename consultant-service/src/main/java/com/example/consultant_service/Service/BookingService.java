@@ -10,15 +10,22 @@ import com.example.consultant_service.Model.Response.BookingResponse;
 import com.example.consultant_service.Model.Response.DataResponse;
 import com.example.consultant_service.Repository.BookingRepository;
 import com.example.consultant_service.Repository.SchedulerRepository;
+import com.example.consultant_service.Service.redis.RedisService;
+import com.example.consultant_service.event.SocketNewApplicationEvent;
+import com.example.consultant_service.event.SubmitApplicationEvent;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -32,6 +39,15 @@ public class BookingService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private RedisService redisService;
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     public BookingResponse create (BookingRequest bookingRequest){
         Booking booking = new Booking();
@@ -55,11 +71,12 @@ public class BookingService {
         List<BookingResponse> bookingResponse = new ArrayList<>();
         for(Booking booking: bookings) {
             BookingResponse booking1 = new BookingResponse();
+            booking1.setBookingUuid(booking.getUuid());
             booking1.setStatus(booking.getStatus());
             booking1.setScheduler(booking.getScheduler());
             booking1.setBookAt(booking.getCreatedAt());
             booking1.setScheduler(booking.getScheduler());
-            booking1.setStatus(StatusEnum.BOOKED);
+            booking1.setStatus(booking.getStatus());
             booking1.setStaffUuid(booking.getStaffUuid());
             booking1.setScheduler(booking.getScheduler());
             booking1.setAvailableDate(booking.getAvailableDate());
@@ -117,14 +134,47 @@ public class BookingService {
         return booking;
     }
 
-    public Booking candidateBookingAdmission(String schedularUuid, String candidateUuid){
-        Scheduler scheduler = schedulerRepository.findSchedulerByUuid(schedularUuid);
-        if(scheduler == null) throw new NotFoundException("Scheduler not found");
-        Booking booking = bookingRepository.findByScheduler(scheduler);
+    public Booking candidateBookingAdmission(Map<String, String> data){
+        String bookingUuid = data.get("bookingUuid");
+        String candidateUuid = data.get("candidateUuid");
+        String email = data.get("email");
+        String fullname = data.get("fullname");
+        String phone = data.get("phone");
+        String campus = data.get("campus");
+        String specialization = data.get("specialization");
+
+        // update booking, gán candidateUuid
+        Booking booking = bookingRepository.findBookingByUuid(bookingUuid);
+
         if(booking == null) throw new NotFoundException("Booking not found");
+        if(booking.getStatus() == StatusEnum.BOOKED || StringUtils.hasText(booking.getCandidateUuid())) throw new NotFoundException("Booking not available");
+
         booking.setCandidateUuid(candidateUuid);
         booking.setStatus(StatusEnum.BOOKED);
-        return bookingRepository.save(booking);
+        bookingRepository.save(booking);
+
+        // Gửi sự kiện submit_application - email notification
+        try {
+            SubmitApplicationEvent event = new SubmitApplicationEvent();
+            event.setEmail(email);
+            event.setFullname(fullname);
+            event.setPhone(phone);
+            event.setCampus(campus);
+            event.setSpecialization(specialization);
+
+            // notification-service
+            String TOPIC = "submit_application";
+            kafkaTemplate.send(TOPIC, objectMapper.writeValueAsString(event));
+            // publish event to new-application
+            SocketNewApplicationEvent socketEvent = new SocketNewApplicationEvent();
+            socketEvent.setBookingUuid(bookingUuid);
+            socketEvent.setConsultantUuid(booking.getStaffUuid());
+            socketEvent.setSubmitApplicationEvent(event);
+            redisService.sendApplicationMessage(socketEvent, "new-application");
+        } catch (Exception e) {
+            throw new RuntimeException("Không thể tạo kafka-event submit_application: " + e.getMessage());
+        }
+        return booking;
     }
 
     public DataResponse<BookingResponse> getByStaff(String staffUuid, int page, int size) {

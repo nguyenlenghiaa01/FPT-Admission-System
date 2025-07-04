@@ -1,6 +1,11 @@
 # Use official OpenJDK runtime as a parent image
 FROM openjdk:23-jdk-slim
 
+# Cài redis-cli và curl ngay trong image
+RUN apt-get update \
+ && apt-get install -y redis-tools curl \
+ && rm -rf /var/lib/apt/lists/*
+
 # Set working directory in container
 WORKDIR /app
 

@@ -1,5 +1,6 @@
 package com.fptu.hk7.programservice.service;
 
+import com.fptu.hk7.programservice.dto.Response.GetOfferingResponse;
 import com.fptu.hk7.programservice.exception.NotFoundException;
 import com.fptu.hk7.programservice.pojo.Campus;
 import com.fptu.hk7.programservice.pojo.Offering;
@@ -38,13 +39,17 @@ public class OfferingService {
         offeringRepo.deleteById(id);
     }
 
-    public ResponseEntity<UUID> findOfferingByCampusNameAndSpecializationName(String campusUuid, String specializationUuid) {
-        campusRepo.findById(UUID.fromString(campusUuid))
+    public ResponseEntity<GetOfferingResponse> findOfferingByCampusNameAndSpecializationName(String campusUuid, String specializationUuid) {
+        GetOfferingResponse getOfferingResponse = new GetOfferingResponse();
+        Campus campus = campusRepo.findById(UUID.fromString(campusUuid))
                 .orElseThrow(() -> new NotFoundException("Campus not found"));
-        specializationRepo.findById(UUID.fromString(specializationUuid))
+        getOfferingResponse.setCampusName(campus.getName());
+        Specialization specialization = specializationRepo.findById(UUID.fromString(specializationUuid))
                 .orElseThrow(() -> new NotFoundException("Specialization not found"));
+        getOfferingResponse.setSpecializationName(specialization.getName());
         Offering offering =  offeringRepo.findOfferingByCampusIdAndSpecializationId(UUID.fromString(campusUuid), UUID.fromString(specializationUuid))
                 .orElseThrow(() -> new NotFoundException("Offering not found for campus specializationName"));
-        return ResponseEntity.ok(offering.getId());
+        getOfferingResponse.setOfferingId(offering.getId());
+        return ResponseEntity.ok(getOfferingResponse);
     }
 }
