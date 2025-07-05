@@ -11,7 +11,8 @@ $services = @(
         "candidate-service",
         "program-service",
         "consultant-service",
-        "blog-service"
+        "blog-service",
+        "websocket-service"
 )
 
 # Lặp qua từng service để xóa thư mục target

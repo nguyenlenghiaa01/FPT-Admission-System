@@ -29,15 +29,8 @@ public class SchedulerApi {
     public ResponseEntity<Scheduler> create (@RequestBody CreateSchedulerRequest createSchedulerRequest){
         Scheduler scheduler = schedulerService.create(createSchedulerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduler);
-
     }
 
-    // create booking
-//    @PostMapping("/create")
-//    public ResponseEntity<Scheduler> create (@RequestBody Booking1Request booking){
-//        Scheduler scheduler = schedulerService.create(booking);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(scheduler);
-//    }
     @GetMapping("/filter")
     public ResponseEntity<DataResponse<BookingResponse>> filter
             (@ModelAttribute FilterSchedulerRequest filterSchedulerRequest){
