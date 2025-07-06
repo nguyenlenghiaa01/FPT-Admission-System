@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 @Data
 public class BookingResponse {
 
+    private String BookingUuid;
+
     private String staffUuid;
 
     private Scheduler scheduler;

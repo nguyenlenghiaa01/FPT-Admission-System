@@ -11,6 +11,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.util.List;
 
@@ -33,11 +34,15 @@ public class SecurityConfig {
                                         "/swagger-resources/**",
                                         "/webjars/**",
                                         "/api/posts",
-                                                "/api/categories")
+                                        "/api/categories")
                                 .permitAll() // Cho phép tất cả các request
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+    @Bean(name = "myHandlerExceptionResolver")
+    public HandlerExceptionResolver handlerExceptionResolver() {
+        return new org.springframework.web.servlet.handler.HandlerExceptionResolverComposite();
     }
 }

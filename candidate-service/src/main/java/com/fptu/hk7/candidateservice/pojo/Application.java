@@ -30,6 +30,9 @@ public class Application {
     @Column(name = "offering_id")
     private UUID offering_id;
 
+    @Column(name = "consultant_id")
+    private UUID booking_id;
+
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status = ApplicationStatus.PENDING;
 

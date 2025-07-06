@@ -11,6 +11,7 @@ import com.example.consultant_service.Model.Request.SchedulerResponse;
 import com.example.consultant_service.Model.Response.BookingResponse;
 import com.example.consultant_service.Model.Response.DataResponse;
 import com.example.consultant_service.Repository.SchedulerRepository;
+import com.example.consultant_service.Service.redis.RedisService;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
@@ -26,9 +27,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.time.temporal.WeekFields;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,13 +36,11 @@ public class SchedulerService {
     @Autowired
     SchedulerRepository schedulerRepository;
 
-    @Transactional
-    public Scheduler create(CreateSchedulerRequest request) {
-        Scheduler scheduler = new Scheduler();
-        scheduler.setUuid(UUID.randomUUID().toString());
+    @Autowired
+    private RedisService redisService;
 
-        List<Booking> bookings = new ArrayList<>();
-        for (Booking1Request bReq : request.getBookings()) {
+    public List<Booking> createBookingFromRequest(List<Booking> bookings, List<Booking1Request> booking1Requests, Scheduler scheduler) {
+        for (Booking1Request bReq : booking1Requests) {
             Booking booking = new Booking();
             booking.setUuid(UUID.randomUUID().toString());
             booking.setStaffUuid(bReq.getStaff_uuid());
@@ -52,15 +50,58 @@ public class SchedulerService {
             booking.setCreatedAt(LocalDateTime.now());
             booking.setStatus(StatusEnum.AVAILABLE);
             booking.setScheduler(scheduler);
-
             bookings.add(booking);
         }
-
-        scheduler.setBookingList(bookings);
-
-        return schedulerRepository.save(scheduler);
+        return bookings;
     }
 
+    @Transactional
+    public Scheduler create(CreateSchedulerRequest request) {
+        LocalDateTime date = request.getBookings().get(0).getStartTime();
+        WeekFields weekFields = WeekFields.ISO;
+
+        int weekOfYear = date.get(weekFields.weekOfWeekBasedYear());
+        int year = date.get(weekFields.weekBasedYear());
+        int month = date.getMonthValue();
+
+        LocalDate startDate = date.toLocalDate().with(weekFields.dayOfWeek(), 1);
+
+        LocalDate endDate = startDate.plusDays(6);
+
+        // define which scheduler
+        Scheduler scheduler = schedulerRepository.findSchedulerByWeekOfYearAndYear(weekOfYear, year).orElse(null);
+        // already saved scheduler
+        Scheduler savedScheduler;
+        try {
+            if (scheduler != null) {
+                List<Booking> bookings = scheduler.getBookingList();
+                createBookingFromRequest(bookings, request.getBookings(), scheduler);
+                scheduler.setBookingList(bookings);
+                savedScheduler = schedulerRepository.save(scheduler);
+            } else {
+                Scheduler newScheduler = new Scheduler();
+                newScheduler.setUuid(UUID.randomUUID().toString());
+                newScheduler.setWeekOfYear(weekOfYear);
+                newScheduler.setYear(year);
+                newScheduler.setMonth(month);
+                newScheduler.setStart_date(startDate);
+                newScheduler.setEnd_date(endDate);
+                // booking
+                List<Booking> bookings = new ArrayList<>();
+                createBookingFromRequest(bookings, request.getBookings(), newScheduler);
+                newScheduler.setBookingList(bookings);
+                savedScheduler = schedulerRepository.save(newScheduler);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error when create or update scheduler: " + e.getMessage());
+        }
+        // send message to /new-scheduler realtime
+        for(Booking1Request bReq : request.getBookings()) {
+            redisService.sendApplicationMessage(bReq, "new-scheduler");
+        }
+
+        return savedScheduler;
+    }
 
     public Scheduler update(String uuid, CreateSchedulerRequest updateSchedulerRequest) {
         Scheduler scheduler = schedulerRepository.findSchedulerByUuid(uuid);

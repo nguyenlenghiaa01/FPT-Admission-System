@@ -1,6 +1,7 @@
 package com.example.consultant_service.Controller;
 
 import com.example.consultant_service.Entity.Scheduler;
+import com.example.consultant_service.Model.Request.Booking1Request;
 import com.example.consultant_service.Model.Request.CreateSchedulerRequest;
 import com.example.consultant_service.Model.Request.FilterSchedulerRequest;
 import com.example.consultant_service.Model.Request.SchedulerResponse;
@@ -28,8 +29,8 @@ public class SchedulerApi {
     public ResponseEntity<Scheduler> create (@RequestBody CreateSchedulerRequest createSchedulerRequest){
         Scheduler scheduler = schedulerService.create(createSchedulerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduler);
-
     }
+
     @GetMapping("/filter")
     public ResponseEntity<DataResponse<BookingResponse>> filter
             (@ModelAttribute FilterSchedulerRequest filterSchedulerRequest){

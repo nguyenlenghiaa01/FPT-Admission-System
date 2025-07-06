@@ -4,11 +4,13 @@ import com.example.AuthenticationService.Model.Request.*;
 import com.example.AuthenticationService.Model.Response.AccountResponse;
 import com.example.AuthenticationService.Service.AuthenticationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -37,6 +39,13 @@ public class AuthenticationAPI {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         return ResponseEntity.ok(accountResponse);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        String token = authHeader.substring(7);
+        return ResponseEntity.ok(authenticationService.logout(token));
     }
 
 //    @PostMapping("/loginGoogle")

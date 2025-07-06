@@ -33,6 +33,6 @@ public class ApplicationRequest {
 
     private String scholarshipUuid;
 
-    @NotBlank(message = "Schedular can not be blank")
-    private String schedularUuid;
+    @NotBlank(message = "Booking uuid can not be blank")
+    private String bookingUuid;
 }

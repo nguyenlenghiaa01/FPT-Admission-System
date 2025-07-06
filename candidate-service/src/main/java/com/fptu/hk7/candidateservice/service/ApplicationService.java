@@ -7,31 +7,34 @@ import com.fptu.hk7.candidateservice.client.UserClient;
 import com.fptu.hk7.candidateservice.client.UserServiceFallback;
 import com.fptu.hk7.candidateservice.dto.request.ApplicationRequest;
 import com.fptu.hk7.candidateservice.dto.request.FindOfferingRequest;
+import com.fptu.hk7.candidateservice.dto.response.AccountResponse;
 import com.fptu.hk7.candidateservice.dto.response.ApplicationResponse;
+import com.fptu.hk7.candidateservice.dto.response.GetOfferingResponse;
 import com.fptu.hk7.candidateservice.dto.response.ResponseApi;
 import com.fptu.hk7.candidateservice.enums.ApplicationStatus;
 import com.fptu.hk7.candidateservice.event.BookingEvent;
 import com.fptu.hk7.candidateservice.event.SubmitApplicationEvent;
+import com.fptu.hk7.candidateservice.exception.NotFoundException;
 import com.fptu.hk7.candidateservice.pojo.Candidate;
 import com.fptu.hk7.candidateservice.pojo.StatusApplication;
 import com.fptu.hk7.candidateservice.repository.ApplicationRepository;
 import com.fptu.hk7.candidateservice.pojo.Application;
+import com.fptu.hk7.candidateservice.service.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class ApplicationService {
     private final ApplicationRepository applicationRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     ModelMapper modelMapper = new ModelMapper();
     private final UserClient userClient;
@@ -41,6 +44,7 @@ public class ApplicationService {
     private final StatusApplicationService statusApplicationService;
     private final UserServiceFallback userServiceFallback;
     private final OfferingProgramServiceFallback offeringProgramServiceFallback;
+    private final RedisService redisService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -80,62 +84,60 @@ public class ApplicationService {
         return false;
     }
 
-    private final String TOPIC = "submit_application"; // notification-service
-
     private final String TOPIC2 = "booking_admission"; // consultant-service
 
     public ResponseEntity<ResponseApi<ApplicationResponse>> submitApplication(ApplicationRequest applicationRequest){
         Candidate candidate = modelMapper.map(applicationRequest, Candidate.class);
 
-        UUID id = UUID.fromString(userServiceFallback.getAccountByEmail(candidateService.getCurrentEmailUser()).getUuid());
-        candidate.setId(id);
+        String candidateUuid = Optional.ofNullable(userServiceFallback.getAccountByEmail(candidateService.getCurrentEmailUser()))
+                .map(AccountResponse::getUuid)
+                .orElseThrow(() -> new NotFoundException(
+                        "Cannot find account with email: "
+                                + candidateService.getCurrentEmailUser()
+                                + " in database. Please register account first!"
+                ));
+        candidate.setId(UUID.fromString(candidateUuid));
         candidateService.createCandidate(candidate);
 
-        UUID offering_id = offeringProgramServiceFallback.getOffering(
+        GetOfferingResponse offering = offeringProgramServiceFallback.getOffering(
                 new FindOfferingRequest(applicationRequest.getSpecializationUuid(), applicationRequest.getCampusUuid())
         ).getBody();
 
-        // ✅ Tạo và lưu Application trước
+        // Tạo và lưu Application trước
         Application application = new Application();
-        application.setOffering_id(offering_id);
+        assert offering != null;
+        application.setOffering_id(offering.getOfferingId());
         application.setCandidate(candidate);
+        application.setBooking_id(UUID.fromString(applicationRequest.getBookingUuid()));
         application.setScholarship(scholarshipService.getScholarshipById(UUID.fromString(applicationRequest.getScholarshipUuid())));
         createApplication(application); // Lưu trước
 
-        // ✅ Sau đó mới tạo và lưu StatusApplication
+        // Sau đó mới tạo và lưu StatusApplication
         StatusApplication statusApplication = new StatusApplication();
         statusApplication.setStatus(ApplicationStatus.PENDING);
         statusApplication.setApplication(application);
         statusApplicationService.create(statusApplication); // Lưu sau
 
-        // Gửi sự kiện Booking
+        // Gửi sự kiện Booking tới consultant
         try {
             BookingEvent bookingEvent = new BookingEvent();
-            bookingEvent.setSchedularUuid(applicationRequest.getSchedularUuid());
-            bookingEvent.setCandidateUuid(String.valueOf(id));
+            bookingEvent.setBookingUuid(applicationRequest.getBookingUuid());
+            bookingEvent.setCandidateUuid(candidateUuid);
+
+            bookingEvent.setEmail(candidate.getEmail());
+            bookingEvent.setFullname(candidate.getFullname());
+            bookingEvent.setPhone(applicationRequest.getPhone());
+            bookingEvent.setCampus(offering.getCampusName());
+            bookingEvent.setSpecialization(offering.getSpecializationName());
             kafkaTemplate.send(TOPIC2, objectMapper.writeValueAsString(bookingEvent));
         } catch (Exception e) {
             throw new RuntimeException("Không thể tạo kafka-event booking: " + e.getMessage());
         }
 
-        // Gửi sự kiện submit_application
-        try {
-            SubmitApplicationEvent event = new SubmitApplicationEvent();
-            event.setEmail(candidate.getEmail());
-            event.setFullname(candidate.getFullname());
-            event.setPhone(applicationRequest.getPhone());
-            event.setCampus(applicationRequest.getCampusUuid());
-            event.setSpecialization(applicationRequest.getSpecializationUuid());
-
-            kafkaTemplate.send(TOPIC, objectMapper.writeValueAsString(event));
-        } catch (Exception e) {
-            throw new RuntimeException("Không thể tạo kafka-event submit_application: " + e.getMessage());
-        }
-
         return ResponseEntity.ok(
                 ResponseApi.<ApplicationResponse>builder()
                         .status(200)
-                        .message("Application submitted successfully")
+                        .message("Send application successfully!")
                         .data(modelMapper.map(application, ApplicationResponse.class))
                         .build()
         );

@@ -1,6 +1,7 @@
 package com.fptu.hk7.candidateservice.client;
 
 import com.fptu.hk7.candidateservice.dto.request.FindOfferingRequest;
+import com.fptu.hk7.candidateservice.dto.response.GetOfferingResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,5 +12,5 @@ import java.util.UUID;
 @FeignClient(value = "program-service", url = "${feign.client.program-service.url}")
 public interface OfferingProgramClient {
     @PostMapping(value = "/api/program/get_offering")
-    ResponseEntity<UUID> getOffering(@RequestBody FindOfferingRequest findOfferingRequest);
+    ResponseEntity<GetOfferingResponse> getOffering(@RequestBody FindOfferingRequest findOfferingRequest);
 }

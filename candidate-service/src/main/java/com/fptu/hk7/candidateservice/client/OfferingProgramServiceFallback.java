@@ -1,6 +1,7 @@
 package com.fptu.hk7.candidateservice.client;
 
 import com.fptu.hk7.candidateservice.dto.request.FindOfferingRequest;
+import com.fptu.hk7.candidateservice.dto.response.GetOfferingResponse;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class OfferingProgramServiceFallback{
     private OfferingProgramClient offeringProgramClient;
 
     @CircuitBreaker(name = "Offering", fallbackMethod = "getOfferingFallback")
-    public ResponseEntity<UUID> getOffering(FindOfferingRequest request) {
+    public ResponseEntity<GetOfferingResponse> getOffering(FindOfferingRequest request) {
         return offeringProgramClient.getOffering(request);
     }
 

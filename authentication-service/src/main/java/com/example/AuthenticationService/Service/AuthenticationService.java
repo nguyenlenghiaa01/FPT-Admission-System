@@ -5,14 +5,19 @@ import com.example.AuthenticationService.Exception.AuthException;
 import com.example.AuthenticationService.Exception.NotFoundException;
 import com.example.AuthenticationService.Model.Request.*;
 import com.example.AuthenticationService.Model.Response.AccountResponse;
+import com.example.AuthenticationService.Service.redis.RedisTokenService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.UserService.Entity.ForgotPasswordEvent;
+import io.jsonwebtoken.Claims;
+import org.apache.el.parser.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 import com.example.AuthenticationService.Controller.UserServiceCaller;
+
+import java.util.Date;
 
 @Service
 public class AuthenticationService {
@@ -32,6 +37,10 @@ public class AuthenticationService {
 
     @Autowired
     private UserClient userClient;
+
+    @Autowired
+    private RedisTokenService redisTokenService;
+
 
     public AccountResponse register(RegisterRequest registerRequest) {
         return userClient.register(registerRequest);
@@ -59,6 +68,10 @@ public class AuthenticationService {
 
             String jwtToken = tokenService.generateToken(accountResponse);
             accountResponse.setToken(jwtToken);
+
+            // redis
+//            String key = "auth:" + accountResponse.getUuid();
+//            redisTokenService.saveToken(key, jwtToken, 10);
 
             return accountResponse;
 
@@ -106,4 +119,11 @@ public class AuthenticationService {
     }
 
 
+    public String logout(String token) {
+        Claims claims = tokenService.extractAllClaims(token);
+        Date exp = claims.getExpiration();
+        Date now = new Date(System.currentTimeMillis());
+        redisTokenService.blacklistToken(token, exp.getTime() - now.getTime() / 1000);
+        return "Logout successfully!";
+    }
 }
