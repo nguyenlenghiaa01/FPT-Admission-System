@@ -35,6 +35,12 @@ public class SpecializationController {
         return ResponseEntity.ok(specializationDataResponse);
     }
 
+    @GetMapping("/major/{id}")
+    public ResponseEntity<List<SpecializationResponse>> getSpecializationByMajorId(@PathVariable UUID id){
+        List<SpecializationResponse> specialization = specializationService.getSpecializationByMajorId(id);
+        return ResponseEntity.ok(specialization);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Specialization> getSpecializationById(@PathVariable UUID id) {
         return specializationService.getSpecializationById(id)

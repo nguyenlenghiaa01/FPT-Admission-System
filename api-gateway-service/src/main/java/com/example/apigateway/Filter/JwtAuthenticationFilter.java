@@ -28,7 +28,8 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
             "/api/program/get_all",
             "/api/specialization",
             "/api/posts",
-            "/api/categories"
+            "/api/categories",
+            "/api/specialization/major/{id}"
     );
 
     private boolean isPublicAPI(String uri) {

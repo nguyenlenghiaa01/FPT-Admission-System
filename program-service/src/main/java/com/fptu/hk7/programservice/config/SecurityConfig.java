@@ -50,7 +50,8 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/api/campus/get",
                                 "/api/specialization",
-                                "/api/program/get_all"
+                                "/api/program/get_all",
+                                "/api/specialization/major/{id}"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

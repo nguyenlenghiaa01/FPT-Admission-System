@@ -43,6 +43,7 @@ public class Filter extends OncePerRequestFilter {
             "/api/campus/get",
             "/api/program/get_all",
             "/api/specialization",
+            "/api/specialization/major/{id}",
             "/actuator/**"
     );
 

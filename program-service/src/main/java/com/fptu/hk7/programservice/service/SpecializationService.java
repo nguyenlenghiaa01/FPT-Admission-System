@@ -5,8 +5,13 @@ import com.fptu.hk7.programservice.dto.Response.DataResponse;
 import com.fptu.hk7.programservice.dto.Response.MajorResponse;
 import com.fptu.hk7.programservice.dto.Response.SpecializationResponse;
 import com.fptu.hk7.programservice.exception.NotFoundException;
+import com.fptu.hk7.programservice.pojo.Campus;
 import com.fptu.hk7.programservice.pojo.Major;
+import com.fptu.hk7.programservice.pojo.Offering;
 import com.fptu.hk7.programservice.pojo.Specialization;
+import com.fptu.hk7.programservice.repository.CampusRepository;
+import com.fptu.hk7.programservice.repository.MajorRepository;
+import com.fptu.hk7.programservice.repository.OfferingRepository;
 import com.fptu.hk7.programservice.repository.SpecializationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +29,12 @@ import java.util.UUID;
 public class SpecializationService {
     @Autowired
     private SpecializationRepository specializationRepository;
+
+    @Autowired
+    private MajorRepository majorRepository;
+
+    @Autowired
+    private OfferingRepository offeringRepository;
 
     public Specialization createSpecialization(SpecializationRequest specializationRequest) {
         Specialization specialization =new Specialization();
@@ -70,6 +81,29 @@ public class SpecializationService {
         specialization1.setMajor(specialization.getMajor());
         return specializationRepository.save(specialization1);
     }
+
+    @Transactional
+    public List<SpecializationResponse> getSpecializationByMajorId(UUID id){
+        Major major = majorRepository.findMajorById(id);
+        if(major == null){
+            throw new NotFoundException("Major not found!");
+        }
+
+        List<SpecializationResponse> specializationResponses = new ArrayList<>();
+        for(Specialization specialization : major.getSpecializations()){
+            SpecializationResponse response = new SpecializationResponse();
+            response.setSpecializationId(specialization.getId());
+            response.setName(specialization.getName());
+            response.setDescription(specialization.getDescription());
+            response.setMajor(specialization.getMajor());
+
+            specializationResponses.add(response);
+        }
+
+        return specializationResponses;
+    }
+
+
 
     @Transactional
     public void deleteSpecialization(UUID id) {
