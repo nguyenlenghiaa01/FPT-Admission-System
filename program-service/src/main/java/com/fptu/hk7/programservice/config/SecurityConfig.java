@@ -51,7 +51,8 @@ public class SecurityConfig {
                                 "/api/campus/get",
                                 "/api/specialization",
                                 "/api/program/get_all",
-                                "/api/specialization/major/{id}"
+                                "/api/specialization/major/{id}",
+                                "/api/major"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
