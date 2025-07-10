@@ -11,8 +11,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -42,12 +44,14 @@ public class BookingApi {
         return ResponseEntity.ok(booking);
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @PutMapping("/{id}")
     public ResponseEntity<BookingResponse> update(@PathVariable("id") String uuid, @RequestBody BookingRequest bookingRequest) {
         BookingResponse bookingResponse = bookingService.update(uuid, bookingRequest);
         return ResponseEntity.ok(bookingResponse);
     }
 
+    @PreAuthorize("hasAuthority('CONSULTANT')")
     @PutMapping("/status/{id}")
     public ResponseEntity<BookingResponse> update(@PathVariable("id") String uuid, @RequestBody BookingUpdateRequest bookingUpdateRequest) {
         BookingResponse bookingResponse = bookingService.updateStatus(uuid, bookingUpdateRequest);
@@ -64,5 +68,11 @@ public class BookingApi {
     public ResponseEntity<DataResponse<BookingResponse>> getByStaff(@PathVariable("id") String staffUuid,
                                                                     @RequestParam int page, @RequestParam int size) {
         return ResponseEntity.ok(bookingService.getByStaff(staffUuid, page, size));
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @GetMapping("/getByUser/{id}")
+    public ResponseEntity<List<BookingResponse>> getByUser(@PathVariable("id")String userUuid){
+        return ResponseEntity.ok(bookingService.getByUser(userUuid));
     }
 }

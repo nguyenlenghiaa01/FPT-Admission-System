@@ -192,4 +192,23 @@ public class BookingService {
         dataResponse.setTotalPages(bookings.getTotalPages());
         return dataResponse;
     }
+
+    public List<BookingResponse> getByUser(String userUuid){
+        List<Booking> bookings = bookingRepository.findBookingByCandidateUuid(userUuid);
+        if(bookings == null){
+            throw new NotFoundException("Not found booking");
+        }
+        List<BookingResponse> bookingResponses = new ArrayList<>();
+        for(Booking booking : bookings){
+            BookingResponse bookingResponse = new BookingResponse();
+            bookingResponse.setStatus(booking.getStatus());
+            bookingResponse.setScheduler(booking.getScheduler());
+            bookingResponse.setBookAt(booking.getCreatedAt());
+            bookingResponse.setStartTime(booking.getStartTime());
+            bookingResponse.setEndTime(booking.getEndTime());
+
+            bookingResponses.add(bookingResponse);
+        }
+        return bookingResponses;
+    }
 }

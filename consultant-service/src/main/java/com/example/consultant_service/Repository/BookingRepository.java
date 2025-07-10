@@ -6,15 +6,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface BookingRepository extends JpaRepository<Booking,String> {
+public interface BookingRepository extends JpaRepository<Booking,String>, JpaSpecificationExecutor<Booking> {
     Booking findBookingByUuid(String uuid);
 
     Booking findByScheduler(Scheduler scheduler);
 
     Page<Booking> findBookingByStaffUuid(String staffUuid, Pageable pageable);
+    List<Booking> findBookingByCandidateUuid(String userUuid);
 }
