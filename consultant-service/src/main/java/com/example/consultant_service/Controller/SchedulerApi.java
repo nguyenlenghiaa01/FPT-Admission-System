@@ -33,7 +33,6 @@ public class SchedulerApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduler);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/filter")
     public ResponseEntity<DataResponse<BookingResponse>> filter
             (@ModelAttribute FilterSchedulerRequest filterSchedulerRequest){
