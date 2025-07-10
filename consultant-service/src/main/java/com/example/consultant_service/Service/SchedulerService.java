@@ -1,5 +1,6 @@
 package com.example.consultant_service.Service;
 
+import com.example.consultant_service.Controller.UserServiceCaller;
 import com.example.consultant_service.Entity.Booking;
 import com.example.consultant_service.Entity.Scheduler;
 import com.example.consultant_service.Enum.StatusEnum;
@@ -8,7 +9,9 @@ import com.example.consultant_service.Model.Request.Booking1Request;
 import com.example.consultant_service.Model.Request.CreateSchedulerRequest;
 import com.example.consultant_service.Model.Request.FilterSchedulerRequest;
 import com.example.consultant_service.Model.Request.SchedulerResponse;
+import com.example.consultant_service.Model.Response.AccountResponse;
 import com.example.consultant_service.Model.Response.BookingResponse;
+import com.example.consultant_service.Model.Response.BookingResponse1;
 import com.example.consultant_service.Model.Response.DataResponse;
 import com.example.consultant_service.Repository.BookingRepository;
 import com.example.consultant_service.Repository.SchedulerRepository;
@@ -42,6 +45,9 @@ public class SchedulerService {
 
     @Autowired
     private BookingRepository bookingRepository;
+
+    @Autowired
+    private UserServiceCaller userServiceCaller;
 
     public List<Booking> createBookingFromRequest(List<Booking> bookings, List<Booking1Request> booking1Requests, Scheduler scheduler) {
         for (Booking1Request bReq : booking1Requests) {
@@ -154,7 +160,7 @@ public class SchedulerService {
         return dataResponse;
     }
 
-    public DataResponse<BookingResponse> filter(FilterSchedulerRequest filterSchedulerRequest) {
+    public DataResponse<BookingResponse1> filter(FilterSchedulerRequest filterSchedulerRequest) {
         Pageable pageable = PageRequest.of(filterSchedulerRequest.getPage(), filterSchedulerRequest.getSize());
 
         Specification<Booking> spec = (root, query, cb) -> {
@@ -180,11 +186,16 @@ public class SchedulerService {
         };
 
         Page<Booking> bookingPage = bookingRepository.findAll(spec, pageable);
-
-        List<BookingResponse> bookingResponses = bookingPage.getContent().stream().map(booking -> {
-            BookingResponse response = new BookingResponse();
+        List<BookingResponse1> bookingResponses = bookingPage.getContent().stream().map(booking -> {
+            BookingResponse1 response = new BookingResponse1();
             response.setCandidateUuid(booking.getCandidateUuid());
             response.setStaffUuid(booking.getStaffUuid());
+            AccountResponse accountResponse = userServiceCaller.getUserByUuid(booking.getStaffUuid());
+            response.setFullName(accountResponse.getFullName());
+            response.setImage(accountResponse.getImage());
+            response.setEmail(accountResponse.getEmail());
+            response.setAddress(accountResponse.getAddress());
+            response.setPhone(accountResponse.getPhone());
             response.setAvailableDate(booking.getStartTime());
             response.setStartTime(booking.getStartTime());
             response.setEndTime(booking.getEndTime());
@@ -194,7 +205,7 @@ public class SchedulerService {
             return response;
         }).toList();
 
-        DataResponse<BookingResponse> dataResponse = new DataResponse<>();
+        DataResponse<BookingResponse1> dataResponse = new DataResponse<>();
         dataResponse.setListData(bookingResponses);
         dataResponse.setTotalElements(bookingPage.getTotalElements());
         dataResponse.setPageNumber(bookingPage.getNumber());

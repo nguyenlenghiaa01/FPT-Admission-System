@@ -1,11 +1,11 @@
 package com.example.consultant_service.Controller;
 
 import com.example.consultant_service.Entity.Scheduler;
-import com.example.consultant_service.Model.Request.Booking1Request;
 import com.example.consultant_service.Model.Request.CreateSchedulerRequest;
 import com.example.consultant_service.Model.Request.FilterSchedulerRequest;
 import com.example.consultant_service.Model.Request.SchedulerResponse;
 import com.example.consultant_service.Model.Response.BookingResponse;
+import com.example.consultant_service.Model.Response.BookingResponse1;
 import com.example.consultant_service.Model.Response.DataResponse;
 import com.example.consultant_service.Service.SchedulerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -15,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -34,9 +32,9 @@ public class SchedulerApi {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<DataResponse<BookingResponse>> filter
+    public ResponseEntity<DataResponse<BookingResponse1>> filter
             (@ModelAttribute FilterSchedulerRequest filterSchedulerRequest){
-        DataResponse<BookingResponse> scheduler = schedulerService.filter(filterSchedulerRequest);
+        DataResponse<BookingResponse1> scheduler = schedulerService.filter(filterSchedulerRequest);
         return ResponseEntity.ok(scheduler);
     }
     @GetMapping("/get")
