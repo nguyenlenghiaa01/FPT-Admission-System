@@ -202,6 +202,7 @@ public class SchedulerService {
             response.setBookAt(booking.getCreatedAt());
             response.setStatus(booking.getStatus());
             response.setScheduler(booking.getScheduler());
+            response.setBookingUuid(booking.getUuid());
             return response;
         }).toList();
 
