@@ -28,7 +28,6 @@ public class ApplicationRequest {
     @NotNull
     private String campusUuid;
 
-    @NotNull
     private String specializationUuid;
 
     private String scholarshipUuid;
