@@ -1,5 +1,6 @@
 package com.fptu.hk7.candidateservice.service;
 
+import com.fptu.hk7.candidateservice.exception.NotFoundException;
 import com.fptu.hk7.candidateservice.pojo.Candidate;
 import com.fptu.hk7.candidateservice.repository.CandidateRepository;
 import com.fptu.hk7.candidateservice.repository.SubjectRepository;
@@ -22,8 +23,8 @@ public class CandidateService {
     }
 
     // Read (find by id)
-    public Optional<Candidate> getCandidateById(UUID id) {
-        return candidateRepository.findById(id);
+    public Candidate getCandidateById(UUID id) {
+        return candidateRepository.findById(id).orElseThrow(() -> new NotFoundException("Candidate not found with id: " + id));
     }
 
     // Read (find all)
@@ -36,11 +37,7 @@ public class CandidateService {
         return candidateRepository.findById(id).map(candidate -> {
             candidate.setEmail(updatedCandidate.getEmail());
             candidate.setFullname(updatedCandidate.getFullname());
-//            candidate.setDob(updatedCandidate.getDob());
-//            candidate.setGender(updatedCandidate.getGender());
-//            candidate.setProvince(updatedCandidate.getProvince());
             candidate.setCreateAt(updatedCandidate.getCreateAt());
-            // ...update other fields as needed...
             return candidateRepository.save(candidate);
         });
     }

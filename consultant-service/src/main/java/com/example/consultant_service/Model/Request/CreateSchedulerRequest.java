@@ -10,5 +10,4 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateSchedulerRequest {
     private List<Booking1Request> bookings;
-
 }

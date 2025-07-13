@@ -57,11 +57,15 @@ public class ApplicationService {
     }
 
     public Application getApplicationById(UUID id) {
-        return applicationRepository.findById(id).orElse(null);
+        return applicationRepository.findById(id).orElseThrow(() -> new NotFoundException("Application not found with id: " + id));
     }
 
     public List<Application> getAllApplications() {
         return applicationRepository.findAll();
+    }
+
+    public List<Application> getApplicationsByCandidate(Candidate candidate) {
+        return applicationRepository.findAllByCandidate(candidate);
     }
 
     public Application updateApplication(UUID id, Application updatedApplication) {

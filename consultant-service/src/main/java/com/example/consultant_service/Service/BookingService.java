@@ -146,6 +146,7 @@ public class BookingService {
         // update booking, gán candidateUuid
         Booking booking = bookingRepository.findBookingByUuid(bookingUuid);
 
+        // check status của booking
         if(booking == null) throw new NotFoundException("Booking not found");
         if(booking.getStatus() == StatusEnum.BOOKED || StringUtils.hasText(booking.getCandidateUuid())) throw new NotFoundException("Booking not available");
 
