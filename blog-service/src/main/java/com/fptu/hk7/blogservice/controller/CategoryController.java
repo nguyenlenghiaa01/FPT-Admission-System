@@ -5,7 +5,6 @@ import com.fptu.hk7.blogservice.pojo.Category;
 import com.fptu.hk7.blogservice.InterFace.CategoryService;
 import com.fptu.hk7.blogservice.service.CategoryServiceImp;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,7 @@ import java.util.UUID;
 @RequestMapping("/api/categories")
 @SecurityRequirement(name = "api")
 public class CategoryController {
-    private final CategoryServiceImp categoryService;
+    private final CategoryService categoryService;
 
     public CategoryController(CategoryServiceImp categoryService) {
         this.categoryService = categoryService;

@@ -1,6 +1,7 @@
 package com.fptu.hk7.candidateservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fptu.hk7.candidateservice.InterFace.IApplicationService;
 import com.fptu.hk7.candidateservice.InterFace.OfferingProgramClient;
 import com.fptu.hk7.candidateservice.client.OfferingProgramServiceFallback;
 import com.fptu.hk7.candidateservice.InterFace.UserClient;
@@ -31,7 +32,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class ApplicationService {
+public class ApplicationService implements IApplicationService {
     private final ApplicationRepository applicationRepository;
     private final RedisTemplate<String, Object> redisTemplate;
 
