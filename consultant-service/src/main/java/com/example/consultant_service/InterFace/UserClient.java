@@ -1,4 +1,4 @@
-package com.example.consultant_service.Controller;
+package com.example.consultant_service.InterFace;
 
 import com.example.consultant_service.Config.FeignConfig;
 import com.example.consultant_service.Model.Response.AccountResponse;

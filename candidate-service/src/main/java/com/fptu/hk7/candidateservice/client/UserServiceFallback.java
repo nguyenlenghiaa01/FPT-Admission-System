@@ -1,5 +1,6 @@
 package com.fptu.hk7.candidateservice.client;
 
+import com.fptu.hk7.candidateservice.InterFace.UserClient;
 import com.fptu.hk7.candidateservice.dto.response.AccountResponse;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;

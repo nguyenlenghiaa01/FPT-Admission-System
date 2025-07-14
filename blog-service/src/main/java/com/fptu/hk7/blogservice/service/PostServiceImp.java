@@ -1,5 +1,6 @@
 package com.fptu.hk7.blogservice.service;
 
+import com.fptu.hk7.blogservice.InterFace.PostService;
 import com.fptu.hk7.blogservice.dto.Request.PostRequest;
 import com.fptu.hk7.blogservice.pojo.Category;
 import com.fptu.hk7.blogservice.pojo.Post;
@@ -8,7 +9,6 @@ import com.fptu.hk7.blogservice.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

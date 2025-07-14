@@ -1,6 +1,7 @@
 package com.fptu.hk7.programservice.controller;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fptu.hk7.programservice.InterFace.IOfferingService;
 import com.fptu.hk7.programservice.dto.Request.OfferingRequest;
 import com.fptu.hk7.programservice.dto.Response.GetOfferingResponse;
 import com.fptu.hk7.programservice.pojo.Offering;
@@ -23,7 +24,7 @@ import java.util.UUID;
 @Transactional
 public class ProgramController {
 
-    private final OfferingService offeringService;
+    private final IOfferingService offeringService;
 
     @PostMapping("/get_offering")
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)

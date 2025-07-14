@@ -1,9 +1,11 @@
 package com.fptu.hk7.programservice.service;
 
+import com.fptu.hk7.programservice.InterFace.ICampusService;
 import com.fptu.hk7.programservice.dto.Request.CampusRequest;
 import com.fptu.hk7.programservice.exception.NotFoundException;
 import com.fptu.hk7.programservice.pojo.Campus;
 import com.fptu.hk7.programservice.repository.CampusRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +15,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class CampusService {
-    @Autowired
-    private CampusRepository campusRepository;
+@RequiredArgsConstructor
+public class CampusService implements ICampusService {
+    private final CampusRepository campusRepository;
 
     public Campus createCampus(CampusRequest campusRequest) {
         Campus campus = new Campus();

@@ -1,6 +1,7 @@
 package com.example.consultant_service.Service;
 
 import com.example.consultant_service.Entity.UserPrincipal;
+import com.example.consultant_service.InterFace.ITokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -13,12 +14,12 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
-public class TokenService {
+public class TokenService implements ITokenService {
 
 
     private final String SECRET_KEY = "4bb6d1dfbafb64a681139d1586b6f1160d18159afd57c8c79136d7490630407c";
 
-    private SecretKey getSigningKey() {
+    public SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
@@ -43,21 +44,4 @@ public class TokenService {
         return new UserPrincipal(userId, roles);
     }
 
-    public Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
-            return true;
-        } catch (Exception e) {
-            System.err.println("Token validation failed: " + e.getMessage());
-            return false;
-        }
-    }
 }

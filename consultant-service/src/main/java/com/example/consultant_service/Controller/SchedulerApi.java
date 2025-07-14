@@ -1,15 +1,14 @@
 package com.example.consultant_service.Controller;
 
 import com.example.consultant_service.Entity.Scheduler;
+import com.example.consultant_service.InterFace.ISchedulerService;
 import com.example.consultant_service.Model.Request.CreateSchedulerRequest;
 import com.example.consultant_service.Model.Request.FilterSchedulerRequest;
 import com.example.consultant_service.Model.Request.SchedulerResponse;
-import com.example.consultant_service.Model.Response.BookingResponse;
 import com.example.consultant_service.Model.Response.BookingResponse1;
 import com.example.consultant_service.Model.Response.DataResponse;
-import com.example.consultant_service.Service.SchedulerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,9 +19,10 @@ import java.util.List;
 @RestController
 @RequestMapping("api/scheduler")
 @SecurityRequirement(name = "api")
+@RequiredArgsConstructor
+
 public class SchedulerApi {
-    @Autowired
-    private SchedulerService schedulerService;
+    private final ISchedulerService schedulerService;
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/create")

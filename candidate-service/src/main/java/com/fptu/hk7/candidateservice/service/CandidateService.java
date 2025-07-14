@@ -1,5 +1,6 @@
 package com.fptu.hk7.candidateservice.service;
 
+import com.fptu.hk7.candidateservice.InterFace.ICandidateService;
 import com.fptu.hk7.candidateservice.exception.NotFoundException;
 import com.fptu.hk7.candidateservice.pojo.Candidate;
 import com.fptu.hk7.candidateservice.repository.CandidateRepository;
@@ -14,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class CandidateService {
+public class CandidateService implements ICandidateService {
     public final CandidateRepository candidateRepository;
 
     // Create

@@ -1,5 +1,6 @@
 package com.fptu.hk7.programservice.controller;
 
+import com.fptu.hk7.programservice.InterFace.ISpecializationService;
 import com.fptu.hk7.programservice.dto.Request.SpecializationRequest;
 import com.fptu.hk7.programservice.dto.Response.DataResponse;
 import com.fptu.hk7.programservice.dto.Response.SpecializationResponse;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @SecurityRequirement(name = "api")
 public class SpecializationController {
-    private final SpecializationService specializationService;
+    private final ISpecializationService specializationService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping

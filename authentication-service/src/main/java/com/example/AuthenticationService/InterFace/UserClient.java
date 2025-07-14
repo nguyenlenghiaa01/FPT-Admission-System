@@ -1,4 +1,4 @@
-package com.example.AuthenticationService.Controller;
+package com.example.AuthenticationService.InterFace;
 
 import com.example.AuthenticationService.Config.FeignConfig;
 import com.example.AuthenticationService.Model.Request.ChangePasswordRequest;

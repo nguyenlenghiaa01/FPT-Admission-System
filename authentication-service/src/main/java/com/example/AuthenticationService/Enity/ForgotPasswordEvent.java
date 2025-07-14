@@ -1,4 +1,4 @@
-package com.example.UserService.Entity;
+package com.example.AuthenticationService.Enity;
 
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package com.fptu.hk7.candidateservice.client;
+package com.fptu.hk7.candidateservice.InterFace;
 
 import com.fptu.hk7.candidateservice.dto.request.FindOfferingRequest;
 import com.fptu.hk7.candidateservice.dto.response.GetOfferingResponse;

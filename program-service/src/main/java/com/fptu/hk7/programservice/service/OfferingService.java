@@ -1,5 +1,6 @@
 package com.fptu.hk7.programservice.service;
 
+import com.fptu.hk7.programservice.InterFace.IOfferingService;
 import com.fptu.hk7.programservice.dto.Response.GetOfferingResponse;
 import com.fptu.hk7.programservice.exception.NotFoundException;
 import com.fptu.hk7.programservice.pojo.Campus;
@@ -18,7 +19,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class OfferingService {
+public class OfferingService implements IOfferingService {
     private final OfferingRepository offeringRepo;
     private final CampusRepository campusRepo;
     private final SpecializationRepository specializationRepo;

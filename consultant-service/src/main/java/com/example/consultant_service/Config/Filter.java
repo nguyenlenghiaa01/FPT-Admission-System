@@ -3,7 +3,7 @@ package com.example.consultant_service.Config;
 
 import com.example.consultant_service.Entity.UserPrincipal;
 import com.example.consultant_service.Exception.AuthException;
-import com.example.consultant_service.Service.TokenService;
+import com.example.consultant_service.InterFace.ITokenService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
@@ -26,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Filter extends OncePerRequestFilter {
 
-    private final TokenService jwtUtil;
+    private final ITokenService jwtUtil;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
     private final List<String> PUBLIC_USER_SERVICE_APIS = List.of(

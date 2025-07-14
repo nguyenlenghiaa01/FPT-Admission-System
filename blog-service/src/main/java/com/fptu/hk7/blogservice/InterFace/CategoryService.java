@@ -1,4 +1,4 @@
-package com.fptu.hk7.blogservice.service;
+package com.fptu.hk7.blogservice.InterFace;
 
 import com.fptu.hk7.blogservice.pojo.Category;
 import com.fptu.hk7.blogservice.pojo.Post;

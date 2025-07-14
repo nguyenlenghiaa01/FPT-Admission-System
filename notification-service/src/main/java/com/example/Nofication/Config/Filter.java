@@ -1,7 +1,7 @@
 package com.example.Nofication.Config;
 
 import com.example.Nofication.Exception.AuthException;
-import com.example.Nofication.Service.TokenUtil;
+import com.example.Nofication.InterFace.ITokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
@@ -25,8 +25,12 @@ import java.util.List;
 
 @Component
 public class Filter extends OncePerRequestFilter {
+    private final ITokenUtil tokenService;
+
     @Autowired
-    private TokenUtil tokenService;
+    public Filter (ITokenUtil tokenService){
+        this.tokenService = tokenService;
+    }
 
     @Autowired
     @Qualifier("handlerExceptionResolver")

@@ -1,5 +1,8 @@
 package com.fptu.hk7.candidateservice.controller;
 
+import com.fptu.hk7.candidateservice.InterFace.IApplicationService;
+import com.fptu.hk7.candidateservice.InterFace.ICandidateService;
+import com.fptu.hk7.candidateservice.InterFace.IStatusApplicationService;
 import com.fptu.hk7.candidateservice.dto.request.ApplicationRequest;
 import com.fptu.hk7.candidateservice.dto.request.UpdateApplicationRequest;
 import com.fptu.hk7.candidateservice.dto.response.ApplicationResponse;
@@ -8,7 +11,6 @@ import com.fptu.hk7.candidateservice.enums.ApplicationStatus;
 import com.fptu.hk7.candidateservice.pojo.Application;
 import com.fptu.hk7.candidateservice.pojo.Candidate;
 import com.fptu.hk7.candidateservice.pojo.StatusApplication;
-import com.fptu.hk7.candidateservice.service.ApplicationService;
 import com.fptu.hk7.candidateservice.service.CandidateService;
 import com.fptu.hk7.candidateservice.service.StatusApplicationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -28,9 +30,9 @@ import java.util.UUID;
 @SecurityRequirement(name = "api")
 public class ApplicationController {
 
-    private final ApplicationService applicationService;
-    private final StatusApplicationService statusApplicationService;
-    private final CandidateService candidateService;
+    private final IStatusApplicationService statusApplicationService;
+    private final ICandidateService candidateService;
+    private final IApplicationService applicationService;
 
     ModelMapper modelMapper = new ModelMapper();
 

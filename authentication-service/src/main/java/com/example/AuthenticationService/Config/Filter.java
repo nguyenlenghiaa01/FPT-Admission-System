@@ -1,10 +1,12 @@
 package com.example.AuthenticationService.Config;
 
+import com.example.AuthenticationService.InterFace.ITokenService;
 import com.example.AuthenticationService.Service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,8 +32,12 @@ import com.example.AuthenticationService.Exception.AuthException;
 @Component
 public class Filter extends OncePerRequestFilter {
 
+    private final ITokenService tokenService;
+
     @Autowired
-    private TokenService tokenService;
+    public Filter (ITokenService tokenService){
+        this.tokenService =tokenService;
+    }
 
     @Autowired
     @Qualifier("handlerExceptionResolver")

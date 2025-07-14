@@ -1,9 +1,9 @@
 package com.example.consultant_service.Service;
 
 import com.example.consultant_service.Entity.Booking;
-import com.example.consultant_service.Entity.Scheduler;
 import com.example.consultant_service.Enum.StatusEnum;
 import com.example.consultant_service.Exception.NotFoundException;
+import com.example.consultant_service.InterFace.IBookingService;
 import com.example.consultant_service.Model.Request.BookingRequest;
 import com.example.consultant_service.Model.Request.BookingUpdateRequest;
 import com.example.consultant_service.Model.Response.BookingResponse;
@@ -14,6 +14,7 @@ import com.example.consultant_service.Service.redis.RedisService;
 import com.example.consultant_service.event.SocketNewApplicationEvent;
 import com.example.consultant_service.event.SubmitApplicationEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,25 +30,14 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
-public class BookingService {
+@RequiredArgsConstructor
+public class BookingService implements IBookingService {
 
-    @Autowired
-    private BookingRepository bookingRepository;
-
-    @Autowired
-    private SchedulerRepository schedulerRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
-    private RedisService redisService;
-
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final BookingRepository bookingRepository;
+    private final ModelMapper modelMapper;
+    private final RedisService redisService;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final ObjectMapper objectMapper;
 
     public BookingResponse create (BookingRequest bookingRequest){
         Booking booking = new Booking();

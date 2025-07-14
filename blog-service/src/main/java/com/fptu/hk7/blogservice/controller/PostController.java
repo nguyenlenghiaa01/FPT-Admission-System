@@ -4,8 +4,10 @@ import com.fptu.hk7.blogservice.dto.PostResponse;
 import com.fptu.hk7.blogservice.dto.Request.PostRequest;
 import com.fptu.hk7.blogservice.pojo.Category;
 import com.fptu.hk7.blogservice.pojo.Post;
-import com.fptu.hk7.blogservice.service.CategoryService;
-import com.fptu.hk7.blogservice.service.PostService;
+import com.fptu.hk7.blogservice.InterFace.CategoryService;
+import com.fptu.hk7.blogservice.InterFace.PostService;
+import com.fptu.hk7.blogservice.service.CategoryServiceImp;
+import com.fptu.hk7.blogservice.service.PostServiceImp;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -22,9 +24,9 @@ import java.util.UUID;
 @SecurityRequirement(name = "api")
 @RequiredArgsConstructor
 public class PostController {
-    private final PostService postService;
+    private final PostServiceImp postService;
 
-    private final CategoryService categoryService;
+    private final CategoryServiceImp categoryService;
 
     ModelMapper modelMapper = new ModelMapper();
 

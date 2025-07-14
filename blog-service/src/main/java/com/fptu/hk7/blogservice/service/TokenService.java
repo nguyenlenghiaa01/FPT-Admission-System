@@ -1,5 +1,6 @@
 package com.fptu.hk7.blogservice.service;
 
+import com.fptu.hk7.blogservice.InterFace.ITokenService;
 import com.fptu.hk7.blogservice.dto.AuthorResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -13,14 +14,11 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import javax.crypto.SecretKey;
 
 @Service
-public class TokenService {
-    @Autowired
-    @Qualifier("handlerExceptionResolver")
-    HandlerExceptionResolver resolver;
+public class TokenService implements ITokenService {
 
     private final String SECRET_KEY = "4bb6d1dfbafb64a681139d1586b6f1160d18159afd57c8c79136d7490630407c";
 
-    private SecretKey getSigninKey() {
+    public SecretKey getSigninKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }

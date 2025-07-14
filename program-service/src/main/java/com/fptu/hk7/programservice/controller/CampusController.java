@@ -1,8 +1,8 @@
 package com.fptu.hk7.programservice.controller;
 
+import com.fptu.hk7.programservice.InterFace.ICampusService;
 import com.fptu.hk7.programservice.dto.Request.CampusRequest;
 import com.fptu.hk7.programservice.pojo.Campus;
-import com.fptu.hk7.programservice.service.CampusService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @SecurityRequirement(name = "api")
 public class CampusController {
-    private final CampusService campusService;
+    private final ICampusService campusService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping

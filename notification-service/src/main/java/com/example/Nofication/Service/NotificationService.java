@@ -3,28 +3,27 @@ package com.example.Nofication.Service;
 import com.example.Nofication.Entity.Notification;
 import com.example.Nofication.Enum.StatusEnum;
 import com.example.Nofication.Enum.TypeEnum;
+import com.example.Nofication.InterFace.IEmailService;
+import com.example.Nofication.InterFace.INotificationService;
+import com.example.Nofication.InterFace.ITokenUtil;
 import com.example.Nofication.Model.EmailDetail;
 import com.example.Nofication.Model.Request.NotificationRequest;
 import com.example.Nofication.Model.Request.SubmissionApplicationNotificationRequest;
 import com.example.Nofication.Repository.NotificationRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
-public class NotificationService {
-    @Autowired
-    private NotificationRepository notificationRepository;
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
-    private EmailService emailService;
-    @Autowired
-    private TokenUtil tokenUtil;
+@RequiredArgsConstructor
+public class NotificationService implements INotificationService {
+    private final NotificationRepository notificationRepository;
+    private final ModelMapper modelMapper;
+    private final IEmailService emailService;
+    private final ITokenUtil tokenUtil;
 
     public void createNotificationForgotPassword(NotificationRequest notificationRequest) {
         try {

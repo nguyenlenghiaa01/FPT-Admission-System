@@ -1,9 +1,9 @@
 package com.fptu.hk7.candidateservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fptu.hk7.candidateservice.client.OfferingProgramClient;
+import com.fptu.hk7.candidateservice.InterFace.OfferingProgramClient;
 import com.fptu.hk7.candidateservice.client.OfferingProgramServiceFallback;
-import com.fptu.hk7.candidateservice.client.UserClient;
+import com.fptu.hk7.candidateservice.InterFace.UserClient;
 import com.fptu.hk7.candidateservice.client.UserServiceFallback;
 import com.fptu.hk7.candidateservice.dto.request.ApplicationRequest;
 import com.fptu.hk7.candidateservice.dto.request.FindOfferingRequest;
@@ -13,7 +13,6 @@ import com.fptu.hk7.candidateservice.dto.response.GetOfferingResponse;
 import com.fptu.hk7.candidateservice.dto.response.ResponseApi;
 import com.fptu.hk7.candidateservice.enums.ApplicationStatus;
 import com.fptu.hk7.candidateservice.event.BookingEvent;
-import com.fptu.hk7.candidateservice.event.SubmitApplicationEvent;
 import com.fptu.hk7.candidateservice.exception.NotFoundException;
 import com.fptu.hk7.candidateservice.pojo.Candidate;
 import com.fptu.hk7.candidateservice.pojo.StatusApplication;

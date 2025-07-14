@@ -1,5 +1,6 @@
 package com.fptu.hk7.candidateservice.client;
 
+import com.fptu.hk7.candidateservice.InterFace.OfferingProgramClient;
 import com.fptu.hk7.candidateservice.dto.request.FindOfferingRequest;
 import com.fptu.hk7.candidateservice.dto.response.GetOfferingResponse;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;

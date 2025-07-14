@@ -1,11 +1,11 @@
 package com.fptu.hk7.candidateservice.service;
 
+import com.fptu.hk7.candidateservice.InterFace.IScholarshipService;
 import com.fptu.hk7.candidateservice.dto.request.ScholarshipRequest;
 import com.fptu.hk7.candidateservice.pojo.Scholarship;
 import com.fptu.hk7.candidateservice.repository.ScholarshipRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +15,7 @@ import java.util.UUID;
 @Service
 @Lazy
 @RequiredArgsConstructor
-public class ScholarshipService {
+public class ScholarshipService implements IScholarshipService {
     private final ScholarshipRepository scholarshipRepository;
 
     public Scholarship save(Scholarship scholarship) {

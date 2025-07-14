@@ -1,10 +1,10 @@
 package com.fptu.hk7.programservice.controller;
 
+import com.fptu.hk7.programservice.InterFace.IMajorService;
 import com.fptu.hk7.programservice.dto.Request.MajorRequest;
 import com.fptu.hk7.programservice.dto.Response.DataResponse;
 import com.fptu.hk7.programservice.dto.Response.MajorResponse;
 import com.fptu.hk7.programservice.pojo.Major;
-import com.fptu.hk7.programservice.service.MajorService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ import java.util.UUID;
 @SecurityRequirement(name = "api")
 public class MajorController {
 
-    private final MajorService majorService;
+    private final IMajorService majorService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping

@@ -1,6 +1,7 @@
 package com.example.AuthenticationService.Service;
 
-import com.example.AuthenticationService.Controller.UserClient;
+import com.example.AuthenticationService.InterFace.IAuthenticationService;
+import com.example.AuthenticationService.InterFace.UserClient;
 import com.example.AuthenticationService.Exception.AuthException;
 import com.example.AuthenticationService.Exception.NotFoundException;
 import com.example.AuthenticationService.Model.Request.*;
@@ -8,46 +9,31 @@ import com.example.AuthenticationService.Model.Response.AccountResponse;
 import com.example.AuthenticationService.Service.redis.RedisTokenService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.example.UserService.Entity.ForgotPasswordEvent;
+import com.example.AuthenticationService.Enity.ForgotPasswordEvent;
 import io.jsonwebtoken.Claims;
-import org.apache.el.parser.Token;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
-import com.example.AuthenticationService.Controller.UserServiceCaller;
 
 import java.util.Date;
 
 @Service
-public class AuthenticationService {
+@RequiredArgsConstructor
+public class AuthenticationService implements IAuthenticationService {
 
-    @Autowired
-    private TokenService tokenService;
+    private final TokenService tokenService;
+    private final ObjectMapper objectMapper;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final UserServiceCaller userServiceCaller;
+    private final UserClient userClient;
+    private final RedisTokenService redisTokenService;
+    private final String TOPIC = "forgot-password-events";
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
-
-    @Autowired
-
-    private UserServiceCaller userServiceCaller;
-
-    @Autowired
-    private UserClient userClient;
-
-    @Autowired
-    private RedisTokenService redisTokenService;
 
 
     public AccountResponse register(RegisterRequest registerRequest) {
         return userClient.register(registerRequest);
     }
-
-    @Autowired
-    AuthenticationManager authenticationManager;
 
     public AccountResponse login(LoginRequest loginRequest) {
         try {
@@ -82,10 +68,6 @@ public class AuthenticationService {
         }
     }
 
-    private final String TOPIC = "forgot-password-events";
-
-
-
     public void forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
         AccountResponse account = userServiceCaller.getAccountByEmail(forgotPasswordRequest.getEmail());
         if (account == null) {
@@ -107,8 +89,6 @@ public class AuthenticationService {
             }
         }
     }
-
-
 
     public void resetPassword(ResetPasswordRequest resetPasswordRequest){
         userServiceCaller.resetPassword(resetPasswordRequest);

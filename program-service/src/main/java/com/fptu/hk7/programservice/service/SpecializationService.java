@@ -1,5 +1,6 @@
 package com.fptu.hk7.programservice.service;
 
+import com.fptu.hk7.programservice.InterFace.ISpecializationService;
 import com.fptu.hk7.programservice.dto.Request.SpecializationRequest;
 import com.fptu.hk7.programservice.dto.Response.DataResponse;
 import com.fptu.hk7.programservice.dto.Response.MajorResponse;
@@ -13,6 +14,7 @@ import com.fptu.hk7.programservice.repository.CampusRepository;
 import com.fptu.hk7.programservice.repository.MajorRepository;
 import com.fptu.hk7.programservice.repository.OfferingRepository;
 import com.fptu.hk7.programservice.repository.SpecializationRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,15 +28,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class SpecializationService {
-    @Autowired
-    private SpecializationRepository specializationRepository;
-
-    @Autowired
-    private MajorRepository majorRepository;
-
-    @Autowired
-    private OfferingRepository offeringRepository;
+@RequiredArgsConstructor
+public class SpecializationService implements ISpecializationService {
+    private final SpecializationRepository specializationRepository;
+    private final MajorRepository majorRepository;
 
     public Specialization createSpecialization(SpecializationRequest specializationRequest) {
         Specialization specialization =new Specialization();

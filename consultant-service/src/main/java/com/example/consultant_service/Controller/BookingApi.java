@@ -2,12 +2,13 @@ package com.example.consultant_service.Controller;
 
 
 import com.example.consultant_service.Entity.Booking;
+import com.example.consultant_service.InterFace.IBookingService;
 import com.example.consultant_service.Model.Request.BookingRequest;
 import com.example.consultant_service.Model.Request.BookingUpdateRequest;
 import com.example.consultant_service.Model.Response.BookingResponse;
 import com.example.consultant_service.Model.Response.DataResponse;
-import com.example.consultant_service.Service.BookingService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +16,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("api/booking")
 @SecurityRequirement(name = "api")
+@RequiredArgsConstructor
+
 public class BookingApi {
 
-    @Autowired
-    private BookingService bookingService;
+    private final IBookingService bookingService;
 
     @PostMapping("/create")
     public ResponseEntity<BookingResponse> create(@RequestBody BookingRequest bookingRequest) {

@@ -1,5 +1,6 @@
 package com.example.Nofication.Service;
 
+import com.example.Nofication.InterFace.ITokenUtil;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -10,7 +11,7 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
-public class TokenUtil {
+public class TokenUtil implements ITokenUtil {
 
     private static final String SECRET = "4bb6d1dfbafb64a681139d1586b6f1160d18159afd57c8c79136d7490630407c";
 
@@ -35,10 +36,10 @@ public class TokenUtil {
         return parseToken(token).getSubject();
     }
 
-    public boolean isTokenExpired(String token) {
-        Date expiration = parseToken(token).getExpiration();
-        return expiration.before(new Date());
-    }
+//    public boolean isTokenExpired(String token) {
+//        Date expiration = parseToken(token).getExpiration();
+//        return expiration.before(new Date());
+//    }
 
     public String getToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");

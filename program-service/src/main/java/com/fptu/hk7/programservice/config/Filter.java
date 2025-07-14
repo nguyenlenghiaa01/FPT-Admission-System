@@ -1,5 +1,6 @@
 package com.fptu.hk7.programservice.config;
 
+import com.fptu.hk7.programservice.InterFace.ITokenService;
 import com.fptu.hk7.programservice.service.TokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -29,8 +30,12 @@ import java.util.stream.Collectors;
 @Component
 public class Filter extends OncePerRequestFilter {
 
+    private final ITokenService tokenService;
+
     @Autowired
-    private TokenService tokenService;
+    public Filter (ITokenService tokenService){
+        this.tokenService = tokenService;
+    }
 
     @Autowired
     @Qualifier("handlerExceptionResolver")

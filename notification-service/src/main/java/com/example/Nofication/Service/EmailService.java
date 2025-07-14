@@ -1,4 +1,5 @@
 package com.example.Nofication.Service;
+import com.example.Nofication.InterFace.IEmailService;
 import com.example.Nofication.Model.EmailDetail;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -11,7 +12,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 @Service
-public class EmailService {
+public class EmailService implements IEmailService {
     @Autowired
     TemplateEngine templateEngine;
     @Autowired

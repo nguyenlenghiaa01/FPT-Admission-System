@@ -1,16 +1,17 @@
-package com.example.AuthenticationService.Controller;
+package com.example.AuthenticationService.Service;
 
+import com.example.AuthenticationService.InterFace.UserClient;
 import com.example.AuthenticationService.Model.Request.*;
 import com.example.AuthenticationService.Model.Response.AccountResponse;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceCaller {
+@RequiredArgsConstructor
+public class UserServiceCaller{
 
-    @Autowired
-    private UserClient userClient;
+    private final UserClient userClient;
 
     @CircuitBreaker(name = "userLoginCB", fallbackMethod = "loginFallback")
     public AccountResponse login(LoginRequest loginRequest) {

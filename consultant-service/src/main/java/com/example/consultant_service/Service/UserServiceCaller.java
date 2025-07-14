@@ -1,5 +1,6 @@
-package com.example.consultant_service.Controller;
+package com.example.consultant_service.Service;
 
+import com.example.consultant_service.InterFace.UserClient;
 import com.example.consultant_service.Model.Response.AccountResponse;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;

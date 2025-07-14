@@ -1,5 +1,6 @@
-package com.fptu.hk7.candidateservice.client;
+package com.fptu.hk7.candidateservice.InterFace;
 
+import com.fptu.hk7.candidateservice.client.UserServiceFallback;
 import com.fptu.hk7.candidateservice.dto.response.AccountResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

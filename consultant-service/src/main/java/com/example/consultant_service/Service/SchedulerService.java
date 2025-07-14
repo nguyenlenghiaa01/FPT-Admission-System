@@ -1,26 +1,24 @@
 package com.example.consultant_service.Service;
 
-import com.example.consultant_service.Controller.UserServiceCaller;
 import com.example.consultant_service.Entity.Booking;
 import com.example.consultant_service.Entity.Scheduler;
 import com.example.consultant_service.Enum.StatusEnum;
 import com.example.consultant_service.Exception.NotFoundException;
+import com.example.consultant_service.InterFace.ISchedulerService;
 import com.example.consultant_service.Model.Request.Booking1Request;
 import com.example.consultant_service.Model.Request.CreateSchedulerRequest;
 import com.example.consultant_service.Model.Request.FilterSchedulerRequest;
 import com.example.consultant_service.Model.Request.SchedulerResponse;
 import com.example.consultant_service.Model.Response.AccountResponse;
-import com.example.consultant_service.Model.Response.BookingResponse;
 import com.example.consultant_service.Model.Response.BookingResponse1;
 import com.example.consultant_service.Model.Response.DataResponse;
 import com.example.consultant_service.Repository.BookingRepository;
 import com.example.consultant_service.Repository.SchedulerRepository;
 import com.example.consultant_service.Service.redis.RedisService;
 import jakarta.persistence.criteria.Expression;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,18 +34,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class SchedulerService {
-    @Autowired
-    SchedulerRepository schedulerRepository;
-
-    @Autowired
-    private RedisService redisService;
-
-    @Autowired
-    private BookingRepository bookingRepository;
-
-    @Autowired
-    private UserServiceCaller userServiceCaller;
+@RequiredArgsConstructor
+public class SchedulerService implements ISchedulerService {
+    private final SchedulerRepository schedulerRepository;
+    private final RedisService redisService;
+    private final BookingRepository bookingRepository;
+    private final UserServiceCaller userServiceCaller;
 
     public List<Booking> createBookingFromRequest(List<Booking> bookings, List<Booking1Request> booking1Requests, Scheduler scheduler) {
         for (Booking1Request bReq : booking1Requests) {

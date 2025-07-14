@@ -1,5 +1,7 @@
 package com.fptu.hk7.candidateservice.service;
 
+import com.fptu.hk7.candidateservice.InterFace.ISubjectService;
+import com.fptu.hk7.candidateservice.InterFace.ITokenService;
 import com.fptu.hk7.candidateservice.pojo.Subject;
 import com.fptu.hk7.candidateservice.repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +13,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class SubjectService {
+public class SubjectService implements ISubjectService {
     private final SubjectRepository subjectRepository;
 
     // Create

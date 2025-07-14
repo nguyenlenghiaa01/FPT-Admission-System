@@ -1,5 +1,6 @@
 package com.fptu.hk7.candidateservice.config;
 
+import com.fptu.hk7.candidateservice.InterFace.ITokenService;
 import com.fptu.hk7.candidateservice.exception.AuthException;
 import com.fptu.hk7.candidateservice.dto.response.AuthorResponse;
 import com.fptu.hk7.candidateservice.service.TokenService;
@@ -28,8 +29,12 @@ import java.util.List;
 public class Filter extends OncePerRequestFilter {
 
 
+    private final ITokenService tokenService;
+
     @Autowired
-    private TokenService tokenService;
+    public Filter (ITokenService tokenService){
+        this.tokenService = tokenService;
+    }
 
     @Autowired
     @Qualifier("handlerExceptionResolver")

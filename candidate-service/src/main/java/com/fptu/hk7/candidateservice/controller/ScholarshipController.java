@@ -1,5 +1,6 @@
 package com.fptu.hk7.candidateservice.controller;
 
+import com.fptu.hk7.candidateservice.InterFace.IScholarshipService;
 import com.fptu.hk7.candidateservice.dto.request.ScholarshipRequest;
 import com.fptu.hk7.candidateservice.pojo.Scholarship;
 import com.fptu.hk7.candidateservice.service.ScholarshipService;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @SecurityRequirement(name = "api")
 public class ScholarshipController {
-    private final ScholarshipService scholarshipService;
+    private final IScholarshipService scholarshipService;
 
     @GetMapping
     public List<Scholarship> getAllScholarShip(){
