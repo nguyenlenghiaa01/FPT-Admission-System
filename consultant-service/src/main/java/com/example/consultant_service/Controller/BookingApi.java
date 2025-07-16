@@ -5,6 +5,7 @@ import com.example.consultant_service.Entity.Booking;
 import com.example.consultant_service.InterFace.IBookingService;
 import com.example.consultant_service.Model.Request.BookingRequest;
 import com.example.consultant_service.Model.Request.BookingUpdateRequest;
+import com.example.consultant_service.Model.Request.UpdateBookingReq;
 import com.example.consultant_service.Model.Response.BookingResponse;
 import com.example.consultant_service.Model.Response.DataResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -47,7 +48,7 @@ public class BookingApi {
 
     @PreAuthorize("hasAuthority('USER')")
     @PutMapping("/{id}")
-    public ResponseEntity<BookingResponse> update(@PathVariable("id") String uuid, @RequestBody BookingRequest bookingRequest) {
+    public ResponseEntity<BookingResponse> update(@PathVariable("id") String uuid, @RequestBody UpdateBookingReq bookingRequest) {
         BookingResponse bookingResponse = bookingService.update(uuid, bookingRequest);
         return ResponseEntity.ok(bookingResponse);
     }

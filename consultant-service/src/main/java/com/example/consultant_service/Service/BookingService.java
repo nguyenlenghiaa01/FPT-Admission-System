@@ -6,6 +6,7 @@ import com.example.consultant_service.Exception.NotFoundException;
 import com.example.consultant_service.InterFace.IBookingService;
 import com.example.consultant_service.Model.Request.BookingRequest;
 import com.example.consultant_service.Model.Request.BookingUpdateRequest;
+import com.example.consultant_service.Model.Request.UpdateBookingReq;
 import com.example.consultant_service.Model.Response.BookingResponse;
 import com.example.consultant_service.Model.Response.DataResponse;
 import com.example.consultant_service.Repository.BookingRepository;
@@ -93,6 +94,17 @@ public class BookingService implements IBookingService {
         return booking;
     }
 
+    @Override
+    public BookingResponse update(String bookingUuid, UpdateBookingReq bookingRequest) {
+        Booking booking = bookingRepository.findBookingByUuid(bookingUuid);
+        if(booking == null){
+            throw new NotFoundException("Booking not found");
+        }
+        booking.setStatus(StatusEnum.valueOf(bookingRequest.getStatus()));
+        bookingRepository.save(booking);
+        return modelMapper.map(booking, BookingResponse.class);
+    }
+
     public BookingResponse update(String bookingUuid,BookingRequest bookingRequest){
         Booking booking = bookingRepository.findBookingByUuid(bookingUuid);
         if(booking == null){
@@ -137,8 +149,12 @@ public class BookingService implements IBookingService {
         Booking booking = bookingRepository.findBookingByUuid(bookingUuid);
 
         // check status của booking
+//        String ;
         if(booking == null) throw new NotFoundException("Booking not found");
-        if(booking.getStatus() == StatusEnum.BOOKED || StringUtils.hasText(booking.getCandidateUuid())) throw new NotFoundException("Booking not available");
+        if(booking.getStatus() == StatusEnum.BOOKED || StringUtils.hasText(booking.getCandidateUuid())){
+
+            throw new NotFoundException("Booking not available");
+        }
 
         booking.setCandidateUuid(candidateUuid);
         booking.setStatus(StatusEnum.BOOKED);
@@ -192,6 +208,9 @@ public class BookingService implements IBookingService {
         List<BookingResponse> bookingResponses = new ArrayList<>();
         for(Booking booking : bookings){
             BookingResponse bookingResponse = new BookingResponse();
+            bookingResponse.setStaffUuid(booking.getStaffUuid());
+            bookingResponse.setCandidateUuid(booking.getCandidateUuid());
+            bookingResponse.setBookingUuid(booking.getUuid());
             bookingResponse.setStatus(booking.getStatus());
             bookingResponse.setScheduler(booking.getScheduler());
             bookingResponse.setBookAt(booking.getCreatedAt());

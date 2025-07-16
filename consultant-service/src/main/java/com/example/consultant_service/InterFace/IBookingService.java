@@ -3,6 +3,7 @@ package com.example.consultant_service.InterFace;
 import com.example.consultant_service.Entity.Booking;
 import com.example.consultant_service.Model.Request.BookingRequest;
 import com.example.consultant_service.Model.Request.BookingUpdateRequest;
+import com.example.consultant_service.Model.Request.UpdateBookingReq;
 import com.example.consultant_service.Model.Response.BookingResponse;
 import com.example.consultant_service.Model.Response.DataResponse;
 
@@ -16,7 +17,7 @@ public interface IBookingService {
 
     Booking findBookingByUuid(String uuid);
 
-    BookingResponse update(String bookingUuid, BookingRequest bookingRequest);
+    BookingResponse update(String bookingUuid, UpdateBookingReq bookingRequest);
 
     BookingResponse updateStatus(String uuid, BookingUpdateRequest bookingUpdateRequest);
 
