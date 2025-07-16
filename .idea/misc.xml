@@ -19,6 +19,7 @@
         <option value="$PROJECT_DIR$/blog-service/pom.xml" />
         <option value="$PROJECT_DIR$/websocket-service/pom.xml" />
         <option value="$PROJECT_DIR$/AI-service/pom.xml" />
+        <option value="$PROJECT_DIR$/report-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
