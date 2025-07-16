@@ -52,9 +52,9 @@ public class NotificationService implements INotificationService {
             // Gửi email
             try {
                 emailService.sendEmail(emailDetail);
-                newNotification.setStatus(StatusEnum.SEND);
+                newNotification.setStatus(StatusEnum.SENT);
             } catch (Exception e) {
-                newNotification.setStatus(StatusEnum.FAIL);
+                newNotification.setStatus(StatusEnum.FAILED);
             }
 
             notificationRepository.save(newNotification);
@@ -82,10 +82,10 @@ public class NotificationService implements INotificationService {
 
             try {
                 emailService.sendEmailNotiSubmitApplication(emailDetail);
-                newNotification.setStatus(StatusEnum.SEND);
+                newNotification.setStatus(StatusEnum.SENT);
                 System.out.println("Đã gửi mail thành công cho user!");
             } catch (Exception e) {
-                newNotification.setStatus(StatusEnum.FAIL);
+                newNotification.setStatus(StatusEnum.FAILED);
                 System.out.println("Lỗi: " + e.getMessage());
             }
 

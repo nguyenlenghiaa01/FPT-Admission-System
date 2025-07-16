@@ -4,6 +4,6 @@ public enum StatusEnum {
     AVAILABLE,
     BOOKED,
     PROCESSING,
-    CANCEL,
+    CANCELED,
     COMPLETED
 }
