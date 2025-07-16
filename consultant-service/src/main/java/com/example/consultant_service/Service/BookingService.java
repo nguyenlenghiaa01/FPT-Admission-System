@@ -9,14 +9,13 @@ import com.example.consultant_service.Model.Request.BookingUpdateRequest;
 import com.example.consultant_service.Model.Response.BookingResponse;
 import com.example.consultant_service.Model.Response.DataResponse;
 import com.example.consultant_service.Repository.BookingRepository;
-import com.example.consultant_service.Repository.SchedulerRepository;
 import com.example.consultant_service.Service.redis.RedisService;
+import com.example.consultant_service.event.BookingReportEvent;
 import com.example.consultant_service.event.SocketNewApplicationEvent;
 import com.example.consultant_service.event.SubmitApplicationEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -38,6 +37,8 @@ public class BookingService implements IBookingService {
     private final RedisService redisService;
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper;
+
+    private final String TOPIC1 = "booking_report";
 
     public BookingResponse create (BookingRequest bookingRequest){
         Booking booking = new Booking();
@@ -112,6 +113,17 @@ public class BookingService implements IBookingService {
         booking.setStaffUuid(bookingUpdateRequest.getStaffUuid());
         booking.setCandidateUuid(bookingUpdateRequest.getUserUuid());
         Booking newBooking = bookingRepository.save(booking);
+        try{
+            BookingReportEvent bookingReportEvent = new BookingReportEvent();
+            if(booking.getStatus().equals(StatusEnum.COMPLETED)) {
+                bookingReportEvent.setCompletedCount(1);
+            }
+            if(booking.getStatus().equals(StatusEnum.CANCELED)){
+                bookingReportEvent.setCanceled(1);
+            }
+        }catch(Exception e){
+            throw new RuntimeException("Can not publish event to Report-Service" + e.getMessage());
+        }
         return modelMapper.map(newBooking,BookingResponse.class);
     }
 

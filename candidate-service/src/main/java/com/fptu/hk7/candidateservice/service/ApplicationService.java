@@ -13,6 +13,7 @@ import com.fptu.hk7.candidateservice.dto.response.ApplicationResponse;
 import com.fptu.hk7.candidateservice.dto.response.GetOfferingResponse;
 import com.fptu.hk7.candidateservice.dto.response.ResponseApi;
 import com.fptu.hk7.candidateservice.enums.ApplicationStatus;
+import com.fptu.hk7.candidateservice.event.ApplicationReportEvent;
 import com.fptu.hk7.candidateservice.event.BookingEvent;
 import com.fptu.hk7.candidateservice.exception.NotFoundException;
 import com.fptu.hk7.candidateservice.pojo.Candidate;
@@ -45,6 +46,10 @@ public class ApplicationService implements IApplicationService {
     private final UserServiceFallback userServiceFallback;
     private final OfferingProgramServiceFallback offeringProgramServiceFallback;
     private final RedisService redisService;
+    private final String TOPIC1 = "booking_report";
+
+    private final String TOPIC2 = "booking_admission";
+    private final String TOPIC3 = "application_report";
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -75,7 +80,21 @@ public class ApplicationService implements IApplicationService {
                     application.setOffering_id(updatedApplication.getOffering_id());
                     application.setStatus(updatedApplication.getStatus());
                     application.setScholarship(updatedApplication.getScholarship());
+
+                    try{
+                        ApplicationReportEvent applicationReportEvent = new ApplicationReportEvent();
+                        applicationReportEvent.setApplicationUuid(application.getId().toString());
+                        if(application.getStatus().equals(ApplicationStatus.APPROVED)){
+                            applicationReportEvent.setApproved(1);
+                        }else {
+                            applicationReportEvent.setReject(1);
+                        }
+                        kafkaTemplate.send(TOPIC3,objectMapper.writeValueAsString(applicationReportEvent));
+                    }catch(Exception e){
+                        throw new RuntimeException("Can not publish kafka to Report-Service ");
+                    }
                     return applicationRepository.save(application);
+
                 })
                 .orElse(null);
     }
@@ -88,7 +107,7 @@ public class ApplicationService implements IApplicationService {
         return false;
     }
 
-    private final String TOPIC2 = "booking_admission"; // consultant-service
+
 
     public ResponseEntity<ResponseApi<ApplicationResponse>> submitApplication(ApplicationRequest applicationRequest){
         Candidate candidate = modelMapper.map(applicationRequest, Candidate.class);
@@ -134,10 +153,27 @@ public class ApplicationService implements IApplicationService {
             bookingEvent.setCampus(offering.getCampusName());
             bookingEvent.setSpecialization(offering.getSpecializationName());
             kafkaTemplate.send(TOPIC2, objectMapper.writeValueAsString(bookingEvent));
+            //gui su kien toi report service
+            try{
+                BookingReportEvent bookingReportEvent = new BookingReportEvent();
+                bookingReportEvent.setBookingUuid(applicationRequest.getBookingUuid());
+                bookingReportEvent.setCampusName(offering.getCampusName());
+                kafkaTemplate.send(TOPIC1,objectMapper.writeValueAsString(bookingReportEvent));
+            }catch(Exception e){
+                throw new RuntimeException("Can not send kafka to Report-Service"+ e.getMessage());
+            }
+            // gui su kien toi report service
+            try{
+                ApplicationReportEvent applicationReportEvent =new ApplicationReportEvent();
+                applicationReportEvent.setCampusName(offering.getCampusName());
+                applicationReportEvent.setApplicationUuid(application.getId().toString());
+                kafkaTemplate.send(TOPIC3,objectMapper.writeValueAsString(applicationReportEvent));
+            }catch (Exception e){
+                throw new RuntimeException("Can not create kafka-event application: "+ e.getMessage());
+            }
         } catch (Exception e) {
-            throw new RuntimeException("Không thể tạo kafka-event booking: " + e.getMessage());
+            throw new RuntimeException("Can not create kafka-event booking: " + e.getMessage());
         }
-
         return ResponseEntity.ok(
                 ResponseApi.<ApplicationResponse>builder()
                         .status(200)
