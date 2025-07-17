@@ -20,6 +20,8 @@ public class DataInitial {
                 list.add(new Category("báo chí nói về fpt"));
                 list.add(new Category("trách nhiệm cộng đồng"));
                 categoryRepository.saveAll(list);
+
+
             }
         };
     }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @SpringBootApplication
 @SecurityScheme(name = "api", scheme = "bearer", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
-@CrossOrigin("*")
+//@CrossOrigin("*")
 public class BlogServiceApplication {
 
     public static void main(String[] args) {

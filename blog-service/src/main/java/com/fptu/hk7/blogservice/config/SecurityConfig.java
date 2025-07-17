@@ -34,7 +34,10 @@ public class SecurityConfig {
                                         "/swagger-resources/**",
                                         "/webjars/**",
                                         "/api/posts",
-                                        "/api/categories")
+                                        "/api/categories",
+                                        "/uploads/**",
+                                        "/api/assets/upload"
+                                        )
                                 .permitAll() // Cho phép tất cả các request
                                 .anyRequest().authenticated()
                 )

@@ -45,7 +45,9 @@ public class Filter extends OncePerRequestFilter {
             "/webjars/**",
             "/swagger-ui.html",
             "/api/posts",
-            "/api/categories"
+            "/api/categories",
+            "/uploads/**",
+            "/api/assets/upload"
     );
 
     public boolean checkIsPublicAPI(String uri) {
