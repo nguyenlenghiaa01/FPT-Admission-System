@@ -29,6 +29,15 @@
         <module name="websocket-service" />
         <module name="program-service" />
       </profile>
+      <profile name="Annotation profile for report-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.28/lombok-1.18.28.jar" />
+        </processorPath>
+        <module name="report-service" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="AI-service" target="17" />
@@ -50,6 +59,7 @@
       <module name="demo" options="-parameters" />
       <module name="demo (1)" options="-parameters" />
       <module name="program-service" options="-parameters" />
+      <module name="report-service" options="-parameters" />
       <module name="websocket-service" options="-parameters" />
     </option>
   </component>

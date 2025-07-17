@@ -6,6 +6,7 @@ import com.example.consultant_service.Exception.NotFoundException;
 import com.example.consultant_service.InterFace.IBookingService;
 import com.example.consultant_service.Model.Request.BookingRequest;
 import com.example.consultant_service.Model.Request.BookingUpdateRequest;
+import com.example.consultant_service.Model.Request.ReturnApplication;
 import com.example.consultant_service.Model.Request.UpdateBookingReq;
 import com.example.consultant_service.Model.Response.BookingResponse;
 import com.example.consultant_service.Model.Response.DataResponse;
@@ -14,6 +15,7 @@ import com.example.consultant_service.Service.redis.RedisService;
 import com.example.consultant_service.event.BookingReportEvent;
 import com.example.consultant_service.event.SocketNewApplicationEvent;
 import com.example.consultant_service.event.SubmitApplicationEvent;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -164,7 +166,7 @@ public class BookingService implements IBookingService {
         return booking;
     }
 
-    public Booking candidateBookingAdmission(Map<String, String> data){
+    public Booking candidateBookingAdmission(Map<String, String> data) throws JsonProcessingException {
         String bookingUuid = data.get("bookingUuid");
         String candidateUuid = data.get("candidateUuid");
         String email = data.get("email");
@@ -177,13 +179,24 @@ public class BookingService implements IBookingService {
         Booking booking = bookingRepository.findBookingByUuid(bookingUuid);
 
         // check status của booking
-//        String ;
+        String applicationStatus = "APPROVED";
+        String note = "Booking đã được xác nhận";
         if(booking == null) throw new NotFoundException("Booking not found");
         if(booking.getStatus() == StatusEnum.BOOKED || StringUtils.hasText(booking.getCandidateUuid())){
-
+            applicationStatus = "REJECTED";
+            note = "Booking đã được đăng kí bởi người khác";
             throw new NotFoundException("Booking not available");
         }
 
+        // cập nhật thông tin application
+        ReturnApplication returnApplication = ReturnApplication.builder()
+                .booking_id(bookingUuid)
+                .status(applicationStatus)
+                .note(note)
+                .build();
+        kafkaTemplate.send("return_application_submit", objectMapper.writeValueAsString(returnApplication));
+
+        // lưu booking với candidateUuid
         booking.setCandidateUuid(candidateUuid);
         booking.setStatus(StatusEnum.BOOKED);
         bookingRepository.save(booking);

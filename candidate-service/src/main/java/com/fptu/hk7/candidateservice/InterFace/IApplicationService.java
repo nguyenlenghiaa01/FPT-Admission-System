@@ -8,6 +8,7 @@ import com.fptu.hk7.candidateservice.pojo.Candidate;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface IApplicationService {
@@ -18,4 +19,5 @@ public interface IApplicationService {
     Application updateApplication(UUID id, Application updatedApplication);
     boolean deleteApplication(UUID id);
     ResponseEntity<ResponseApi<ApplicationResponse>> submitApplication(ApplicationRequest applicationRequest);
+    void returnStatusApplication(Map<String, String> data);
 }

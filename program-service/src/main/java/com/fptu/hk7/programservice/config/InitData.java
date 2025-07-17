@@ -24,48 +24,48 @@ public class InitData {
                                       OfferingRepository offeringRepo,
                                       SpecializationRepository specializationRepo) {
         return args -> {
-            if(campusRepo.count() == 0) {
+            if (campusRepo.count() == 0) {
                 // ======= CAMPUS =======
                 Campus hanoi = new Campus(
                         null,
-                        "FPT Hà Nội",
-                        "Hòa Lạc, Hà Nội",
+                        "Đại học FPT Hà Nội",
+                        "Khu Công nghệ cao Hòa Lạc, Thạch Thất, Hà Nội",
                         "Cơ sở chính",
-                        "contact@fpt.edu.vn",
-                        "0841234567",
+                        "hanoi@fpt.edu.vn",
+                        "02473001866",
                         null,
                         new ArrayList<>()
                 );
 
                 Campus hcm = new Campus(
                         null,
-                        "FPT Hồ Chí Minh",
-                        "Khu Công Nghệ Cao, Quận 9, TP.HCM",
-                        "Cơ sở miền Nam",
-                        "hcm@fpt.edu.vn",
-                        "0848765432",
+                        "Đại học FPT TP.HCM",
+                        "Lô E2a-7, Đường D1, Khu Công nghệ cao, TP Thủ Đức, TP.HCM",
+                        "Cơ sở TP.HCM",
+                        "hcmc@fpt.edu.vn",
+                        "02873001866",
                         null,
                         new ArrayList<>()
                 );
 
                 Campus danang = new Campus(
                         null,
-                        "FPT Đà Nẵng",
-                        "Ngũ Hành Sơn, Đà Nẵng",
-                        "Cơ sở miền Trung",
+                        "Đại học FPT Đà Nẵng",
+                        "Khu đô thị công nghệ FPT City, Ngũ Hành Sơn, Đà Nẵng",
+                        "Cơ sở Đà Nẵng",
                         "danang@fpt.edu.vn",
-                        "0842345678",
+                        "023673001866",
                         null,
                         new ArrayList<>()
                 );
 
                 Campus cantho = new Campus(
                         null,
-                        "FPT Cần Thơ",
-                        "Khu đô thị mới Nam Cần Thơ",
-                        "Cơ sở miền Tây",
+                        "Đại học FPT Cần Thơ",
+                        "Khu đô thị Nam Cần Thơ, Quận Cái Răng, TP Cần Thơ",
+                        "Cơ sở Cần Thơ",
                         "cantho@fpt.edu.vn",
-                        "0843456789",
+                        "029273001866",
                         null,
                         new ArrayList<>()
                 );
@@ -73,24 +73,44 @@ public class InitData {
                 campusRepo.saveAll(List.of(hanoi, hcm, danang, cantho));
 
                 // ======= MAJOR =======
-                Major it = new Major(null, "Computer Science", "Ngành Công nghệ thông tin", new ArrayList<>());
-                Major biz = new Major(null, "International Business", "Ngành Kinh doanh quốc tế", new ArrayList<>());
-                Major design = new Major(null, "Graphic Design", "Ngành Thiết kế đồ họa", new ArrayList<>());
-                Major comm = new Major(null, "Multimedia Communication", "Ngành truyền thông", new ArrayList<>());
-                Major english = new Major(null, "English Linguistics", "Ngành ngôn ngữ Anh", new ArrayList<>());
+                Major it = new Major(null, "Software Engineering", "Kỹ thuật phần mềm", new ArrayList<>());
+                Major ai = new Major(null, "Artificial Intelligence", "Trí tuệ nhân tạo", new ArrayList<>());
+                Major biz = new Major(null, "Business Administration", "Quản trị kinh doanh", new ArrayList<>());
+                Major tourism = new Major(null, "Hospitality & Tourism Management", "Quản trị khách sạn và du lịch", new ArrayList<>());
+                Major japanese = new Major(null, "Japanese Studies", "Ngôn ngữ Nhật", new ArrayList<>());
+                Major english = new Major(null, "English Language", "Ngôn ngữ Anh", new ArrayList<>());
+                Major multimedia = new Major(null, "Multimedia Communications", "Truyền thông đa phương tiện", new ArrayList<>());
+                Major graphic = new Major(null, "Graphic Design", "Thiết kế đồ họa", new ArrayList<>());
 
-                majorRepo.saveAll(List.of(it, biz, design, comm, english));
+                majorRepo.saveAll(List.of(it, ai, biz, tourism, japanese, english, multimedia, graphic));
 
                 // ======= SPECIALIZATION =======
                 List<Specialization> specs = new ArrayList<>();
-                for (Major major : List.of(it, biz, design, comm, english)) {
-                    for (int i = 1; i <= 2; i++) {
-                        Specialization s = new Specialization();
-                        s.setName("Specialization " + i + " of " + major.getName());
-                        s.setDescription("Mô tả chuyên ngành " + i + " của " + major.getName());
-                        s.setMajor(major);
-                        s.setOfferings(new ArrayList<>());
-                        specs.add(s);
+                for (Major major : List.of(it, ai, biz, tourism, japanese, english, multimedia, graphic)) {
+                    if (major.getName().equals("Software Engineering")) {
+                        specs.add(new Specialization(null, "Web Development", "Lập trình web", major, new ArrayList<>()));
+                        specs.add(new Specialization(null, "Mobile Development", "Lập trình di động", major, new ArrayList<>()));
+                    } else if (major.getName().equals("Artificial Intelligence")) {
+                        specs.add(new Specialization(null, "Data Science", "Khoa học dữ liệu", major, new ArrayList<>()));
+                        specs.add(new Specialization(null, "Machine Learning", "Học máy", major, new ArrayList<>()));
+                    } else if (major.getName().equals("Business Administration")) {
+                        specs.add(new Specialization(null, "International Business", "Kinh doanh quốc tế", major, new ArrayList<>()));
+                        specs.add(new Specialization(null, "Digital Marketing", "Marketing số", major, new ArrayList<>()));
+                    } else if (major.getName().equals("Hospitality & Tourism Management")) {
+                        specs.add(new Specialization(null, "Hotel Management", "Quản trị khách sạn", major, new ArrayList<>()));
+                        specs.add(new Specialization(null, "Travel Management", "Quản trị du lịch", major, new ArrayList<>()));
+                    } else if (major.getName().equals("Japanese Studies")) {
+                        specs.add(new Specialization(null, "Translation & Interpretation", "Biên phiên dịch", major, new ArrayList<>()));
+                        specs.add(new Specialization(null, "Business Japanese", "Tiếng Nhật thương mại", major, new ArrayList<>()));
+                    } else if (major.getName().equals("English Language")) {
+                        specs.add(new Specialization(null, "Translation & Interpretation", "Biên phiên dịch", major, new ArrayList<>()));
+                        specs.add(new Specialization(null, "Teaching English", "Giảng dạy tiếng Anh", major, new ArrayList<>()));
+                    } else if (major.getName().equals("Multimedia Communications")) {
+                        specs.add(new Specialization(null, "Content Production", "Sản xuất nội dung", major, new ArrayList<>()));
+                        specs.add(new Specialization(null, "Brand Communication", "Truyền thông thương hiệu", major, new ArrayList<>()));
+                    } else if (major.getName().equals("Graphic Design")) {
+                        specs.add(new Specialization(null, "Visual Branding", "Thiết kế nhận diện thương hiệu", major, new ArrayList<>()));
+                        specs.add(new Specialization(null, "UI/UX Design", "Thiết kế giao diện người dùng", major, new ArrayList<>()));
                     }
                 }
                 specializationRepo.saveAll(specs);
@@ -102,8 +122,8 @@ public class InitData {
                     for (Campus campus : List.of(hanoi, hcm, danang, cantho)) {
                         Offering o = new Offering();
                         o.setYear(2025);
-                        o.setTarget(rand.nextInt(151) + 100); // 100 - 250
-                        o.setPrice(24000000 + rand.nextInt(4) * 3000000); // 24tr - 33tr
+                        o.setTarget(rand.nextInt(151) + 100); // 100 - 250 chỉ tiêu
+                        o.setPrice(28000000 + rand.nextInt(3) * 3000000); // 28tr - 34tr
                         o.setCampus(campus);
                         o.setSpecialization(spec);
                         offerings.add(o);

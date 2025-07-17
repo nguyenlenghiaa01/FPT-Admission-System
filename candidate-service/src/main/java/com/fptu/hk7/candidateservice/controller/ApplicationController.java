@@ -21,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -101,6 +103,7 @@ public class ApplicationController {
         status.setApplication(application);
         status.setNote(updateApplicationRequest.getNote());
         status.setStatus(ApplicationStatus.valueOf(updateApplicationRequest.getStatus()));
+
         statusApplicationService.create(status);
         System.out.println("Cập nhật trạng thái đơn thành công");
 
