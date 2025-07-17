@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface ApplicationReportRepository extends JpaRepository<ApplicationReport,String> {
     Optional<ApplicationReport> findByCampusNameAndMonthAndYear(String campus,Integer month, Integer year);
+    Optional<ApplicationReport> findByApplicationUuidAndMonthAndYear(String uuid, Integer month, Integer year);
 }

@@ -1,7 +1,7 @@
 package com.example.websocketservice.subscriber;
 
 import com.example.websocketservice.event.ApplicationReportEvent;
-import com.example.websocketservice.event.SocketNewApplicationEvent;
+import com.example.websocketservice.event.BookingReportEvent; // 👈 Import thêm
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.connection.Message;
@@ -20,31 +20,41 @@ public class ReportSubscriber implements MessageListener {
     public void onMessage(Message message, byte[] pattern) {
         try {
             String rawJsonString = new String(message.getBody());
-            System.out.println("new-application-report topic");
+            System.out.println("Received topic message");
             System.out.println("Raw received JSON string: " + rawJsonString);
 
-            // Bóc lớp JSON string lồng bên ngoài
+            // Parse lớp JSON string lồng bên ngoài
             String actualJson = objectMapper.readValue(rawJsonString, String.class);
 
-            // Parse thành đối tượng event
-            ApplicationReportEvent event = objectMapper.readValue(actualJson, ApplicationReportEvent.class);
+            // Check nội dung JSON để xác định loại event
+            if (actualJson.contains("\"applicationUuid\"")) {
+                ApplicationReportEvent event = objectMapper.readValue(actualJson, ApplicationReportEvent.class);
+                String campusName = event.getCampusName();
+                if (campusName == null || campusName.isBlank()) {
+                    throw new IllegalArgumentException("Campus name is missing in application event");
+                }
 
-            // Lấy thông tin định danh để gửi đúng topic
-            String campusName = event.getCampusName();
-            if (campusName == null || campusName.isBlank()) {
-                throw new IllegalArgumentException("Campus name is missing");
+                String topic = "/topic/new-application-report/" + campusName;
+                template.convertAndSend(topic, event);
+                System.out.println("WebSocket message sent to " + topic + ": " + actualJson);
+
+            } else if (actualJson.contains("\"bookingUuid\"")) {
+                BookingReportEvent event = objectMapper.readValue(actualJson, BookingReportEvent.class);
+                String campusName = event.getCampusName();
+                if (campusName == null || campusName.isBlank()) {
+                    throw new IllegalArgumentException("Campus name is missing in booking event");
+                }
+
+                String topic = "/topic/new-booking-report/" + campusName;
+                template.convertAndSend(topic, event);
+                System.out.println("WebSocket message sent to " + topic + ": " + actualJson);
             }
-
-            String topic = "/topic/new-application-report/" + campusName;
-            template.convertAndSend(topic, event);
-            System.out.println("WebSocket message sent to " + topic + ": " + actualJson);
 
         } catch (Exception e) {
             String fallback = new String(message.getBody());
-            template.convertAndSend("/topic/new-application-report", fallback);
+            template.convertAndSend("/topic/new-application-report", fallback); // fallback topic chung
             System.out.println("Error deserializing message, sent as string: " + fallback);
             e.printStackTrace();
         }
     }
-
 }

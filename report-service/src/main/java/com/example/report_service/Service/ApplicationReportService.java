@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +22,9 @@ public class ApplicationReportService {
     public ApplicationReport applicationReport(Map<String, String> data) {
         String campusName = data.get("campusName");
         String applicationUuid = data.get("applicationUuid");
+        if (campusName == null || applicationUuid == null) {
+            throw new IllegalArgumentException("Missing campusName or applicationUuid");
+        }
 
         Integer approved = data.containsKey("approved") ? Integer.parseInt(data.get("approved")) : 0;
         Integer reject = data.containsKey("reject") ? Integer.parseInt(data.get("reject")) : 0;
@@ -31,14 +36,17 @@ public class ApplicationReportService {
         Optional<ApplicationReport> optionalReport =
                 applicationReportRepository.findByCampusNameAndMonthAndYear(campusName, month, year);
 
+        Optional<ApplicationReport> optionalApplicationReport = applicationReportRepository.findByApplicationUuidAndMonthAndYear(applicationUuid,month,year);
         ApplicationReport report;
 
-        if (optionalReport.isPresent()) {
-            // da co record cho thang nay
+        if (optionalApplicationReport.isPresent()) {
+            report = optionalApplicationReport.get();
+        } else if (optionalReport.isPresent()) {
             report = optionalReport.get();
-        } else {
+        }else {
             // Khong co hoac sang thang moi → tạo mới
             report = new ApplicationReport();
+            report.setUuid(UUID.randomUUID().toString());
             report.setCampusName(campusName);
             report.setApplicationUuid(applicationUuid);
             report.setMonth(month);
@@ -63,6 +71,7 @@ public class ApplicationReportService {
         // WebSocket
         ApplicationReportEvent event = ApplicationReportEvent.builder()
                 .campusName(report.getCampusName())
+                .applicationUuid(report.getApplicationUuid())
                 .totalApplication(report.getTotalApplication())
                 .approveCount(report.getApproveCount())
                 .rejectCount(report.getRejectCount())
