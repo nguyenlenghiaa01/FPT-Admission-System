@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -30,16 +32,15 @@ public class Application {
     @Column(name = "offering_id")
     private UUID offering_id;
 
-    @Column(name = "consultant_id")
-    private UUID booking_id;
+    @Column(name = "booking_id", unique = true)
+    private UUID bookingUuid;
 
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status = ApplicationStatus.PENDING;
 
     @CreationTimestamp
     @Column(name = "create_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createAt;
+    private LocalDateTime createAt;
 
     @ManyToOne
     @JoinColumn(name = "scholarship_id")

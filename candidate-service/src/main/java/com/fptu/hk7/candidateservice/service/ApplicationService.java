@@ -29,6 +29,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -131,7 +133,7 @@ public class ApplicationService implements IApplicationService {
         assert offering != null;
         application.setOffering_id(offering.getOfferingId());
         application.setCandidate(candidate);
-        application.setBooking_id(UUID.fromString(applicationRequest.getBookingUuid()));
+        application.setBookingUuid(UUID.fromString(applicationRequest.getBookingUuid()));
         application.setScholarship(scholarshipService.getScholarshipById(UUID.fromString(applicationRequest.getScholarshipUuid())));
         createApplication(application); // Lưu trước
 
@@ -181,6 +183,29 @@ public class ApplicationService implements IApplicationService {
                         .data(modelMapper.map(application, ApplicationResponse.class))
                         .build()
         );
+    }
+
+    @Override
+    public void returnStatusApplication(Map<String, String> data) {
+        String booking_id = data.get("booking_id");
+        String status = data.get("status");
+        String note = data.get("note");
+
+        Application application = applicationRepository.findApplicationByBookingUuid(UUID.fromString(booking_id))
+                .orElseThrow(() -> new NotFoundException("Application not found with booking_id: " + booking_id));
+
+        application.setStatus(ApplicationStatus.valueOf(status));
+
+        StatusApplication statusApplication = new StatusApplication();
+        statusApplication.setStatus(ApplicationStatus.valueOf(status));
+        statusApplication.setApplication(application);
+        statusApplication.setNote(note);
+        statusApplication.setCreateAt(LocalDateTime.now());
+
+        statusApplicationService.create(statusApplication);
+
+        updateApplication(application.getId(), application);
+        System.out.println("Application status updated successfully: " + application.getId());
     }
 
 }
