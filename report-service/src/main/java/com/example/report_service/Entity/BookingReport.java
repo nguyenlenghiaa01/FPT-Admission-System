@@ -11,6 +11,7 @@ import lombok.Data;
 @Table (name="booking_statistics")
 public class BookingReport {
     @Id
+    private String uuid;
     @Column(name="booking_uuid")
     private String bookingUuid;
 
@@ -33,6 +34,6 @@ public class BookingReport {
     @Column(name="completed_count")
     private Integer completedCount;
 
-    @Column(name="pending_count")
-    private Integer pendingCount;
+    @Column(name="canceled_count")
+    private Integer canceledCount;
 }

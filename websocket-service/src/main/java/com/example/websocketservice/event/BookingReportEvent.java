@@ -9,12 +9,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApplicationReportEvent {
-    private Integer totalApplication;
-    private String applicationUuid;
-    private Integer approveCount;
-    private Integer rejectCount;
+public class BookingReportEvent {
+    private String bookingUuid;
+    private Integer weekOfYear;
     private String campusName;
     private Integer month;
     private Integer year;
+    private Integer totalBooking;
+    private Integer completedCount;
+    private Integer canceledCount;
 }

@@ -8,7 +8,10 @@ import lombok.Data;
 @Data
 @Entity
 public class ApplicationReport {
+
     @Id
+    private String uuid;
+
     @Column(name="application_uuid")
     private String applicationUuid;
 

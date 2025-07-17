@@ -105,6 +105,22 @@ public class BookingService implements IBookingService {
         }
         booking.setStatus(StatusEnum.valueOf(bookingRequest.getStatus()));
         bookingRepository.save(booking);
+        try{
+            BookingReportEvent bookingReportEvent = new BookingReportEvent();
+            bookingReportEvent.setBookingUuid(booking.getUuid());
+            if(bookingRequest.getStatus().equals("BOOKED")){
+                bookingReportEvent.setBookedCount(1);
+            }
+            if(bookingRequest.getStatus().equals("CANCELED")){
+                bookingReportEvent.setCanceled(1);
+            }
+            if(bookingRequest.getStatus().equals("COMPLETED")){
+                bookingReportEvent.setCompletedCount(1);
+            }
+            kafkaTemplate.send(TOPIC1,objectMapper.writeValueAsString(bookingReportEvent));
+        }catch(Exception e){
+            throw new RuntimeException("Can not publish event to kafka "+ e.getMessage());
+        }
         return modelMapper.map(booking, BookingResponse.class);
     }
 
