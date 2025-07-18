@@ -9,8 +9,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+import java.util.TimeZone;
 
 @SpringBootApplication
+@EnableScheduling
 @EnableFeignClients
 @EnableDiscoveryClient
 @OpenAPIDefinition(info = @Info(title = "CONSULTANT API", version = "1.0", description = "Information"))
@@ -18,6 +22,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 public class ConsultantServiceApplication {
 
 	public static void main(String[] args) {
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
 		SpringApplication.run(ConsultantServiceApplication.class, args);
 	}
 

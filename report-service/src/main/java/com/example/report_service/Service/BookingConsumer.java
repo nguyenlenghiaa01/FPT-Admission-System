@@ -19,7 +19,7 @@ public class BookingConsumer {
 
     private final BookingReportService bookingReportService;
 
-    @KafkaListener(topics = "booking_report", groupId = "booking-group")
+    @KafkaListener(topics = "booking_report", groupId = "report-group")
     public void listenToApplicationReportFromCandidate(String message) {
         try {
             System.out.println("Catch booking_report event: Đã nhận được event từ Consultant Service");

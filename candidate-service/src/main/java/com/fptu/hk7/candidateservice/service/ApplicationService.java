@@ -15,6 +15,7 @@ import com.fptu.hk7.candidateservice.dto.response.ResponseApi;
 import com.fptu.hk7.candidateservice.enums.ApplicationStatus;
 import com.fptu.hk7.candidateservice.event.ApplicationReportEvent;
 import com.fptu.hk7.candidateservice.event.BookingEvent;
+import com.fptu.hk7.candidateservice.event.BookingReportEvent;
 import com.fptu.hk7.candidateservice.exception.NotFoundException;
 import com.fptu.hk7.candidateservice.pojo.Candidate;
 import com.fptu.hk7.candidateservice.pojo.StatusApplication;
@@ -29,7 +30,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 

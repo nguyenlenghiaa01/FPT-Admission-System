@@ -128,6 +128,7 @@ services:
       SPRING_CONFIG_IMPORT: http://config-service:8088/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
       SPRING_CLOUD_FAIL_FAST: "false"
+      TZ: Asia/Ho_Chi_Minh
     networks:
       - app-network
 
@@ -178,6 +179,7 @@ services:
       SPRING_CONFIG_IMPORT: http://config-service:8088/
       SPRING_CLOUD_FAIL_FAST: "false"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
+      TZ: Asia/Ho_Chi_Minh
     networks:
       - app-network
 
@@ -219,6 +221,7 @@ services:
       SPRING_CONFIG_IMPORT: http://config-service:8088/
       SPRING_CLOUD_FAIL_FAST: "false"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
+      TZ: Asia/Ho_Chi_Minh
     networks:
       - app-network
 
@@ -255,6 +258,7 @@ services:
       SPRING_CONFIG_IMPORT: http://config-service:8088/
       SPRING_CLOUD_FAIL_FAST: "false"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
+      TZ: Asia/Ho_Chi_Minh
     networks:
       - app-network
 
@@ -280,6 +284,7 @@ services:
       SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
       SPRING_CONFIG_IMPORT: http://config-service:8088/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
+      TZ: Asia/Ho_Chi_Minh
     networks:
       - app-network
 
@@ -306,6 +311,7 @@ services:
       SPRING_CONFIG_IMPORT: http://config-service:8088/
       SPRING_CLOUD_FAIL_FAST: "false"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
+      TZ: Asia/Ho_Chi_Minh
     networks:
       - app-network
 
@@ -331,6 +337,7 @@ services:
       SPRING_CONFIG_IMPORT: http://config-service:8088/
       SPRING_CLOUD_FAIL_FAST: "false"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
+      TZ: Asia/Ho_Chi_Minh
     networks:
       - app-network
 
@@ -367,6 +374,7 @@ services:
       SPRING_CONFIG_IMPORT: http://config-service:8088/
       SPRING_CLOUD_FAIL_FAST: "false"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
+      TZ: Asia/Ho_Chi_Minh
     networks:
       - app-network
 
@@ -385,6 +393,44 @@ services:
     networks:
       - app-network
 
+  report-db:
+    image: postgres:14
+    container_name: report-db
+    environment:
+      POSTGRES_DB: report
+      POSTGRES_USER: report
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - "5455:5432"
+    volumes:
+      - report_pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  report-service:
+    build:
+      context: ./report-service
+    container_name: report-service
+    depends_on:
+      kafka:
+        condition: service_started
+      report-db:
+        condition: service_started
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://report-db:5432/report
+      SPRING_DATASOURCE_USERNAME: report
+      SPRING_DATASOURCE_PASSWORD: 12345
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_CONFIG_IMPORT: http://config-service:8088/
+      SPRING_CLOUD_FAIL_FAST: "false"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:9099/eureka/
+      TZ: Asia/Ho_Chi_Minh
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+    networks:
+      - app-network
 
 #  prometheus:
 #    image: prom/prometheus
@@ -408,6 +454,7 @@ volumes:
   candidate_pgdata:
   consultant_pgdata:
   blog_pgdata:
+  report_pgdata:
 
 networks:
   app-network:

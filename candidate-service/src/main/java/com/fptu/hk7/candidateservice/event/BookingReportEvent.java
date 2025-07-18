@@ -1,4 +1,4 @@
-package com.fptu.hk7.candidateservice.service;
+package com.fptu.hk7.candidateservice.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

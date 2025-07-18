@@ -2,6 +2,7 @@ package com.example.report_service.Service;
 
 import com.example.report_service.Entity.BookingReport;
 import com.example.report_service.Repository.BookingReportRepository;
+import com.example.report_service.Service.redis.RedisService;
 import com.example.report_service.event.ApplicationReportEvent;
 import com.example.report_service.event.BookingReportEvent;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,7 @@ import java.util.UUID;
 public class BookingReportService {
 
     private final BookingReportRepository bookingReportRepository;
-    private final SimpMessagingTemplate messagingTemplate;
-
+    private final RedisService redisService;
 
     public BookingReport bookingReport(Map<String, String> data) {
         String campusName = data.get("campusName");
@@ -85,7 +85,7 @@ public class BookingReportService {
                 .totalBooking(report.getTotalBooking())
                 .build();
 
-        messagingTemplate.convertAndSend("/topic/new-booking-report/" + campusName, event);
+        redisService.sendApplicationMessage(event,"/topic/new-booking-report/" );
 
         return report;
     }

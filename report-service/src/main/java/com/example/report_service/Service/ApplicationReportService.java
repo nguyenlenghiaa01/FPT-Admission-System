@@ -2,9 +2,9 @@ package com.example.report_service.Service;
 
 import com.example.report_service.Entity.ApplicationReport;
 import com.example.report_service.Repository.ApplicationReportRepository;
+import com.example.report_service.Service.redis.RedisService;
 import com.example.report_service.event.ApplicationReportEvent;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,8 +17,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ApplicationReportService {
 
-    private final SimpMessagingTemplate messagingTemplate;
     private final ApplicationReportRepository applicationReportRepository;
+    private final RedisService redisService;
     public ApplicationReport applicationReport(Map<String, String> data) {
         String campusName = data.get("campusName");
         String applicationUuid = data.get("applicationUuid");
@@ -79,8 +79,7 @@ public class ApplicationReportService {
                 .year(report.getYear())
                 .build();
 
-        messagingTemplate.convertAndSend("/topic/new-application-report/" + campusName, event);
-
+        redisService.sendApplicationMessage(event, "/topic/new-application-report/");
         return report;
     }
 
