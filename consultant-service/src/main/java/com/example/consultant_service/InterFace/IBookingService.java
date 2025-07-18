@@ -7,7 +7,6 @@ import com.example.consultant_service.Model.Request.UpdateBookingReq;
 import com.example.consultant_service.Model.Response.BookingResponse;
 import com.example.consultant_service.Model.Response.DataResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
-
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +27,7 @@ public interface IBookingService {
 
     DataResponse<BookingResponse> getByStaff(String staffUuid, int page, int size);
 
+    void updateBookingStatusToDid();
     List<BookingResponse> getByUser(String userUuid);
 
 }

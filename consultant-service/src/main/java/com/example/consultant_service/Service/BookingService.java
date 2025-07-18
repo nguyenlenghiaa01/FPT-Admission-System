@@ -22,10 +22,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -261,6 +263,22 @@ public class BookingService implements IBookingService {
             bookingResponses.add(bookingResponse);
         }
         return bookingResponses;
+    }
+
+    @Scheduled(fixedDelay = 10000)
+    public void updateBookingStatusToDid() {
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+
+        List<Booking> bookingsToUpdate = bookingRepository.findBookingsToUpdate(now);
+
+        for (Booking booking : bookingsToUpdate) {
+            if (booking.getAvailableDate().isBefore(now) || booking.getAvailableDate().isEqual(now) && booking.getStatus().equals(StatusEnum.BOOKED)) {
+                booking.setStatus(StatusEnum.PROCESSING);
+            }
+        }
+        bookingRepository.saveAll(bookingsToUpdate);
+
+        System.out.println("Updated " + bookingsToUpdate.size() + " bookings to 'DID' at " + now);
     }
 
 
