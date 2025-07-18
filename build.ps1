@@ -11,7 +11,8 @@ $services = @(
     "program-service",
     "consultant-service",
     "blog-service",
-    "websocket-service"
+    "websocket-service",
+    "report-service"
 )
 
 # Lưu thư mục hiện tại

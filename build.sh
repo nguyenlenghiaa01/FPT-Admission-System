@@ -12,6 +12,9 @@ services=(
     candidate-service
     program-service
     consultant-service
+    blog-service
+    websocket-service
+    report-service
 )
 
 # Lưu thư mục gốc
