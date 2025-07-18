@@ -278,7 +278,7 @@ public class BookingService implements IBookingService {
         }
         bookingRepository.saveAll(bookingsToUpdate);
 
-        System.out.println("Updated " + bookingsToUpdate.size() + " bookings to 'DID' at " + now);
+        System.out.println("Updated " + bookingsToUpdate.size() + " bookings to 'PROCESSING' at " + now);
     }
 
 
