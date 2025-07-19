@@ -1,6 +1,5 @@
 package com.example.report_service.Entity;
 
-import com.example.report_service.Enum.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -10,8 +9,8 @@ import lombok.Data;
 public class UserReport {
 
     @Id
-    @Column(name = "user_uuid")
-    private String userUuid;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String uuid;
 
     @Column(name = "week_of_year")
     private Integer weekOfYear;
@@ -24,8 +23,4 @@ public class UserReport {
 
     @Column(name = "new_user")
     private Integer newUser;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private UserRole role;
 }

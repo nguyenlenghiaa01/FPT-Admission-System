@@ -1,6 +1,7 @@
 package com.example.report_service.Service;
 
 import com.example.report_service.Entity.ApplicationReport;
+import com.example.report_service.InterFace.IApplicationReport;
 import com.example.report_service.Repository.ApplicationReportRepository;
 import com.example.report_service.Service.redis.RedisService;
 import com.example.report_service.event.ApplicationReportEvent;
@@ -15,7 +16,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ApplicationReportService {
+public class ApplicationReportService implements IApplicationReport {
 
     private final ApplicationReportRepository applicationReportRepository;
     private final RedisService redisService;
