@@ -21,7 +21,7 @@ import java.util.List;
 @SecurityRequirement(name = "api")
 @RequiredArgsConstructor
 
-public class SchedulerApi {
+public class SchedulerController {
     private final ISchedulerService schedulerService;
 
     @PreAuthorize("hasAuthority('ADMIN')")

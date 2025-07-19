@@ -93,7 +93,7 @@ public class Filter extends OncePerRequestFilter {
             // => cho phép truy cập
             // => lưu lại thông tin account
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    authorResponse.getEmail(),
+                    authorResponse.getUuid(),
                     token,
                     Collections.singleton(new SimpleGrantedAuthority(authorResponse.getRole()))
             );

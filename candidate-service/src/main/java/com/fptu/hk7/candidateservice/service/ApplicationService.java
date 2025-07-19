@@ -114,13 +114,7 @@ public class ApplicationService implements IApplicationService {
     public ResponseEntity<ResponseApi<ApplicationResponse>> submitApplication(ApplicationRequest applicationRequest){
         Candidate candidate = modelMapper.map(applicationRequest, Candidate.class);
 
-        String candidateUuid = Optional.ofNullable(userServiceFallback.getAccountByEmail(candidateService.getCurrentEmailUser()))
-                .map(AccountResponse::getUuid)
-                .orElseThrow(() -> new NotFoundException(
-                        "Cannot find account with email: "
-                                + candidateService.getCurrentEmailUser()
-                                + " in database. Please register account first!"
-                ));
+        String candidateUuid =candidateService.getCurrentUuid();
         candidate.setId(UUID.fromString(candidateUuid));
         candidateService.createCandidate(candidate);
 
@@ -154,6 +148,7 @@ public class ApplicationService implements IApplicationService {
             bookingEvent.setPhone(applicationRequest.getPhone());
             bookingEvent.setCampus(offering.getCampusName());
             bookingEvent.setSpecialization(offering.getSpecializationName());
+            // sai fegin
             kafkaTemplate.send(TOPIC2, objectMapper.writeValueAsString(bookingEvent));
             //gui su kien toi report service
             try{
@@ -165,6 +160,7 @@ public class ApplicationService implements IApplicationService {
                 throw new RuntimeException("Can not send kafka to Report-Service"+ e.getMessage());
             }
             // gui su kien toi report service
+            // sua lai logic
             try{
                 ApplicationReportEvent applicationReportEvent =new ApplicationReportEvent();
                 applicationReportEvent.setCampusName(offering.getCampusName());

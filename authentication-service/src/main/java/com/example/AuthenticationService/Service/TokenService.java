@@ -27,6 +27,7 @@ public class TokenService implements ITokenService {
     public String generateToken(AccountResponse account) {
         return Jwts.builder()
                 .setSubject(account.getEmail())
+                .claim("uuid",account.getUuid())
                 .claim("roles", account.getRole().toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 1 ngày

@@ -52,7 +52,7 @@ public class CandidateService implements ICandidateService {
         return false;
     }
 
-    public String getCurrentEmailUser() {
+    public String getCurrentUuid() {
         return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
     }
 }

@@ -22,7 +22,7 @@ import java.util.List;
 @SecurityRequirement(name = "api")
 @RequiredArgsConstructor
 
-public class BookingApi {
+public class BookingController {
 
     private final IBookingService bookingService;
 

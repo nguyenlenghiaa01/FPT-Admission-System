@@ -12,5 +12,5 @@ public interface ICandidateService {
     List<Candidate> getAllCandidates();
     Optional<Candidate> updateCandidate(UUID id, Candidate updatedCandidate);
     boolean deleteCandidate(UUID id);
-    String getCurrentEmailUser();
+    String getCurrentUuid();
 }
