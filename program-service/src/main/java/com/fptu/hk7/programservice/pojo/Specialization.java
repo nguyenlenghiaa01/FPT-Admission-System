@@ -31,4 +31,9 @@ public class Specialization {
     @OneToMany(mappedBy = "specialization", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Offering> offerings;
 
+    public Specialization(String name, String description, Major major) {
+        this.name = name;
+        this.description = description;
+        this.major = major;
+    }
 }

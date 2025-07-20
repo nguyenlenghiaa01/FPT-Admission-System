@@ -184,7 +184,7 @@ public class BookingService implements IBookingService {
         if(booking == null) throw new NotFoundException("Booking not found");
         if(booking.getStatus() == StatusEnum.BOOKED || StringUtils.hasText(booking.getCandidateUuid())){
             applicationStatus = "REJECTED";
-            note = "Booking đã được đăng kí bởi người khác";
+            note = "Booking đã được đăng kí bởi người khác, vui lòng chọn ngày tư vấn khác!";
             throw new NotFoundException("Booking not available");
         }
 
@@ -213,6 +213,7 @@ public class BookingService implements IBookingService {
             // notification-service
             String TOPIC = "submit_application";
             kafkaTemplate.send(TOPIC, objectMapper.writeValueAsString(event));
+
             // publish event to new-application
             SocketNewApplicationEvent socketEvent = new SocketNewApplicationEvent();
             socketEvent.setBookingUuid(bookingUuid);
