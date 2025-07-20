@@ -8,11 +8,6 @@ import lombok.Data;
 
 @Data
 public class BookingUpdateRequest {
-
-    private String userUuid;
-
-    private String staffUuid;
-
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
 }
