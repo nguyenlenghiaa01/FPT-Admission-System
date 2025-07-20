@@ -9,4 +9,5 @@ public interface BookingReportRepository extends JpaRepository<BookingReport,Str
     Optional<BookingReport> findByCampusNameAndMonthAndYearAndWeekOfYear(String bookingUuid,Integer month, Integer year, Integer weekOfYear);
     Optional<BookingReport> findByBookingUuidAndMonthAndYearAndWeekOfYear(
             String bookingUuid, Integer month, Integer year, Integer weekOfYear);
+
 }

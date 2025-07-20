@@ -28,7 +28,7 @@ public interface IBookingService {
 
     ReturnApplication candidateBookingAdmission(BookingEvent bookingEvent) throws JsonProcessingException;
 
-    DataResponse<BookingResponse1> getByStaff(String staffUuid, int page, int size);
+    DataResponse<BookingResponse> getByStaff(String staffUuid, int page, int size);
 
     void updateBookingStatusToDid();
     List<BookingResponse> getByUser(String userUuid);
