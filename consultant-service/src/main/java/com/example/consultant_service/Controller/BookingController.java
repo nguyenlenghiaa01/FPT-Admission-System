@@ -8,6 +8,9 @@ import com.example.consultant_service.Model.Request.BookingUpdateRequest;
 import com.example.consultant_service.Model.Request.UpdateBookingReq;
 import com.example.consultant_service.Model.Response.BookingResponse;
 import com.example.consultant_service.Model.Response.DataResponse;
+import com.example.consultant_service.event.BookingEvent;
+import com.example.consultant_service.event.ReturnApplication;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -75,5 +78,10 @@ public class BookingController {
     @GetMapping("/getByUser/{id}")
     public ResponseEntity<List<BookingResponse>> getByUser(@PathVariable("id")String userUuid){
         return ResponseEntity.ok(bookingService.getByUser(userUuid));
+    }
+
+    @PostMapping("/book")
+    public ResponseEntity<ReturnApplication> bookingConsultant(@RequestBody BookingEvent bookingEvent) throws JsonProcessingException {
+        return ResponseEntity.ok(bookingService.candidateBookingAdmission(bookingEvent));
     }
 }

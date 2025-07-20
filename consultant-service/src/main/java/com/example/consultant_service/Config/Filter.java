@@ -36,7 +36,8 @@ public class Filter extends OncePerRequestFilter {
             "/api/users/getEmail",
             "/swagger-ui/**",
             "/v3/api-docs/**",
-            "/actuator/**"
+            "/actuator/**",
+            "/api/booking/book"
     );
 
     private final AntPathMatcher pathMatcher = new AntPathMatcher();

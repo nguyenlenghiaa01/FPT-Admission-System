@@ -6,6 +6,8 @@ import com.example.consultant_service.Model.Request.BookingUpdateRequest;
 import com.example.consultant_service.Model.Request.UpdateBookingReq;
 import com.example.consultant_service.Model.Response.BookingResponse;
 import com.example.consultant_service.Model.Response.DataResponse;
+import com.example.consultant_service.event.BookingEvent;
+import com.example.consultant_service.event.ReturnApplication;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,7 @@ public interface IBookingService {
 
     Booking delete(String uuid);
 
-    Booking candidateBookingAdmission(Map<String, String> data) throws JsonProcessingException;
+    ReturnApplication candidateBookingAdmission(BookingEvent bookingEvent) throws JsonProcessingException;
 
     DataResponse<BookingResponse> getByStaff(String staffUuid, int page, int size);
 
