@@ -43,7 +43,7 @@ public class Application {
     private LocalDateTime createAt;
 
     @ManyToOne
-    @JoinColumn(name = "scholarship_id")
+    @JoinColumn(name = "scholarship_id",nullable = true)
     private Scholarship scholarship;
 
     @OneToMany(mappedBy = "application", fetch = FetchType.EAGER)
