@@ -87,16 +87,16 @@ public class ApplicationService implements IApplicationService {
                     application.setStatus(updatedApplication.getStatus());
                     application.setScholarship(updatedApplication.getScholarship());
 
-                    try{
+                    try {
                         ApplicationReportEvent applicationReportEvent = new ApplicationReportEvent();
                         applicationReportEvent.setApplicationUuid(application.getId().toString());
-                        if(application.getStatus().equals(ApplicationStatus.APPROVED)){
+                        if (application.getStatus().equals(ApplicationStatus.APPROVED)) {
                             applicationReportEvent.setApproved(1);
-                        }else {
+                        } else {
                             applicationReportEvent.setReject(1);
                         }
-                        kafkaTemplate.send(TOPIC3,objectMapper.writeValueAsString(applicationReportEvent));
-                    }catch(Exception e){
+                        kafkaTemplate.send(TOPIC3, objectMapper.writeValueAsString(applicationReportEvent));
+                    } catch (Exception e) {
                         throw new RuntimeException("Can not publish kafka to Report-Service ");
                     }
                     return applicationRepository.save(application);
@@ -114,11 +114,10 @@ public class ApplicationService implements IApplicationService {
     }
 
 
-
-    public ResponseEntity<ResponseApi<ApplicationResponse>> submitApplication(ApplicationRequest applicationRequest){
-        String candidateUuid =candidateService.getCurrentUuid();
+    public ResponseEntity<ResponseApi<ApplicationResponse>> submitApplication(ApplicationRequest applicationRequest) {
+        String candidateUuid = candidateService.getCurrentUuid();
         Candidate candidate = null;
-        if(candidateService.isExisted(UUID.fromString(candidateUuid))){
+        if (candidateService.isExisted(UUID.fromString(candidateUuid))) {
             candidate = candidateService.getCandidateById(UUID.fromString(candidateUuid));
         } else {
             candidate = modelMapper.map(applicationRequest, Candidate.class);
@@ -137,7 +136,9 @@ public class ApplicationService implements IApplicationService {
         application.setOffering_id(offering.getOfferingId());
         application.setCandidate(candidate);
         application.setBookingUuid(UUID.fromString(applicationRequest.getBookingUuid()));
-        application.setScholarship(scholarshipService.getScholarshipById(UUID.fromString(applicationRequest.getScholarshipUuid())));
+        if (!applicationRequest.getScholarshipUuid().isBlank() || !applicationRequest.getScholarshipUuid().isEmpty()) {
+            application.setScholarship(scholarshipService.getScholarshipById(UUID.fromString(applicationRequest.getScholarshipUuid())));
+        }
         createApplication(application); // Lưu trước
 
         // Sau đó mới tạo và lưu StatusApplication
@@ -163,23 +164,23 @@ public class ApplicationService implements IApplicationService {
             assert returnApplication != null;
             this.returnStatusApplication(returnApplication);
             //gui su kien toi report service
-            try{
+            try {
                 BookingReportEvent bookingReportEvent = new BookingReportEvent();
                 bookingReportEvent.setBookingUuid(applicationRequest.getBookingUuid());
                 bookingReportEvent.setCampusName(offering.getCampusName());
-                kafkaTemplate.send(TOPIC1,objectMapper.writeValueAsString(bookingReportEvent));
-            }catch(Exception e){
-                throw new RuntimeException("Can not send kafka to Report-Service"+ e.getMessage());
+                kafkaTemplate.send(TOPIC1, objectMapper.writeValueAsString(bookingReportEvent));
+            } catch (Exception e) {
+                throw new RuntimeException("Can not send kafka to Report-Service" + e.getMessage());
             }
             // gui su kien toi report service
             // sua lai logic
-            try{
-                ApplicationReportEvent applicationReportEvent =new ApplicationReportEvent();
+            try {
+                ApplicationReportEvent applicationReportEvent = new ApplicationReportEvent();
                 applicationReportEvent.setCampusName(offering.getCampusName());
                 applicationReportEvent.setApplicationUuid(application.getId().toString());
-                kafkaTemplate.send(TOPIC3,objectMapper.writeValueAsString(applicationReportEvent));
-            }catch (Exception e){
-                throw new RuntimeException("Can not create kafka-event application: "+ e.getMessage());
+                kafkaTemplate.send(TOPIC3, objectMapper.writeValueAsString(applicationReportEvent));
+            } catch (Exception e) {
+                throw new RuntimeException("Can not create kafka-event application: " + e.getMessage());
             }
         } catch (Exception e) {
             throw new RuntimeException("Can not create kafka-event booking: " + e.getMessage());
