@@ -97,5 +97,10 @@ public class ApplicationReportService implements IApplicationReport {
         return response;
     }
 
+    public List<ApplicationReport> filter(String campusName, Integer month, Integer year){
+        return applicationReportRepository.findByCampusOrMonthOrYear(campusName, month, year);
+    }
+
+
 
 }
