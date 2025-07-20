@@ -5,6 +5,7 @@ import com.fptu.hk7.candidateservice.dto.response.AccountResponse;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class UserServiceFallback {
@@ -22,6 +23,11 @@ public class UserServiceFallback {
         AccountResponse response = new AccountResponse();
         response.setMessage("Fallback: user-service unavailable (getEmail)");
         return response;
+    }
+
+    @CircuitBreaker(name = "userUUIDCB", fallbackMethod = "getAccountByUUIDFallback")
+    public AccountResponse getUserByUuid(@PathVariable("uuid") String uuid) {
+        return userClient.getUserByUuid(uuid);
     }
 
 }

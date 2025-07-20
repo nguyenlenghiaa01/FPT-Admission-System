@@ -10,15 +10,9 @@ import com.fptu.hk7.candidateservice.InterFace.UserClient;
 import com.fptu.hk7.candidateservice.client.UserServiceFallback;
 import com.fptu.hk7.candidateservice.dto.request.ApplicationRequest;
 import com.fptu.hk7.candidateservice.dto.request.FindOfferingRequest;
-import com.fptu.hk7.candidateservice.dto.response.AccountResponse;
-import com.fptu.hk7.candidateservice.dto.response.ApplicationResponse;
-import com.fptu.hk7.candidateservice.dto.response.GetOfferingResponse;
-import com.fptu.hk7.candidateservice.dto.response.ResponseApi;
+import com.fptu.hk7.candidateservice.dto.response.*;
 import com.fptu.hk7.candidateservice.enums.ApplicationStatus;
-import com.fptu.hk7.candidateservice.event.ApplicationReportEvent;
-import com.fptu.hk7.candidateservice.event.BookingEvent;
-import com.fptu.hk7.candidateservice.event.BookingReportEvent;
-import com.fptu.hk7.candidateservice.event.ReturnApplication;
+import com.fptu.hk7.candidateservice.event.*;
 import com.fptu.hk7.candidateservice.exception.NotFoundException;
 import com.fptu.hk7.candidateservice.pojo.Candidate;
 import com.fptu.hk7.candidateservice.pojo.StatusApplication;
@@ -86,6 +80,8 @@ public class ApplicationService implements IApplicationService {
                     application.setOffering_id(updatedApplication.getOffering_id());
                     application.setStatus(updatedApplication.getStatus());
                     application.setScholarship(updatedApplication.getScholarship());
+                    application.setStartTime(updatedApplication.getStartTime());
+                    application.setStaffUuid(updatedApplication.getStaffUuid());
 
                     try {
                         ApplicationReportEvent applicationReportEvent = new ApplicationReportEvent();
@@ -161,6 +157,7 @@ public class ApplicationService implements IApplicationService {
 
             ReturnApplication returnApplication = bookingConsultantServiceFallback.bookingConsultant(bookingEvent).getBody();
 
+            System.out.println("return application :"+returnApplication);
             assert returnApplication != null;
             this.returnStatusApplication(returnApplication);
             //gui su kien toi report service
@@ -200,6 +197,8 @@ public class ApplicationService implements IApplicationService {
                 .orElseThrow(() -> new NotFoundException("Application not found with booking_id: " + returnApplication.getBooking_id()));
 
         application.setStatus(ApplicationStatus.valueOf(returnApplication.getStatus()));
+        application.setStaffUuid(UUID.fromString(returnApplication.getConsultantUuid()));
+        application.setStartTime(returnApplication.getStartTime());
 
         StatusApplication statusApplication = new StatusApplication();
         statusApplication.setStatus(ApplicationStatus.valueOf(returnApplication.getStatus()));
@@ -211,6 +210,33 @@ public class ApplicationService implements IApplicationService {
 
         updateApplication(application.getId(), application);
         System.out.println("Application status updated successfully: " + application.getId());
+    }
+
+    @Override
+    public DetailApplicationResponse getDetailApplication(Application application) {
+        OfferingDetail offeringDetail = offeringProgramClient.getOfferingDetail(application.getOffering_id()).getBody();
+        AccountResponse accountResponse = userServiceFallback.getUserByUuid(application.getStaffUuid().toString());
+
+
+        assert offeringDetail != null;
+        DetailApplicationResponse response = DetailApplicationResponse.builder()
+                .phone(accountResponse.getPhone())
+                .email(accountResponse.getEmail())
+                .fullname(accountResponse.getFullName())
+                .major(offeringDetail.getMajor())
+                .specialization(offeringDetail.getSpecialization())
+                .campus(offeringDetail.getCampus())
+                .startTime(application.getStartTime())
+                .build();
+        if(application.getScholarship()!=null){
+            response.setScholarship(application.getScholarship().getName());
+        }
+        return response;
+    }
+
+    @Override
+    public Application getApplicationByBookingUuid(UUID uuid) {
+        return applicationRepository.findApplicationByBookingUuid(uuid).orElseThrow(()-> new NotFoundException("Application not found with booking_id: " + uuid));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.fptu.hk7.candidateservice.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fptu.hk7.candidateservice.enums.ApplicationStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,6 +35,12 @@ public class Application {
 
     @Column(name = "booking_id", unique = true)
     private UUID bookingUuid;
+
+    private UUID staffUuid;
+
+    @Column(name = "start_time")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy HH:mm")
+    private LocalDateTime startTime;
 
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status = ApplicationStatus.PENDING;

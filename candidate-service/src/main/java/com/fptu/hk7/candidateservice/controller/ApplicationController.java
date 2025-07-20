@@ -6,6 +6,7 @@ import com.fptu.hk7.candidateservice.InterFace.IStatusApplicationService;
 import com.fptu.hk7.candidateservice.dto.request.ApplicationRequest;
 import com.fptu.hk7.candidateservice.dto.request.UpdateApplicationRequest;
 import com.fptu.hk7.candidateservice.dto.response.ApplicationResponse;
+import com.fptu.hk7.candidateservice.dto.response.DetailApplicationResponse;
 import com.fptu.hk7.candidateservice.dto.response.ResponseApi;
 import com.fptu.hk7.candidateservice.enums.ApplicationStatus;
 import com.fptu.hk7.candidateservice.pojo.Application;
@@ -110,5 +111,11 @@ public class ApplicationController {
         return ResponseEntity.ok(
                 modelMapper.map(applicationService.updateApplication(updateApplicationRequest.getId(), application), ApplicationResponse.class)
         );
+    }
+
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<DetailApplicationResponse> getDetailApplication(@PathVariable("id") String id){
+        Application application = applicationService.getApplicationByBookingUuid(UUID.fromString(id));
+        return ResponseEntity.ok(applicationService.getDetailApplication(application));
     }
 }

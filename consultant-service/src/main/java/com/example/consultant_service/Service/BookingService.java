@@ -184,9 +184,12 @@ public class BookingService implements IBookingService {
         ReturnApplication returnApplication = ReturnApplication.builder()
                 .booking_id(bookingEvent.getBookingUuid())
                 .status(applicationStatus)
+                .consultantUuid(booking.getStaffUuid())
+                .startTime(booking.getStartTime())
                 .note(note)
                 .build();
 
+        System.out.println("return application :"+returnApplication);
         // lưu booking với candidateUuid
         booking.setCandidateUuid(bookingEvent.getCandidateUuid());
         booking.setStatus(StatusEnum.BOOKED);

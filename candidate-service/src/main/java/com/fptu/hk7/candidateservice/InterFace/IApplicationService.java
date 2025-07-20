@@ -2,6 +2,7 @@ package com.fptu.hk7.candidateservice.InterFace;
 
 import com.fptu.hk7.candidateservice.dto.request.ApplicationRequest;
 import com.fptu.hk7.candidateservice.dto.response.ApplicationResponse;
+import com.fptu.hk7.candidateservice.dto.response.DetailApplicationResponse;
 import com.fptu.hk7.candidateservice.dto.response.ResponseApi;
 import com.fptu.hk7.candidateservice.event.ReturnApplication;
 import com.fptu.hk7.candidateservice.pojo.Application;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface IApplicationService {
@@ -21,4 +23,7 @@ public interface IApplicationService {
     boolean deleteApplication(UUID id);
     ResponseEntity<ResponseApi<ApplicationResponse>> submitApplication(ApplicationRequest applicationRequest);
     void returnStatusApplication(ReturnApplication returnApplication);
+    DetailApplicationResponse getDetailApplication(Application application);
+
+    Application getApplicationByBookingUuid(UUID uuid);
 }

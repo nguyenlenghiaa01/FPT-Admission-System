@@ -3,10 +3,12 @@ package com.fptu.hk7.candidateservice.client;
 import com.fptu.hk7.candidateservice.InterFace.OfferingProgramClient;
 import com.fptu.hk7.candidateservice.dto.request.FindOfferingRequest;
 import com.fptu.hk7.candidateservice.dto.response.GetOfferingResponse;
+import com.fptu.hk7.candidateservice.event.OfferingDetail;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.UUID;
 
@@ -25,4 +27,14 @@ public class OfferingProgramServiceFallback{
         System.out.println("Fallback triggered: " + t.getMessage());
         return ResponseEntity.ok(null);
     }
+
+    @CircuitBreaker(name = "Offering-detail", fallbackMethod = "getOfferingFallback")
+    public ResponseEntity<OfferingDetail> getOfferingDetail(@PathVariable("id") UUID id) {
+        return offeringProgramClient.getOfferingDetail(id);
+    }
+
+    public ResponseEntity<OfferingDetail> getOfferingDetailFallback(UUID id, Throwable t) {
+        return ResponseEntity.ok(null);
+    }
+
 }
