@@ -2,6 +2,7 @@ package com.fptu.hk7.candidateservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fptu.hk7.candidateservice.InterFace.IApplicationService;
+import com.fptu.hk7.candidateservice.InterFace.ICandidateService;
 import com.fptu.hk7.candidateservice.InterFace.OfferingProgramClient;
 import com.fptu.hk7.candidateservice.client.BookingConsultantServiceFallback;
 import com.fptu.hk7.candidateservice.client.OfferingProgramServiceFallback;
@@ -44,12 +45,12 @@ public class ApplicationService implements IApplicationService {
     ModelMapper modelMapper = new ModelMapper();
     private final UserClient userClient;
     private final OfferingProgramClient offeringProgramClient;
-    private final CandidateService candidateService;
     private final ScholarshipService scholarshipService;
     private final StatusApplicationService statusApplicationService;
     private final UserServiceFallback userServiceFallback;
     private final OfferingProgramServiceFallback offeringProgramServiceFallback;
     private final RedisService redisService;
+    private final ICandidateService candidateService;
     private final BookingConsultantServiceFallback bookingConsultantServiceFallback;
     private final String TOPIC1 = "booking_report";
 
@@ -115,11 +116,16 @@ public class ApplicationService implements IApplicationService {
 
 
     public ResponseEntity<ResponseApi<ApplicationResponse>> submitApplication(ApplicationRequest applicationRequest){
-        Candidate candidate = modelMapper.map(applicationRequest, Candidate.class);
-
         String candidateUuid =candidateService.getCurrentUuid();
-        candidate.setId(UUID.fromString(candidateUuid));
-        candidateService.createCandidate(candidate);
+        Candidate candidate = null;
+        if(candidateService.isExisted(UUID.fromString(candidateUuid))){
+            candidate = candidateService.getCandidateById(UUID.fromString(candidateUuid));
+        } else {
+            candidate = modelMapper.map(applicationRequest, Candidate.class);
+
+            candidate.setId(UUID.fromString(candidateUuid));
+            candidateService.createCandidate(candidate);
+        }
 
         GetOfferingResponse offering = offeringProgramServiceFallback.getOffering(
                 new FindOfferingRequest(applicationRequest.getSpecializationUuid(), applicationRequest.getCampusUuid())

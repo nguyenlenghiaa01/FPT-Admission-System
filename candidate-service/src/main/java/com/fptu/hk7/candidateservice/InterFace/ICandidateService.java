@@ -8,6 +8,7 @@ import java.util.UUID;
 
 public interface ICandidateService {
     Candidate createCandidate(Candidate candidate);
+    boolean isExisted(UUID uuid);
     Candidate getCandidateById(UUID id);
     List<Candidate> getAllCandidates();
     Optional<Candidate> updateCandidate(UUID id, Candidate updatedCandidate);

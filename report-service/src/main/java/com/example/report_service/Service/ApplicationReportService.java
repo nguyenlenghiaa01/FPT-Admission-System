@@ -80,7 +80,7 @@ public class ApplicationReportService implements IApplicationReport {
                 .year(report.getYear())
                 .build();
 
-        redisService.sendApplicationMessage(event, "/topic/new-application-report/");
+        redisService.sendApplicationMessage(event, "/topic/report-channel/new-application-report/");
         return report;
     }
 

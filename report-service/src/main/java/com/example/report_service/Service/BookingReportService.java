@@ -86,7 +86,7 @@ public class BookingReportService implements IBookingReport {
                 .totalBooking(report.getTotalBooking())
                 .build();
 
-        redisService.sendApplicationMessage(event,"/topic/new-booking-report/" );
+        redisService.sendApplicationMessage(event,"/topic/report-channel/new-booking-report/" );
 
         return report;
     }
