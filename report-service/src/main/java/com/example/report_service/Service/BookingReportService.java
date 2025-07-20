@@ -1,5 +1,8 @@
 package com.example.report_service.Service;
 
+import com.example.report_service.DTO.Response.ApplicationReportResponse;
+import com.example.report_service.DTO.Response.BookingReportResponse;
+import com.example.report_service.Entity.ApplicationReport;
 import com.example.report_service.Entity.BookingReport;
 import com.example.report_service.InterFace.IBookingReport;
 import com.example.report_service.Repository.BookingReportRepository;
@@ -12,10 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.WeekFields;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +43,9 @@ public class BookingReportService implements IBookingReport {
         Optional<BookingReport> optionalReport =
                 bookingReportRepository.findByCampusNameAndMonthAndYearAndWeekOfYear(campusName, month, year, weekOfYear);
 
-        Optional<BookingReport> optionalBookingReport = bookingReportRepository.findByBookingUuidAndMonthAndYearAndWeekOfYear(bookingUuid,month,year,weekOfYear);
+        Optional<BookingReport> optionalBookingReport =
+                bookingReportRepository.findByBookingUuidAndMonthAndYearAndWeekOfYear(bookingUuid, month, year, weekOfYear);
+
         BookingReport report;
 
         if (optionalBookingReport.isPresent()) {
@@ -63,7 +65,6 @@ public class BookingReportService implements IBookingReport {
             report.setCompletedCount(0);
         }
 
-
         if (booked == 1) {
             report.setTotalBooking(report.getTotalBooking() + 1);
         }
@@ -75,19 +76,32 @@ public class BookingReportService implements IBookingReport {
         }
 
         bookingReportRepository.save(report);
-        BookingReportEvent event = BookingReportEvent.builder()
-                .campusName(report.getCampusName())
-                .bookingUuid(report.getBookingUuid())
-                .weekOfYear(report.getWeekOfYear())
-                .month(report.getMonth())
-                .year(report.getYear())
-                .canceledCount(report.getCanceledCount())
-                .completedCount(report.getCompletedCount())
-                .totalBooking(report.getTotalBooking())
-                .build();
 
-        redisService.sendApplicationMessage(event,"/topic/report-channel/new-booking-report/" );
+        redisService.sendApplicationMessage("booking-updated-status", "/topic/report");
 
         return report;
     }
+
+    public BookingReportResponse getCount() {
+        List<BookingReport> bookingReports = bookingReportRepository.findAll();
+
+        int completedCount = 0;
+        int canceledCount = 0;
+
+        for (BookingReport report : bookingReports) {
+            completedCount += report.getCompletedCount();
+            canceledCount += report.getCanceledCount();
+        }
+
+        BookingReportResponse response = new BookingReportResponse();
+        response.setCanceledCount(completedCount);
+        response.setCompletedCount(canceledCount);
+
+        return response;
+    }
+
+    public List<BookingReport> filter(String campus,Integer month, Integer year){
+        return bookingReportRepository.filterByOptionalFields(campus, month, year);
+    }
+
 }

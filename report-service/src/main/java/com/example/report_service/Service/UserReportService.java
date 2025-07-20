@@ -1,5 +1,8 @@
 package com.example.report_service.Service;
 
+import com.example.report_service.DTO.Response.BookingReportResponse;
+import com.example.report_service.DTO.Response.UserReportResponse;
+import com.example.report_service.Entity.BookingReport;
 import com.example.report_service.Entity.UserReport;
 import com.example.report_service.InterFace.IUserReport;
 import com.example.report_service.Service.redis.RedisService;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.WeekFields;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -43,16 +47,28 @@ public class UserReportService implements IUserReport {
         report.setNewUser(report.getNewUser() + newUser);
         userReportRepository.save(report);
 
-        // Send event to frontend for filtering
-        UserReportEvent event = UserReportEvent.builder()
-                .month(report.getMonth())
-                .year(report.getYear())
-                .weekOfYear(report.getWeekOfYear())
-                .newUser(report.getNewUser())
-                .build();
-
-        redisService.sendApplicationMessage(event, "/topic/new-user-report/");
+        redisService.sendApplicationMessage("new-user", "/topic/report");
 
         return report;
     }
+
+    public UserReportResponse getCount(){
+        List<UserReport> userReports = userReportRepository.findAll();
+
+        int totalUser = 0;
+
+        for (UserReport report : userReports) {
+            totalUser += report.getNewUser();
+        }
+
+        UserReportResponse response = new UserReportResponse();
+        response.setNewUser(totalUser);
+
+        return response;
+    }
+
+    public List<UserReport> filter (Integer weakOfYear, Integer month, Integer year){
+        return userReportRepository.filter(weakOfYear,month,year);
+    }
+
 }

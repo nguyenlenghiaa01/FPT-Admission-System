@@ -1,9 +1,17 @@
 package com.example.report_service.Controller;
 
+import com.example.report_service.DTO.Response.UserReportResponse;
+import com.example.report_service.Entity.BookingReport;
+import com.example.report_service.Entity.UserReport;
+import com.example.report_service.InterFace.IUserReport;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/report")
@@ -11,4 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 @SecurityRequirement(name = "api")
 public class UserReportController {
 
+    private final IUserReport iUserReport;
+    @GetMapping("/user")
+    public ResponseEntity<UserReportResponse> getAll(){
+        UserReportResponse userReportResponse = iUserReport.getCount();
+        return ResponseEntity.ok(userReportResponse);
+    }
+
+    @GetMapping("/filter/user")
+    public ResponseEntity<List<UserReport>> filter(Integer weekOfYear, Integer month, Integer year){
+        List<UserReport> userReports = iUserReport.filter(weekOfYear, month, year);
+        return ResponseEntity.ok(userReports);
+    }
 }

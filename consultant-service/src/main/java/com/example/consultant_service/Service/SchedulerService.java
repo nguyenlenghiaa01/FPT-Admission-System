@@ -215,14 +215,24 @@ public class SchedulerService implements ISchedulerService {
             SchedulerResponse response = new SchedulerResponse();
             response.setUuid(scheduler.getUuid());
 
-            // Tạo danh sách Booking phù hợp
             List<Booking> bookingList = new ArrayList<>();
+            AccountResponse accountResponse = null;
+
             if (scheduler.getBookingList() != null) {
                 for (Booking booking : scheduler.getBookingList()) {
                     if (staffUuid.equals(booking.getStaffUuid())) {
                         bookingList.add(booking);
+                        accountResponse = userServiceCaller.getUserByUuid(booking.getCandidateUuid());
                     }
                 }
+            }
+
+            if (accountResponse != null) {
+                response.setFullName(accountResponse.getFullName());
+                response.setImage(accountResponse.getImage());
+                response.setEmail(accountResponse.getEmail());
+                response.setAddress(accountResponse.getAddress());
+                response.setPhone(accountResponse.getPhone());
             }
 
             response.setBookingList(bookingList);

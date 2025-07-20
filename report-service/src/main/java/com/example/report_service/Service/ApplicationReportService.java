@@ -1,14 +1,15 @@
 package com.example.report_service.Service;
 
+import com.example.report_service.DTO.Response.ApplicationReportResponse;
 import com.example.report_service.Entity.ApplicationReport;
 import com.example.report_service.InterFace.IApplicationReport;
 import com.example.report_service.Repository.ApplicationReportRepository;
 import com.example.report_service.Service.redis.RedisService;
-import com.example.report_service.event.ApplicationReportEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,15 +37,17 @@ public class ApplicationReportService implements IApplicationReport {
         Optional<ApplicationReport> optionalReport =
                 applicationReportRepository.findByCampusNameAndMonthAndYear(campusName, month, year);
 
-        Optional<ApplicationReport> optionalApplicationReport = applicationReportRepository.findByApplicationUuidAndMonthAndYear(applicationUuid,month,year);
+        Optional<ApplicationReport> optionalApplicationReport =
+                applicationReportRepository.findByApplicationUuidAndMonthAndYear(applicationUuid, month, year);
+
         ApplicationReport report;
 
         if (optionalApplicationReport.isPresent()) {
             report = optionalApplicationReport.get();
         } else if (optionalReport.isPresent()) {
             report = optionalReport.get();
-        }else {
-            // Khong co hoac sang thang moi → tạo mới
+        } else {
+            // Không có hoặc sang tháng mới → tạo mới
             report = new ApplicationReport();
             report.setUuid(UUID.randomUUID().toString());
             report.setCampusName(campusName);
@@ -68,20 +71,36 @@ public class ApplicationReportService implements IApplicationReport {
 
         applicationReportRepository.save(report);
 
-        // WebSocket
-        ApplicationReportEvent event = ApplicationReportEvent.builder()
-                .campusName(report.getCampusName())
-                .applicationUuid(report.getApplicationUuid())
-                .totalApplication(report.getTotalApplication())
-                .approveCount(report.getApproveCount())
-                .rejectCount(report.getRejectCount())
-                .month(report.getMonth())
-                .year(report.getYear())
-                .build();
+        redisService.sendApplicationMessage("application-updated-status", "/topic/report");
 
-        redisService.sendApplicationMessage(event, "/topic/report-channel/new-application-report/");
         return report;
     }
+
+    public ApplicationReportResponse getCount() {
+        List<ApplicationReport> applicationReports = applicationReportRepository.findAll();
+
+        int totalApprove = 0;
+        int totalReject = 0;
+        int totalApplication = 0;
+
+        for (ApplicationReport report : applicationReports) {
+            totalApprove += report.getApproveCount();
+            totalReject += report.getRejectCount();
+            totalApplication += report.getTotalApplication();
+        }
+
+        ApplicationReportResponse response = new ApplicationReportResponse();
+        response.setApproveCount(totalApprove);
+        response.setRejectCount(totalReject);
+        response.setTotalApplication(totalApplication);
+
+        return response;
+    }
+
+    public List<ApplicationReport> filter(String campusName, Integer month, Integer year){
+        return applicationReportRepository.findByCampusOrMonthOrYear(campusName, month, year);
+    }
+
 
 
 }
