@@ -7,6 +7,7 @@ import com.example.consultant_service.Model.Request.BookingRequest;
 import com.example.consultant_service.Model.Request.BookingUpdateRequest;
 import com.example.consultant_service.Model.Request.UpdateBookingReq;
 import com.example.consultant_service.Model.Response.BookingResponse;
+import com.example.consultant_service.Model.Response.BookingResponse1;
 import com.example.consultant_service.Model.Response.DataResponse;
 import com.example.consultant_service.event.BookingEvent;
 import com.example.consultant_service.event.ReturnApplication;
@@ -69,8 +70,8 @@ public class BookingController {
     }
 
     @GetMapping("/getByStaff/{id}")
-    public ResponseEntity<DataResponse<BookingResponse>> getByStaff(@PathVariable("id") String staffUuid,
-                                                                    @RequestParam int page, @RequestParam int size) {
+    public ResponseEntity<DataResponse<BookingResponse1>> getByStaff(@PathVariable("id") String staffUuid,
+                                                                     @RequestParam int page, @RequestParam int size) {
         return ResponseEntity.ok(bookingService.getByStaff(staffUuid, page, size));
     }
 

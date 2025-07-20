@@ -5,6 +5,7 @@ import com.example.consultant_service.Model.Request.BookingRequest;
 import com.example.consultant_service.Model.Request.BookingUpdateRequest;
 import com.example.consultant_service.Model.Request.UpdateBookingReq;
 import com.example.consultant_service.Model.Response.BookingResponse;
+import com.example.consultant_service.Model.Response.BookingResponse1;
 import com.example.consultant_service.Model.Response.DataResponse;
 import com.example.consultant_service.event.BookingEvent;
 import com.example.consultant_service.event.ReturnApplication;
@@ -27,7 +28,7 @@ public interface IBookingService {
 
     ReturnApplication candidateBookingAdmission(BookingEvent bookingEvent) throws JsonProcessingException;
 
-    DataResponse<BookingResponse> getByStaff(String staffUuid, int page, int size);
+    DataResponse<BookingResponse1> getByStaff(String staffUuid, int page, int size);
 
     void updateBookingStatusToDid();
     List<BookingResponse> getByUser(String userUuid);
