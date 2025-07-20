@@ -49,36 +49,37 @@ public class InitData {
                 // ======= SPECIALIZATION =======
                 List<Specialization> specs = new ArrayList<>();
 
-                specs.add(new Specialization(null, "Information Security", "An toàn thông tin", it, new ArrayList<>()));
-                specs.add(new Specialization(null, "Digital Automotive Engineering", "Công nghệ ô tô số", it, new ArrayList<>()));
-                specs.add(new Specialization(null, "Software Engineering", "Kỹ thuật phần mềm", it, new ArrayList<>()));
-                specs.add(new Specialization(null, "Digital Transformation", "Chuyển đổi số", it, new ArrayList<>()));
-                specs.add(new Specialization(null, "Digital Art & Design", "Thiết kế mỹ thuật số", it, new ArrayList<>()));
-                specs.add(new Specialization(null, "Semiconductor & IC Design", "Thiết kế vi mạch bán dẫn", it, new ArrayList<>()));
-                specs.add(new Specialization(null, "Artificial Intelligence", "Trí tuệ nhân tạo", it, new ArrayList<>()));
+                specs.add(new Specialization(null, "An toàn thông tin", "Information Security", it, new ArrayList<>()));
+                specs.add(new Specialization(null, "Công nghệ ô tô số", "Digital Automotive Engineering", it, new ArrayList<>()));
+                specs.add(new Specialization(null, "Kỹ thuật phần mềm", "Software Engineering", it, new ArrayList<>()));
+                specs.add(new Specialization(null, "Chuyển đổi số", "Digital Transformation", it, new ArrayList<>()));
+                specs.add(new Specialization(null, "Thiết kế mỹ thuật số", "Digital Art & Design", it, new ArrayList<>()));
+                specs.add(new Specialization(null, "Thiết kế vi mạch bán dẫn", "Semiconductor & IC Design", it, new ArrayList<>()));
+                specs.add(new Specialization(null, "Trí tuệ nhân tạo", "Artificial Intelligence", it, new ArrayList<>()));
 
-                specs.add(new Specialization(null, "Financial Technology", "Công nghệ tài chính", biz, new ArrayList<>()));
+                specs.add(new Specialization(null, "Công nghệ tài chính", "Financial Technology", biz, new ArrayList<>()));
                 specs.add(new Specialization(null, "Digital Marketing", "Digital Marketing", biz, new ArrayList<>()));
-                specs.add(new Specialization(null, "International Business", "Kinh doanh quốc tế", biz, new ArrayList<>()));
-                specs.add(new Specialization(null, "Logistics & Global Supply Chain", "Logistics & quản lý chuỗi cung ứng toàn cầu", biz, new ArrayList<>()));
-                specs.add(new Specialization(null, "Hotel Management", "Quản trị khách sạn", biz, new ArrayList<>()));
-                specs.add(new Specialization(null, "Travel & Tourism Management", "Quản trị dịch vụ du lịch & lữ hành", biz, new ArrayList<>()));
-                specs.add(new Specialization(null, "Corporate Finance", "Tài chính doanh nghiệp", biz, new ArrayList<>()));
-                specs.add(new Specialization(null, "Digital Banking and Finance", "Ngân hàng số - Tài chính", biz, new ArrayList<>()));
-                specs.add(new Specialization(null, "Investment Finance", "Tài chính đầu tư", biz, new ArrayList<>()));
+                specs.add(new Specialization(null, "Kinh doanh quốc tế", "International Business", biz, new ArrayList<>()));
+                specs.add(new Specialization(null, "Logistics & quản lý chuỗi cung ứng toàn cầu", "Logistics & Global Supply Chain", biz, new ArrayList<>()));
+                specs.add(new Specialization(null, "Quản trị khách sạn", "Hotel Management", biz, new ArrayList<>()));
+                specs.add(new Specialization(null, "Quản trị dịch vụ du lịch & lữ hành", "Travel & Tourism Management", biz, new ArrayList<>()));
+                specs.add(new Specialization(null, "Tài chính doanh nghiệp", "Corporate Finance", biz, new ArrayList<>()));
+                specs.add(new Specialization(null, "Ngân hàng số - Tài chính", "Digital Banking and Finance", biz, new ArrayList<>()));
+                specs.add(new Specialization(null, "Tài chính đầu tư", "Investment Finance", biz, new ArrayList<>()));
 
-                specs.add(new Specialization(null, "Public Relations", "Quan hệ công chúng", media, new ArrayList<>()));
-                specs.add(new Specialization(null, "Multimedia Communications", "Truyền thông đa phương tiện", media, new ArrayList<>()));
+                specs.add(new Specialization(null, "Quan hệ công chúng", "Public Relations", media, new ArrayList<>()));
+                specs.add(new Specialization(null, "Truyền thông đa phương tiện", "Multimedia Communications", media, new ArrayList<>()));
 
-                specs.add(new Specialization(null, "English Language", "Ngôn ngữ Anh", en, new ArrayList<>()));
-                specs.add(new Specialization(null, "Chinese - English Bilingual", "Song ngữ Trung - Anh", zh, new ArrayList<>()));
-                specs.add(new Specialization(null, "Japanese - English Bilingual", "Song ngữ Nhật - Anh", jp, new ArrayList<>()));
-                specs.add(new Specialization(null, "Korean - English Bilingual", "Song ngữ Hàn - Anh", kr, new ArrayList<>()));
+                specs.add(new Specialization(null, "Ngôn ngữ Anh", "English Language", en, new ArrayList<>()));
+                specs.add(new Specialization(null, "Song ngữ Trung - Anh", "Chinese - English Bilingual", zh, new ArrayList<>()));
+                specs.add(new Specialization(null, "Song ngữ Nhật - Anh", "Japanese - English Bilingual", jp, new ArrayList<>()));
+                specs.add(new Specialization(null, "Song ngữ Hàn - Anh", "Korean - English Bilingual", kr, new ArrayList<>()));
 
-                specs.add(new Specialization(null, "Economic Law", "Luật kinh tế", law, new ArrayList<>()));
-                specs.add(new Specialization(null, "International Trade Law", "Luật thương mại quốc tế", law, new ArrayList<>()));
+                specs.add(new Specialization(null, "Luật kinh tế", "Economic Law", law, new ArrayList<>()));
+                specs.add(new Specialization(null, "Luật thương mại quốc tế", "International Trade Law", law, new ArrayList<>()));
 
                 specializationRepo.saveAll(specs);
+
 
 
                 // ======= OFFERING =======
