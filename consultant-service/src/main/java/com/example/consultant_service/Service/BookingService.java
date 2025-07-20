@@ -3,6 +3,7 @@ package com.example.consultant_service.Service;
 import com.example.consultant_service.Entity.Booking;
 import com.example.consultant_service.Enum.StatusEnum;
 import com.example.consultant_service.Exception.NotFoundException;
+import com.example.consultant_service.Exception.StatusException;
 import com.example.consultant_service.InterFace.IBookingService;
 import com.example.consultant_service.Model.Request.BookingRequest;
 import com.example.consultant_service.Model.Request.BookingUpdateRequest;
@@ -105,19 +106,17 @@ public class BookingService implements IBookingService {
         if(booking == null){
             throw new NotFoundException("Booking not found");
         }
-        booking.setStatus(StatusEnum.valueOf(bookingRequest.getStatus()));
+        if(bookingRequest.getStatus().equals("CANCELED")) {
+            booking.setStatus(StatusEnum.valueOf(bookingRequest.getStatus()));
+        }else{
+            throw new StatusException("Can not set status");
+        }
         bookingRepository.save(booking);
         try{
             BookingReportEvent bookingReportEvent = new BookingReportEvent();
             bookingReportEvent.setBookingUuid(booking.getUuid());
-            if(bookingRequest.getStatus().equals("BOOKED")){
-                bookingReportEvent.setBookedCount(1);
-            }
             if(bookingRequest.getStatus().equals("CANCELED")){
                 bookingReportEvent.setCanceled(1);
-            }
-            if(bookingRequest.getStatus().equals("COMPLETED")){
-                bookingReportEvent.setCompletedCount(1);
             }
             kafkaTemplate.send(TOPIC1,objectMapper.writeValueAsString(bookingReportEvent));
         }catch(Exception e){
@@ -142,8 +141,6 @@ public class BookingService implements IBookingService {
            throw new NotFoundException("Booking not found");
         }
         booking.setStatus(bookingUpdateRequest.getStatus());
-        booking.setStaffUuid(bookingUpdateRequest.getStaffUuid());
-        booking.setCandidateUuid(bookingUpdateRequest.getUserUuid());
         Booking newBooking = bookingRepository.save(booking);
         try{
             BookingReportEvent bookingReportEvent = new BookingReportEvent();
@@ -153,6 +150,7 @@ public class BookingService implements IBookingService {
             if(booking.getStatus().equals(StatusEnum.CANCELED)){
                 bookingReportEvent.setCanceled(1);
             }
+            kafkaTemplate.send(TOPIC1,objectMapper.writeValueAsString(bookingReportEvent));
         }catch(Exception e){
             throw new RuntimeException("Can not publish event to Report-Service" + e.getMessage());
         }
@@ -278,7 +276,7 @@ public class BookingService implements IBookingService {
         }
         bookingRepository.saveAll(bookingsToUpdate);
 
-        System.out.println("Updated " + bookingsToUpdate.size() + " bookings to 'PROCESSING' at " + now);
+        System.out.println("Updated " + bookingsToUpdate.size() + " bookings to 'Processing' at " + now);
     }
 
 
