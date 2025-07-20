@@ -1,4 +1,4 @@
-package com.example.consultant_service.Model.Request;
+package com.fptu.hk7.candidateservice.event;
 
 import lombok.Builder;
 import lombok.Data;

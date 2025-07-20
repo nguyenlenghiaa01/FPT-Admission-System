@@ -7,15 +7,12 @@ import com.example.consultant_service.Exception.StatusException;
 import com.example.consultant_service.InterFace.IBookingService;
 import com.example.consultant_service.Model.Request.BookingRequest;
 import com.example.consultant_service.Model.Request.BookingUpdateRequest;
-import com.example.consultant_service.Model.Request.ReturnApplication;
+import com.example.consultant_service.event.*;
 import com.example.consultant_service.Model.Request.UpdateBookingReq;
 import com.example.consultant_service.Model.Response.BookingResponse;
 import com.example.consultant_service.Model.Response.DataResponse;
 import com.example.consultant_service.Repository.BookingRepository;
 import com.example.consultant_service.Service.redis.RedisService;
-import com.example.consultant_service.event.BookingReportEvent;
-import com.example.consultant_service.event.SocketNewApplicationEvent;
-import com.example.consultant_service.event.SubmitApplicationEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -166,17 +163,9 @@ public class BookingService implements IBookingService {
         return booking;
     }
 
-    public Booking candidateBookingAdmission(Map<String, String> data) throws JsonProcessingException {
-        String bookingUuid = data.get("bookingUuid");
-        String candidateUuid = data.get("candidateUuid");
-        String email = data.get("email");
-        String fullname = data.get("fullname");
-        String phone = data.get("phone");
-        String campus = data.get("campus");
-        String specialization = data.get("specialization");
-
+    public ReturnApplication candidateBookingAdmission(BookingEvent bookingEvent) throws JsonProcessingException {
         // update booking, gán candidateUuid
-        Booking booking = bookingRepository.findBookingByUuid(bookingUuid);
+        Booking booking = bookingRepository.findBookingByUuid(bookingEvent.getBookingUuid());
 
         // check status của booking
         String applicationStatus = "APPROVED";
@@ -190,25 +179,24 @@ public class BookingService implements IBookingService {
 
         // cập nhật thông tin application
         ReturnApplication returnApplication = ReturnApplication.builder()
-                .booking_id(bookingUuid)
+                .booking_id(bookingEvent.getBookingUuid())
                 .status(applicationStatus)
                 .note(note)
                 .build();
-        kafkaTemplate.send("return_application_submit", objectMapper.writeValueAsString(returnApplication));
 
         // lưu booking với candidateUuid
-        booking.setCandidateUuid(candidateUuid);
+        booking.setCandidateUuid(bookingEvent.getCandidateUuid());
         booking.setStatus(StatusEnum.BOOKED);
         bookingRepository.save(booking);
 
         // Gửi sự kiện submit_application - email notification
         try {
             SubmitApplicationEvent event = new SubmitApplicationEvent();
-            event.setEmail(email);
-            event.setFullname(fullname);
-            event.setPhone(phone);
-            event.setCampus(campus);
-            event.setSpecialization(specialization);
+            event.setEmail(bookingEvent.getEmail());
+            event.setFullname(bookingEvent.getFullname());
+            event.setPhone(bookingEvent.getPhone());
+            event.setCampus(bookingEvent.getCampus());
+            event.setSpecialization(bookingEvent.getSpecialization());
 
             // notification-service
             String TOPIC = "submit_application";
@@ -216,14 +204,14 @@ public class BookingService implements IBookingService {
 
             // publish event to new-application
             SocketNewApplicationEvent socketEvent = new SocketNewApplicationEvent();
-            socketEvent.setBookingUuid(bookingUuid);
+            socketEvent.setBookingUuid(bookingEvent.getBookingUuid());
             socketEvent.setConsultantUuid(booking.getStaffUuid());
             socketEvent.setSubmitApplicationEvent(event);
             redisService.sendApplicationMessage(socketEvent, "new-application");
         } catch (Exception e) {
             throw new RuntimeException("Không thể tạo kafka-event submit_application: " + e.getMessage());
         }
-        return booking;
+        return returnApplication;
     }
 
     public DataResponse<BookingResponse> getByStaff(String staffUuid, int page, int size) {
@@ -279,6 +267,5 @@ public class BookingService implements IBookingService {
 
         System.out.println("Updated " + bookingsToUpdate.size() + " bookings to 'Processing' at " + now);
     }
-
 
 }

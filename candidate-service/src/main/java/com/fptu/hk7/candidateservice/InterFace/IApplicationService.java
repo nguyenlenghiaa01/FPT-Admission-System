@@ -3,6 +3,7 @@ package com.fptu.hk7.candidateservice.InterFace;
 import com.fptu.hk7.candidateservice.dto.request.ApplicationRequest;
 import com.fptu.hk7.candidateservice.dto.response.ApplicationResponse;
 import com.fptu.hk7.candidateservice.dto.response.ResponseApi;
+import com.fptu.hk7.candidateservice.event.ReturnApplication;
 import com.fptu.hk7.candidateservice.pojo.Application;
 import com.fptu.hk7.candidateservice.pojo.Candidate;
 import org.springframework.http.ResponseEntity;
@@ -19,5 +20,5 @@ public interface IApplicationService {
     Application updateApplication(UUID id, Application updatedApplication);
     boolean deleteApplication(UUID id);
     ResponseEntity<ResponseApi<ApplicationResponse>> submitApplication(ApplicationRequest applicationRequest);
-    void returnStatusApplication(Map<String, String> data);
+    void returnStatusApplication(ReturnApplication returnApplication);
 }

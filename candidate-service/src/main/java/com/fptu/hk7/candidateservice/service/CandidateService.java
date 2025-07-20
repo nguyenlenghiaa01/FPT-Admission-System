@@ -23,6 +23,11 @@ public class CandidateService implements ICandidateService {
         return candidateRepository.save(candidate);
     }
 
+    @Override
+    public boolean isExisted(UUID uuid) {
+        return candidateRepository.existsById(uuid);
+    }
+
     // Read (find by id)
     public Candidate getCandidateById(UUID id) {
         return candidateRepository.findById(id).orElseThrow(() -> new NotFoundException("Candidate not found with id: " + id));

@@ -10,12 +10,12 @@ import java.time.LocalDateTime;
 
 @Data
 public class BookingResponse1 {
-    String userName;
-    String fullName;
-    String phone;
-    String email;
-    String address;
-    String image;
+    private String userName;
+    private String fullName;
+    private String phone;
+    private String email;
+    private String address;
+    private String image;
     private String BookingUuid;
 
     private String staffUuid;

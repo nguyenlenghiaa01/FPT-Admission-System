@@ -2,7 +2,9 @@ package com.fptu.hk7.candidateservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fptu.hk7.candidateservice.InterFace.IApplicationService;
+import com.fptu.hk7.candidateservice.InterFace.ICandidateService;
 import com.fptu.hk7.candidateservice.InterFace.OfferingProgramClient;
+import com.fptu.hk7.candidateservice.client.BookingConsultantServiceFallback;
 import com.fptu.hk7.candidateservice.client.OfferingProgramServiceFallback;
 import com.fptu.hk7.candidateservice.InterFace.UserClient;
 import com.fptu.hk7.candidateservice.client.UserServiceFallback;
@@ -16,6 +18,7 @@ import com.fptu.hk7.candidateservice.enums.ApplicationStatus;
 import com.fptu.hk7.candidateservice.event.ApplicationReportEvent;
 import com.fptu.hk7.candidateservice.event.BookingEvent;
 import com.fptu.hk7.candidateservice.event.BookingReportEvent;
+import com.fptu.hk7.candidateservice.event.ReturnApplication;
 import com.fptu.hk7.candidateservice.exception.NotFoundException;
 import com.fptu.hk7.candidateservice.pojo.Candidate;
 import com.fptu.hk7.candidateservice.pojo.StatusApplication;
@@ -42,12 +45,13 @@ public class ApplicationService implements IApplicationService {
     ModelMapper modelMapper = new ModelMapper();
     private final UserClient userClient;
     private final OfferingProgramClient offeringProgramClient;
-    private final CandidateService candidateService;
     private final ScholarshipService scholarshipService;
     private final StatusApplicationService statusApplicationService;
     private final UserServiceFallback userServiceFallback;
     private final OfferingProgramServiceFallback offeringProgramServiceFallback;
     private final RedisService redisService;
+    private final ICandidateService candidateService;
+    private final BookingConsultantServiceFallback bookingConsultantServiceFallback;
     private final String TOPIC1 = "booking_report";
 
     private final String TOPIC2 = "booking_admission";
@@ -112,11 +116,16 @@ public class ApplicationService implements IApplicationService {
 
 
     public ResponseEntity<ResponseApi<ApplicationResponse>> submitApplication(ApplicationRequest applicationRequest){
-        Candidate candidate = modelMapper.map(applicationRequest, Candidate.class);
-
         String candidateUuid =candidateService.getCurrentUuid();
-        candidate.setId(UUID.fromString(candidateUuid));
-        candidateService.createCandidate(candidate);
+        Candidate candidate = null;
+        if(candidateService.isExisted(UUID.fromString(candidateUuid))){
+            candidate = candidateService.getCandidateById(UUID.fromString(candidateUuid));
+        } else {
+            candidate = modelMapper.map(applicationRequest, Candidate.class);
+
+            candidate.setId(UUID.fromString(candidateUuid));
+            candidateService.createCandidate(candidate);
+        }
 
         GetOfferingResponse offering = offeringProgramServiceFallback.getOffering(
                 new FindOfferingRequest(applicationRequest.getSpecializationUuid(), applicationRequest.getCampusUuid())
@@ -137,7 +146,7 @@ public class ApplicationService implements IApplicationService {
         statusApplication.setApplication(application);
         statusApplicationService.create(statusApplication); // Lưu sau
 
-        // Gửi sự kiện Booking tới consultant
+        // Gửi sự kiện Booking tới consultant bằng feign
         try {
             BookingEvent bookingEvent = new BookingEvent();
             bookingEvent.setBookingUuid(applicationRequest.getBookingUuid());
@@ -148,8 +157,11 @@ public class ApplicationService implements IApplicationService {
             bookingEvent.setPhone(applicationRequest.getPhone());
             bookingEvent.setCampus(offering.getCampusName());
             bookingEvent.setSpecialization(offering.getSpecializationName());
-            // sai fegin
-            kafkaTemplate.send(TOPIC2, objectMapper.writeValueAsString(bookingEvent));
+
+            ReturnApplication returnApplication = bookingConsultantServiceFallback.bookingConsultant(bookingEvent).getBody();
+
+            assert returnApplication != null;
+            this.returnStatusApplication(returnApplication);
             //gui su kien toi report service
             try{
                 BookingReportEvent bookingReportEvent = new BookingReportEvent();
@@ -182,20 +194,16 @@ public class ApplicationService implements IApplicationService {
     }
 
     @Override
-    public void returnStatusApplication(Map<String, String> data) {
-        String booking_id = data.get("booking_id");
-        String status = data.get("status");
-        String note = data.get("note");
+    public void returnStatusApplication(ReturnApplication returnApplication) {
+        Application application = applicationRepository.findApplicationByBookingUuid(UUID.fromString(returnApplication.getBooking_id()))
+                .orElseThrow(() -> new NotFoundException("Application not found with booking_id: " + returnApplication.getBooking_id()));
 
-        Application application = applicationRepository.findApplicationByBookingUuid(UUID.fromString(booking_id))
-                .orElseThrow(() -> new NotFoundException("Application not found with booking_id: " + booking_id));
-
-        application.setStatus(ApplicationStatus.valueOf(status));
+        application.setStatus(ApplicationStatus.valueOf(returnApplication.getStatus()));
 
         StatusApplication statusApplication = new StatusApplication();
-        statusApplication.setStatus(ApplicationStatus.valueOf(status));
+        statusApplication.setStatus(ApplicationStatus.valueOf(returnApplication.getStatus()));
         statusApplication.setApplication(application);
-        statusApplication.setNote(note);
+        statusApplication.setNote(returnApplication.getNote());
         statusApplication.setCreateAt(LocalDateTime.now());
 
         statusApplicationService.create(statusApplication);
