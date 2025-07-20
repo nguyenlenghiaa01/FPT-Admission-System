@@ -14,20 +14,20 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/report")
+@RequestMapping("/api/booking-report")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "api")
 public class BookingReportController {
     private final IBookingReport bookingReport;
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/booking")
+    @GetMapping("/get")
     public ResponseEntity<BookingReportResponse> getAll(){
         BookingReportResponse bookingReportResponse = bookingReport.getCount();
         return ResponseEntity.ok(bookingReportResponse);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/filter/booking")
+    @GetMapping("/filter")
     public ResponseEntity<List<BookingReport>> filter(String campus, Integer month, Integer year){
         List<BookingReport> bookingReports = bookingReport.filter(campus, month, year);
         return ResponseEntity.ok(bookingReports);

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/report")
+@RequestMapping("/api/user-report")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "api")
 public class UserReportController {
@@ -23,14 +23,14 @@ public class UserReportController {
     private final IUserReport iUserReport;
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/user")
+    @GetMapping("/get")
     public ResponseEntity<UserReportResponse> getAll(){
         UserReportResponse userReportResponse = iUserReport.getCount();
         return ResponseEntity.ok(userReportResponse);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/filter/user")
+    @GetMapping("/filter")
     public ResponseEntity<List<UserReport>> filter(Integer weekOfYear, Integer month, Integer year){
         List<UserReport> userReports = iUserReport.filter(weekOfYear, month, year);
         return ResponseEntity.ok(userReports);
