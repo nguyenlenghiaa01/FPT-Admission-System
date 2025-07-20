@@ -77,7 +77,7 @@ public class BookingReportService implements IBookingReport {
 
         bookingReportRepository.save(report);
 
-        redisService.sendApplicationMessage("booking-updated-status", "/topic/new-booking-report");
+        redisService.sendApplicationMessage("booking-updated-status", "/topic/report");
 
         return report;
     }

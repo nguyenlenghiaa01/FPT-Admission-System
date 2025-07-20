@@ -47,7 +47,7 @@ public class UserReportService implements IUserReport {
         report.setNewUser(report.getNewUser() + newUser);
         userReportRepository.save(report);
 
-        redisService.sendApplicationMessage("new-user", "/topic/new-user-report");
+        redisService.sendApplicationMessage("new-user", "/topic/report");
 
         return report;
     }

@@ -71,7 +71,7 @@ public class ApplicationReportService implements IApplicationReport {
 
         applicationReportRepository.save(report);
 
-        redisService.sendApplicationMessage("application-updated-status", "/topic/new-application-report");
+        redisService.sendApplicationMessage("application-updated-status", "/topic/report");
 
         return report;
     }

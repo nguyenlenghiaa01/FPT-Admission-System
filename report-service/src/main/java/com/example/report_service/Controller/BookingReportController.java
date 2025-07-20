@@ -1,7 +1,6 @@
 package com.example.report_service.Controller;
 
 import com.example.report_service.DTO.Response.BookingReportResponse;
-import com.example.report_service.Entity.ApplicationReport;
 import com.example.report_service.Entity.BookingReport;
 import com.example.report_service.InterFace.IBookingReport;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
