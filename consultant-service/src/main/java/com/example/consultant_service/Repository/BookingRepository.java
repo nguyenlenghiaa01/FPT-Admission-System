@@ -23,6 +23,6 @@ public interface BookingRepository extends JpaRepository<Booking,String>, JpaSpe
 
     Page<Booking> findBookingByStaffUuid(String staffUuid, Pageable pageable);
     List<Booking> findBookingByCandidateUuid(String userUuid);
-    @Query("SELECT b FROM Booking b WHERE b.status = false AND b.endTime <= :now")
+    @Query("SELECT b FROM Booking b WHERE b.status = 'BOOKED' AND b.endTime <= :now")
     List<Booking> findBookingsToUpdate(@Param("now") LocalDateTime now);
 }

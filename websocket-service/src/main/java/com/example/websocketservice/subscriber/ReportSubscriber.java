@@ -34,7 +34,7 @@ public class ReportSubscriber implements MessageListener {
                     throw new IllegalArgumentException("Campus name is missing in application event");
                 }
 
-                String topic = "/topic/new-application-report/" + campusName;
+                String topic = "/topic/report-channel/new-application-report/" + campusName;
                 template.convertAndSend(topic, event);
                 System.out.println("WebSocket message sent to " + topic + ": " + actualJson);
 
@@ -45,7 +45,7 @@ public class ReportSubscriber implements MessageListener {
                     throw new IllegalArgumentException("Campus name is missing in booking event");
                 }
 
-                String topic = "/topic/new-booking-report/" + campusName;
+                String topic = "/topic/report-channel/new-booking-report/" + campusName;
                 template.convertAndSend(topic, event);
                 System.out.println("WebSocket message sent to " + topic + ": " + actualJson);
             }
