@@ -34,14 +34,14 @@ public class InitData {
                 campusRepo.saveAll(List.of(hanoi, hcm, danang, cantho));
 
                 // ======= MAJOR =======
-                Major it = new Major(null, "Information Technology", "Công nghệ thông tin", new ArrayList<>());
-                Major biz = new Major(null, "Business Administration", "Quản trị kinh doanh", new ArrayList<>());
-                Major media = new Major(null, "Media Technology", "Công nghệ truyền thông", new ArrayList<>());
-                Major en = new Major(null, "English Language", "Ngôn ngữ Anh", new ArrayList<>());
-                Major zh = new Major(null, "Chinese Language", "Ngôn ngữ Trung Quốc", new ArrayList<>());
-                Major jp = new Major(null, "Japanese Language", "Ngôn ngữ Nhật", new ArrayList<>());
-                Major kr = new Major(null, "Korean Language", "Ngôn ngữ Hàn Quốc", new ArrayList<>());
-                Major law = new Major(null, "Law", "Luật", new ArrayList<>());
+                Major it = new Major(null, "Công nghệ thông tin", "Information Technology", new ArrayList<>());
+                Major biz = new Major(null, "Quản trị kinh doanh", "Business Administration", new ArrayList<>());
+                Major media = new Major(null, "Công nghệ truyền thông", "Media Technology", new ArrayList<>());
+                Major en = new Major(null, "Ngôn ngữ Anh", "English Language", new ArrayList<>());
+                Major zh = new Major(null, "Ngôn ngữ Trung Quốc", "Chinese Language", new ArrayList<>());
+                Major jp = new Major(null, "Ngôn ngữ Nhật", "Japanese Language", new ArrayList<>());
+                Major kr = new Major(null, "Ngôn ngữ Hàn Quốc", "Korean Language", new ArrayList<>());
+                Major law = new Major(null, "Luật", "Law", new ArrayList<>());
 
                 majorRepo.saveAll(List.of(it, biz, media, en, zh, jp, kr, law));
 
