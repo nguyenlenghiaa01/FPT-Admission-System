@@ -7,8 +7,6 @@ import com.example.consultant_service.Exception.StatusException;
 import com.example.consultant_service.InterFace.IBookingService;
 import com.example.consultant_service.Model.Request.BookingRequest;
 import com.example.consultant_service.Model.Request.BookingUpdateRequest;
-import com.example.consultant_service.Model.Response.AccountResponse;
-import com.example.consultant_service.Model.Response.BookingResponse1;
 import com.example.consultant_service.event.*;
 import com.example.consultant_service.Model.Request.UpdateBookingReq;
 import com.example.consultant_service.Model.Response.BookingResponse;
@@ -42,7 +40,6 @@ public class BookingService implements IBookingService {
     private final RedisService redisService;
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper;
-    private final UserServiceCaller userServiceCaller;
 
     private final String TOPIC1 = "booking_report";
 
@@ -217,41 +214,21 @@ public class BookingService implements IBookingService {
         return returnApplication;
     }
 
-    public DataResponse<BookingResponse1> getByStaff(String staffUuid, int page, int size) {
+    public DataResponse<BookingResponse> getByStaff(String staffUuid, int page, int size) {
         Page<Booking> bookings = bookingRepository.findBookingByStaffUuid(staffUuid, PageRequest.of(page, size));
-        if (bookings.isEmpty()) throw new NotFoundException("Booking not found");
+        if(bookings.isEmpty()) throw new NotFoundException("Booking not found");
 
-        List<BookingResponse1> bookingResponses = bookings.getContent().stream().map(booking -> {
-            BookingResponse1 response = new BookingResponse1();
-            response.setCandidateUuid(booking.getCandidateUuid());
-            response.setStaffUuid(booking.getStaffUuid());
+        List<BookingResponse> bookingResponses = bookings.getContent().stream()
+                .map(booking -> modelMapper.map(booking, BookingResponse.class))
+                .toList();
 
-            AccountResponse accountResponse = userServiceCaller.getUserByUuid(booking.getCandidateUuid());
-            response.setFullName(accountResponse.getFullName());
-            response.setImage(accountResponse.getImage());
-            response.setEmail(accountResponse.getEmail());
-            response.setAddress(accountResponse.getAddress());
-            response.setPhone(accountResponse.getPhone());
-
-            response.setAvailableDate(booking.getStartTime());
-            response.setStartTime(booking.getStartTime());
-            response.setEndTime(booking.getEndTime());
-            response.setBookAt(booking.getCreatedAt());
-            response.setStatus(booking.getStatus());
-            response.setScheduler(booking.getScheduler());
-            response.setBookingUuid(booking.getUuid());
-            return response;
-        }).toList();
-
-        DataResponse<BookingResponse1> dataResponse = new DataResponse<>();
+        DataResponse<BookingResponse> dataResponse = new DataResponse<>();
         dataResponse.setListData(bookingResponses);
         dataResponse.setTotalElements(bookings.getTotalElements());
         dataResponse.setPageNumber(bookings.getNumber());
         dataResponse.setTotalPages(bookings.getTotalPages());
-
         return dataResponse;
     }
-
 
     public List<BookingResponse> getByUser(String userUuid){
         List<Booking> bookings = bookingRepository.findBookingByCandidateUuid(userUuid);

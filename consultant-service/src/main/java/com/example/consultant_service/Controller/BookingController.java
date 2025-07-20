@@ -70,7 +70,7 @@ public class BookingController {
     }
 
     @GetMapping("/getByStaff/{id}")
-    public ResponseEntity<DataResponse<BookingResponse1>> getByStaff(@PathVariable("id") String staffUuid,
+    public ResponseEntity<DataResponse<BookingResponse>> getByStaff(@PathVariable("id") String staffUuid,
                                                                      @RequestParam int page, @RequestParam int size) {
         return ResponseEntity.ok(bookingService.getByStaff(staffUuid, page, size));
     }
