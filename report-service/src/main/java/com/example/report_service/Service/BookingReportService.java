@@ -100,4 +100,8 @@ public class BookingReportService implements IBookingReport {
         return response;
     }
 
+    public List<BookingReport> filter(String campus,Integer month, Integer year){
+        return bookingReportRepository.filterByOptionalFields(campus, month, year);
+    }
+
 }

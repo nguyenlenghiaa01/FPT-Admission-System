@@ -67,4 +67,8 @@ public class UserReportService implements IUserReport {
         return response;
     }
 
+    public List<UserReport> filter (Integer weakOfYear, Integer month, Integer year){
+        return userReportRepository.filter(weakOfYear,month,year);
+    }
+
 }
