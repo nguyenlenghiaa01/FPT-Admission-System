@@ -27,7 +27,7 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
             "/api/campus/get",
             "/api/program/get_all",
             "/api/specialization",
-            "/api/posts",
+            "/api/posts/**",
             "/api/categories",
             "/api/major",
             "/api/specialization/major/{id}",

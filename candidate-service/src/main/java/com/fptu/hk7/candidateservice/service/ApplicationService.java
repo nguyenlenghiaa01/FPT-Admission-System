@@ -1,12 +1,9 @@
 package com.fptu.hk7.candidateservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fptu.hk7.candidateservice.InterFace.IApplicationService;
-import com.fptu.hk7.candidateservice.InterFace.ICandidateService;
-import com.fptu.hk7.candidateservice.InterFace.OfferingProgramClient;
+import com.fptu.hk7.candidateservice.InterFace.*;
 import com.fptu.hk7.candidateservice.client.BookingConsultantServiceFallback;
 import com.fptu.hk7.candidateservice.client.OfferingProgramServiceFallback;
-import com.fptu.hk7.candidateservice.InterFace.UserClient;
 import com.fptu.hk7.candidateservice.client.UserServiceFallback;
 import com.fptu.hk7.candidateservice.dto.request.ApplicationRequest;
 import com.fptu.hk7.candidateservice.dto.request.FindOfferingRequest;
@@ -39,8 +36,8 @@ public class ApplicationService implements IApplicationService {
     ModelMapper modelMapper = new ModelMapper();
     private final UserClient userClient;
     private final OfferingProgramClient offeringProgramClient;
-    private final ScholarshipService scholarshipService;
-    private final StatusApplicationService statusApplicationService;
+    private final IScholarshipService scholarshipService;
+    private final IStatusApplicationService statusApplicationService;
     private final UserServiceFallback userServiceFallback;
     private final OfferingProgramServiceFallback offeringProgramServiceFallback;
     private final RedisService redisService;

@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  chroma:
+    image: ghcr.io/chroma-core/chroma:0.6.4.dev242
+    restart: always
+    ports:
+      - 8000:8000
+#  ollama:
+#    image: ghcr.io/ollama/ollama:latest
+#    container_name: ollama
+#    ports:
+#      - "11434:11434"
+#    volumes:
+#      - ollama_data:/root/.ollama
+#volumes:
+#  ollama_data:

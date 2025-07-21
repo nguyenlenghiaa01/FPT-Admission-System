@@ -36,7 +36,8 @@ public class SecurityConfig {
                                         "/api/posts",
                                         "/api/categories",
                                         "/uploads/**",
-                                        "/api/assets/upload"
+                                        "/api/assets/upload",
+                                        "/api/posts/**"
                                         )
                                 .permitAll() // Cho phép tất cả các request
                                 .anyRequest().authenticated()

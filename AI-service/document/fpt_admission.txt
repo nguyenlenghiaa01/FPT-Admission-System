@@ -1,0 +1,197 @@
+===========================
+THÔNG TIN TƯ VẤN TUYỂN SINH ĐẠI HỌC FPT - BẢN CHI TIẾT
+===========================
+
+---------------------------
+🎓 A. Điều kiện xét tuyển và hồ sơ
+---------------------------
+Để được xét tuyển vào Đại học FPT, thí sinh cần đáp ứng ít nhất một trong các tiêu chí tuyển sinh sau đây:
+
+Thứ nhất, có học lực Khá trở lên ở lớp 12 theo kết quả học bạ. Cụ thể, điểm trung bình năm lớp 12 của ba môn tổ hợp xét tuyển phải từ 6.5 trở lên. Ví dụ, nếu xét khối A00 (Toán - Lý - Hóa), tổng ba môn chia trung bình phải đạt ít nhất 6.5.
+
+Thứ hai, đạt điểm thi tốt nghiệp THPT từ 15 điểm trở lên đối với tổng ba môn xét tuyển. Ví dụ, nếu bạn thi Toán - Lý - Hóa được 5.5, 4.5 và 5 điểm thì tổng là 15 điểm, vẫn đủ điều kiện nộp hồ sơ.
+
+Thứ ba, có chứng chỉ tiếng Anh quốc tế tương đương IELTS 6.0 trở lên, hoặc đã đạt giải học sinh giỏi cấp Tỉnh trở lên. Chứng chỉ phải còn thời hạn tính đến ngày xét tuyển.
+
+Thứ tư, thí sinh có thể đăng ký tham gia kỳ thi đánh giá năng lực riêng của Đại học FPT. Đây là kỳ thi gồm các phần đánh giá tư duy logic, kiến thức phổ thông và kỹ năng ngôn ngữ.
+
+Nếu học lực Khá, bạn hoàn toàn đủ điều kiện xét tuyển. Trong nhiều năm, học bạ là phương thức phổ biến nhất vì không cần chờ điểm thi THPT.
+
+Hồ sơ xét tuyển bao gồm các giấy tờ sau:
+- Phiếu đăng ký xét tuyển (theo mẫu trường)
+- Bản sao công chứng học bạ THPT
+- Bản sao công chứng giấy khai sinh hoặc CMND/CCCD
+- Ảnh 3x4
+- Bản sao các giấy tờ ưu tiên hoặc chứng chỉ tiếng Anh (nếu có)
+- Giấy chứng nhận tốt nghiệp tạm thời (nếu chưa có bằng chính thức)
+
+Nếu chưa có bằng tốt nghiệp THPT, thí sinh vẫn có thể nộp hồ sơ và bổ sung giấy tờ sau.
+
+Trường cho phép nộp hồ sơ online qua website tuyển sinh hoặc trực tiếp tại cơ sở. Thời gian xét duyệt hồ sơ từ 5 đến 10 ngày làm việc. Lệ phí xét tuyển thường khoảng 100.000 đồng mỗi hồ sơ.
+
+---------------------------
+📚 B. Ngành học và chương trình đào tạo
+---------------------------
+Đại học FPT hiện đang đào tạo nhiều nhóm ngành khác nhau. Cụ thể:
+
+Nhóm Công nghệ thông tin:
+- Kỹ thuật phần mềm: đào tạo lập trình viên, phát triển ứng dụng, quản lý dự án phần mềm.
+- An toàn thông tin: học bảo mật hệ thống, mã hóa dữ liệu.
+- Trí tuệ nhân tạo: nghiên cứu machine learning, xử lý ngôn ngữ tự nhiên.
+- Internet vạn vật (IoT): phát triển thiết bị kết nối thông minh.
+
+Nhóm Kinh tế - Quản trị:
+- Quản trị kinh doanh: có chuyên ngành Quản trị khách sạn, Digital Marketing, Kinh doanh quốc tế, Khởi nghiệp.
+- Tài chính: quản trị tài chính doanh nghiệp.
+- Logistics: quản lý chuỗi cung ứng.
+
+Nhóm Ngôn ngữ:
+- Ngôn ngữ Anh
+- Ngôn ngữ Nhật
+- Ngôn ngữ Hàn
+- Ngôn ngữ Trung
+
+Nhóm Thiết kế:
+- Thiết kế đồ họa
+- Truyền thông đa phương tiện
+
+Ví dụ, nếu bạn chọn Quản trị kinh doanh, sau học kỳ đầu sẽ chọn chuyên ngành cụ thể như Digital Marketing hoặc Kinh doanh quốc tế.
+
+Ngành Công nghệ thông tin học các môn cơ bản về lập trình C, Java, Python, thiết kế phần mềm, bảo mật, phát triển ứng dụng web và mobile.
+
+Học ngành Thiết kế đồ họa không bắt buộc phải vẽ giỏi ngay từ đầu. Tuy nhiên, bạn cần tư duy thẩm mỹ tốt, sẽ được rèn luyện kỹ năng qua các môn cơ bản như Hình họa, Mỹ thuật cơ sở.
+
+Lộ trình học tiêu chuẩn là 3,5 đến 4 năm, gồm:
+- Giai đoạn tiếng Anh dự bị (nếu cần)
+- Học chuyên ngành
+- Một kỳ thực tập bắt buộc OJT
+
+Sinh viên có thể đăng ký học song ngành nếu đáp ứng điều kiện điểm trung bình và năng lực học tập.
+
+Bằng cấp của Đại học FPT được công nhận trên toàn quốc và được nhiều doanh nghiệp quốc tế chấp nhận.
+
+Chương trình liên kết quốc tế được phối hợp với hơn 60 trường đại học đối tác tại Mỹ, Nhật, Pháp, Hàn Quốc. Sinh viên có thể đăng ký ngay khi nhập học hoặc sau 1–2 năm.
+
+---------------------------
+💵 C. Học phí và học bổng
+---------------------------
+Học phí tại Đại học FPT tính theo học kỳ. Mức học phí trung bình là 27–33 triệu đồng/học kỳ (tùy ngành và chương trình).
+
+Học phí chưa bao gồm học phí tiếng Anh dự bị. Khoảng phí tiếng Anh từ 10–15 triệu đồng/học kỳ. Ví dụ, nếu bạn chưa đủ trình độ IELTS 6.0, bạn phải học thêm từ 1–3 kỳ tiếng Anh.
+
+Trường cho phép đóng học phí linh hoạt theo từng đợt hoặc trọn gói.
+
+Học bổng Đại học FPT rất đa dạng:
+- Học bổng 100% học phí
+- Học bổng 70%
+- Học bổng 50%
+- Học bổng 30% hoặc 20%
+
+Điều kiện học bổng cao nhất thường dành cho:
+- Thí sinh có giải quốc gia
+- Điểm thi THPT rất cao (từ 27 điểm trở lên, tùy từng năm)
+- Chứng chỉ IELTS từ 7.5 trở lên
+
+Nếu được học bổng, sinh viên phải duy trì điểm trung bình theo quy định, thường từ 7.0 trở lên.
+
+Ngoài ra, nhà trường hỗ trợ vay tín dụng học phí thông qua các ngân hàng đối tác. Sinh viên có thể trả góp hàng tháng.
+
+---------------------------
+🏠 D. Ký túc xá và cơ sở vật chất
+---------------------------
+Đại học FPT có ký túc xá tiêu chuẩn nội trú trong khuôn viên. Mỗi phòng từ 4 đến 8 sinh viên, có điều hòa, wifi, giường tầng, tủ đồ cá nhân. An ninh 24/7.
+
+Chi phí ký túc xá dao động từ 500.000–1.200.000 đồng/tháng tùy loại phòng và tiện ích.
+
+Bạn có thể đăng ký ký túc xá ngay khi nhập học hoặc bổ sung sau. Nếu phòng còn chỗ, trường luôn hỗ trợ sinh viên đăng ký muộn.
+
+Ngoài ra, trường có xe bus nội bộ di chuyển trong khuôn viên và xe bus tuyến đưa đón sinh viên. Lịch trình xe bus được thông báo công khai trên website.
+
+---------------------------
+🌏 E. Cơ hội quốc tế và thực tập
+---------------------------
+Đại học FPT là trường tiên phong áp dụng chương trình OJT (On the Job Training). Đây là kỳ thực tập bắt buộc kéo dài từ 4–8 tháng, giúp sinh viên tích lũy kinh nghiệm làm việc trước khi ra trường.
+
+Ví dụ, sinh viên Công nghệ thông tin có thể thực tập tại FPT Software, VNPT, Viettel hoặc các startup công nghệ.
+
+Nhà trường có mạng lưới hơn 500 doanh nghiệp đối tác tuyển dụng và hỗ trợ sinh viên tìm nơi thực tập.
+
+Tỷ lệ sinh viên có việc làm sau tốt nghiệp rất cao, trên 98% trong vòng 1 năm.
+
+Sinh viên có thể tham gia chương trình trao đổi quốc tế tại hơn 60 trường đối tác tại Mỹ, Nhật, Hàn Quốc, Úc, Pháp. Thời gian trao đổi từ 1 học kỳ đến 1 năm.
+
+---------------------------
+🎯 F. Hoạt động ngoại khóa và môi trường học
+---------------------------
+Trường có hàng chục câu lạc bộ sinh viên: CLB Công nghệ, CLB Kinh doanh, CLB Truyền thông, CLB Âm nhạc, CLB Võ thuật, CLB Bóng đá.
+
+Sinh viên không bắt buộc tham gia nhưng được khuyến khích tham gia hoạt động ngoại khóa để phát triển kỹ năng mềm.
+
+Môi trường học tập hiện đại, kỷ luật, nhưng rất cởi mở, thân thiện. Sinh viên được tự do tham gia ý kiến và sáng tạo.
+
+Trường thường xuyên tổ chức các sự kiện: hội trại, giải thể thao, cuộc thi khởi nghiệp, cuộc thi ý tưởng sáng tạo, ngày hội tuyển dụng.
+
+---------------------------
+📝 G. Các vấn đề khác
+---------------------------
+Khi nhập học, thí sinh cần chuẩn bị:
+- Giấy báo trúng tuyển
+- CMND hoặc CCCD
+- Học bạ
+- Giấy chứng nhận tốt nghiệp tạm thời
+- Biên lai đóng học phí
+
+Nếu bạn muốn rút hồ sơ để đổi nguyện vọng, cần liên hệ Phòng Tuyển sinh để được hướng dẫn và làm thủ tục chính thức.
+
+Nếu bảo lưu kết quả xét tuyển, thời gian bảo lưu tối đa 1 năm. Sau thời hạn này, bạn cần xét tuyển lại.
+
+Thời gian khai giảng thông thường bắt đầu từ tháng 9 hàng năm.
+
+---------------------------
+===========================
+VĂN BẢN GIẢI ĐÁP CHI TIẾT NHỮNG CÂU HỎI GIẢ ĐỊNH THƯỜNG GẶP KHI XÉT TUYỂN VÀ HỌC TẬP TẠI ĐẠI HỌC FPT
+===========================
+
+Khi xét tuyển vào Đại học FPT, nhiều thí sinh và phụ huynh có những băn khoăn liên quan đến điều kiện xét tuyển, hồ sơ, ngành học, học phí, học bổng, ký túc xá, chương trình quốc tế, cơ hội việc làm, hoạt động ngoại khóa và các tình huống đặc biệt khác. Dưới đây là thông tin chi tiết giải thích từng vấn đề và những câu hỏi liên quan mà thí sinh thường đặt ra.
+
+Về điều kiện xét tuyển, nếu một thí sinh không đủ điểm chuẩn của ngành mình chọn ban đầu (ví dụ ngành Công nghệ thông tin), trường có thể xem xét nguyện vọng chuyển sang ngành khác (như Quản trị kinh doanh) nếu ngành đó vẫn còn chỉ tiêu và bạn đạt điểm xét tuyển tối thiểu của ngành mới. Trong trường hợp muốn chuyển ngành, bạn cần liên hệ Phòng Tuyển sinh để nộp đơn thay đổi nguyện vọng và làm thủ tục điều chỉnh hồ sơ. Nhiều bạn sẽ thắc mắc thêm: "Nếu em muốn đổi nguyện vọng nhưng ngành mới đã hết chỉ tiêu thì sao?" Trong tình huống đó, bạn sẽ phải đợi đợt tuyển sinh tiếp theo hoặc chọn ngành khác còn chỗ.
+
+Nếu bạn nộp hồ sơ muộn sau hạn chính thức của đợt xét tuyển, trường vẫn nhận hồ sơ nhưng sẽ xếp vào đợt tuyển sinh tiếp theo. Trường Đại học FPT thường tổ chức nhiều đợt tuyển sinh trong năm từ tháng 1 đến tháng 10, nên cơ hội vẫn còn. Tuy nhiên, bạn nên nộp sớm để được ưu tiên xét tuyển và chọn ngành mong muốn, vì có những ngành hết chỉ tiêu rất nhanh.
+
+Trong trường hợp đã trúng tuyển nhưng đổi ý không nhập học, bạn sẽ không bị phạt, tuy nhiên phí xét tuyển đã nộp sẽ không được hoàn trả và bạn cần thông báo chính thức với trường để hủy xác nhận nhập học. Nhiều bạn sẽ hỏi thêm: "Nếu em không thông báo thì có ảnh hưởng gì không?" Trường sẽ tự động coi bạn từ chối nhập học sau thời hạn quy định, và chỗ trống có thể dành cho thí sinh khác.
+
+Nếu bạn thi lại THPT Quốc gia để nâng điểm, kết quả mới được công nhận bình thường nếu là kết quả hợp lệ do Bộ Giáo dục và Đào tạo cấp. Bạn có thể dùng kết quả này xét tuyển trong năm tiếp theo, miễn là giấy chứng nhận kết quả thi còn giá trị.
+
+Nếu hồ sơ của bạn còn thiếu giấy tờ, ví dụ thiếu bản sao công chứng học bạ hoặc giấy xác nhận tốt nghiệp, bạn được phép bổ sung trong thời gian nhà trường thông báo, thường từ 5 đến 10 ngày làm việc. Tuy nhiên, bạn phải hoàn tất trước ngày nhập học chính thức. Nhiều thí sinh lo lắng: "Nếu em bổ sung trễ hơn thì có mất suất không?" Trả lời là nếu quá hạn bổ sung và không có lý do chính đáng, hồ sơ sẽ bị hủy.
+
+Nếu bạn nộp song song hai phương thức xét tuyển (bằng điểm thi và học bạ), trường sẽ ưu tiên phương thức mà bạn ghi rõ trên phiếu đăng ký. Nếu bạn không ghi, trường sẽ xét phương thức nào có kết quả tốt nhất và phù hợp thời điểm công bố.
+
+Trong trường hợp bạn không trúng tuyển năm nay, sang năm nếu bạn vẫn muốn xét tuyển bằng bài kiểm tra năng lực của Đại học FPT thì cần đăng ký thi lại. Kết quả của bài kiểm tra chỉ có giá trị xét tuyển trong năm tổ chức.
+
+Về ngành học và chuyển ngành, nếu bạn đã học một học kỳ rồi muốn chuyển ngành, bạn sẽ nộp đơn đề nghị Phòng Đào tạo xét duyệt. Trường sẽ căn cứ kết quả học tập, điểm trung bình và chỉ tiêu ngành mới. Trong trường hợp ngành bạn chọn bị dừng tuyển sinh hoặc tạm ngừng đào tạo vì lý do đặc biệt, sinh viên đang học sẽ vẫn được đảm bảo học tiếp đến khi tốt nghiệp. Nếu chương trình dừng triển khai, trường sẽ thông báo và tạo điều kiện bạn chọn ngành tương đương. Nếu bạn học song ngành mà cảm thấy không theo kịp, bạn được quyền làm thủ tục dừng học một ngành và tiếp tục ngành chính, không cần đóng thêm phí nếu quyết định trong thời hạn cho phép.
+
+Nếu bạn đã học một ngành ở trường khác, khi chuyển sang Đại học FPT, bạn có thể xin công nhận tín chỉ đã học. Hồ sơ gồm bảng điểm, đề cương chi tiết các môn và quyết định công nhận tín chỉ được Phòng Đào tạo xét từng trường hợp cụ thể. Nhiều bạn hỏi thêm: "Có phải đóng thêm phí xét tín chỉ không?" Hiện nhà trường không thu phí xét tín chỉ nhưng bạn cần chuẩn bị hồ sơ đầy đủ.
+
+Nếu bạn muốn học chương trình liên kết quốc tế, bạn sẽ học tập trung tại một cơ sở để đảm bảo chuẩn chất lượng. Việc chuyển giữa các cơ sở có thể thực hiện nếu có lý do đặc biệt và được trường đối tác chấp thuận. Ví dụ, nếu bạn cần chuyển từ Hà Nội vào TP.HCM, cần nộp đơn, giải trình lý do và chờ xét duyệt.
+
+Về học phí và học bổng, nếu bạn đóng học phí trễ hạn, bạn sẽ bị tính phí phạt theo quy định. Nếu chậm quá hạn dài, nhà trường có quyền khóa tài khoản sinh viên, đình chỉ tạm thời hoặc không cho đăng ký môn học mới cho đến khi thanh toán đủ học phí. Nếu gia đình bạn gặp khó khăn tài chính đột xuất, ví dụ thiên tai, bệnh nặng, mất việc, bạn có thể làm đơn xin gia hạn đóng học phí kèm giấy tờ chứng minh hoàn cảnh. Trường sẽ xem xét hỗ trợ chia nhỏ học phí hoặc gia hạn.
+
+Nếu bạn được học bổng mà điểm trung bình năm sau không đạt yêu cầu (thường là từ 7.0), học bổng sẽ tạm dừng từ kỳ kế tiếp. Nếu bạn bảo lưu kết quả vì lý do cá nhân, học bổng sẽ tiếp tục áp dụng sau khi quay lại, miễn là thời gian bảo lưu không quá thời hạn quy định (thường 1 năm). Nếu quá hạn, bạn phải xét lại điều kiện học bổng mới.
+
+Nếu bạn được học bổng 100% nhưng muốn xin thêm hỗ trợ ký túc xá, nhà trường vẫn xem xét riêng. Học bổng học phí và hỗ trợ ký túc xá là hai chính sách độc lập. Nhiều bạn thắc mắc: "Nếu đã được hỗ trợ ký túc xá thì có mất học bổng không?" Câu trả lời là không.
+
+Nếu học phí thay đổi, ví dụ tăng do điều chỉnh lạm phát, trường sẽ thông báo trước cho sinh viên. Thường học phí ổn định cho toàn khóa, chỉ điều chỉnh nhỏ.
+
+Nếu bạn đã đóng học phí nhưng rút hồ sơ trước khi nhập học, bạn có thể được hoàn phí theo quy định. Nếu đã nhập học, học phí sẽ không hoàn lại. Nếu trúng tuyển cả chương trình chuẩn và chương trình quốc tế, học phí sẽ tính theo chương trình bạn chọn khi nhập học.
+
+Về ký túc xá, nếu bạn không kịp đăng ký, nhà trường luôn duy trì một số phòng dự phòng nhưng không đảm bảo còn chỗ lâu dài. Bạn nên liên hệ bộ phận quản lý ký túc xá để giữ chỗ. Nếu đang ở ký túc xá mà muốn ra ngoài thuê trọ, bạn cần làm đơn chấm dứt hợp đồng, thanh toán chi phí phát sinh, sau đó sẽ được trả lại phần phí còn dư (nếu có). Nếu về quê dài hạn như hè hoặc thực tập, bạn vẫn cần đóng phí giữ chỗ để đảm bảo quyền sử dụng phòng sau khi quay lại. Nếu bạn bị ốm, ký túc xá có thể xem xét hỗ trợ cho người thân ở tạm thời, nhưng phải làm thủ tục đăng ký và được quản lý phê duyệt. Nếu vi phạm nội quy, hình thức xử lý tùy mức độ: từ nhắc nhở, phạt hành chính, đến đình chỉ quyền lưu trú.
+
+Về OJT và cơ hội việc làm, chương trình OJT là học kỳ thực tập bắt buộc, nếu bạn không tham gia thì sẽ không đủ điều kiện tốt nghiệp. Nếu bạn không tự tìm được nơi thực tập, Phòng Quan hệ Doanh nghiệp sẽ hỗ trợ kết nối với doanh nghiệp đối tác. Nếu kết quả OJT không đạt, bạn cần đăng ký học lại ở học kỳ sau. Trong trường hợp bạn được nhận làm chính thức trong thời gian OJT, bạn vẫn cần hoàn thành thủ tục và đánh giá thực tập theo quy định. Nhà trường khuyến khích sinh viên tốt nghiệp rồi mới đi làm toàn thời gian. Về cơ hội việc làm, dù ngành học của bạn ít doanh nghiệp tuyển, trường sẽ hỗ trợ kết nối nhưng không cam kết đảm bảo 100% có việc cho tất cả sinh viên.
+
+Về chương trình quốc tế, nếu đang tham gia trao đổi mà dịch bệnh bùng phát, nhà trường phối hợp đối tác để hỗ trợ bạn trở về hoặc học trực tuyến. Nếu không đủ điều kiện tiếng Anh sau năm nhất (ví dụ IELTS dưới 6.0), bạn cần học bổ sung trước khi đi trao đổi. Nếu đang học chương trình chuẩn, muốn chuyển sang chương trình quốc tế, bạn cần làm thủ tục xét điều kiện và học phí. Trong trường hợp visa bị từ chối, học phí phần chưa sử dụng sẽ được hoàn lại hoặc chuyển sang kỳ sau tùy chính sách từng trường. Nếu bạn muốn đi trao đổi khi đã học xong năm cuối, nhà trường vẫn xem xét nhưng ưu tiên sinh viên còn ít nhất 1 kỳ học.
+
+Về hoạt động ngoại khóa và câu lạc bộ, sinh viên không bắt buộc tham gia câu lạc bộ, nhưng được khuyến khích vì sẽ cộng điểm rèn luyện và phát triển kỹ năng mềm. Nếu muốn thành lập câu lạc bộ mới, bạn cần tối thiểu 5 thành viên sáng lập, có đề án hoạt động và được Phòng Công tác Sinh viên phê duyệt. Nếu bạn bị kỷ luật về đạo đức, ví dụ gian lận, bạo lực, học bổng có thể bị thu hồi. Nếu tham gia phong trào xuất sắc, bạn sẽ được cộng điểm rèn luyện. Lớp trưởng hoặc cán bộ Đoàn có thể được ưu tiên đăng ký ký túc xá nếu có thành tích tốt.
+
+Về học tập và lộ trình, nếu học chậm tiến độ, thời gian tối đa kéo dài là 6 năm cho chương trình đại học. Khi bảo lưu kết quả, học phí kỳ bảo lưu không thu, và học phí khi quay lại áp dụng mức mới. Nếu thi lại môn nhưng điểm vẫn kém, bạn có thể thi thêm lần nữa hoặc học lại môn đó. Nếu muốn học vượt để tốt nghiệp sớm, bạn cần đăng ký học thêm tín chỉ và đảm bảo điểm trung bình đủ điều kiện. Nếu muốn chuyển cơ sở học (ví dụ từ Hà Nội về Đà Nẵng), bạn cần lý do chính đáng và làm đơn. Nếu bạn mắc bệnh dài hạn, trường có chính sách hỗ trợ bảo lưu, giãn tiến độ, và xem xét miễn giảm học phí theo hồ sơ. Nếu điểm trung bình dưới mức quy định, bạn sẽ bị cảnh báo học vụ, nếu không cải thiện sẽ bị buộc thôi học theo quy định.
+
+Về quy trình và chính sách khác, nếu muốn rút hồ sơ để đổi trường sau khi nhập học, bạn cần nộp đơn, chờ xác nhận và hoàn thành các nghĩa vụ tài chính. Nếu mất giấy báo trúng tuyển, bạn có thể xin cấp lại bản sao. Nếu gia đình chuyển vùng, học phí không thay đổi vì học phí áp dụng theo chương trình, không theo địa phương. Nếu muốn chuyển ngành giữa năm, cần đạt điểm trung bình tối thiểu và nộp đơn xin xét duyệt. Nếu vừa đi làm vừa học, bạn có thể đăng ký lớp ngoài giờ nếu ngành có tổ chức, tuy nhiên Đại học FPT chủ yếu đào tạo hệ chính quy tập trung.
